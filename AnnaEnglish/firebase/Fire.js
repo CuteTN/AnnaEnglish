@@ -3,6 +3,7 @@ import { reduxStore } from '../redux/store';
 import { createActionUpdateFirebase } from '../redux/actions/CreateActionUpdateFirebase'
 import * as log from '../Utils/ConsoleLog';
 import { firebaseConfig } from './FirebaseConfig';
+import { createFakeEmail, validateUsername } from '../Utils/Auth';
 
 class Fire {
     static initApp = () => {
@@ -11,6 +12,67 @@ class Fire {
         else
             firebase.app();
     };
+
+    static getCurrentUser = () => {
+        return firebase.auth().currentUser
+    }
+
+    static signOut = async () => {
+        await firebase.auth().signOut().then(
+            () => {
+                log.logSuccess(`Signed out successfully`)
+            },
+            (error) => {
+                log.logError(`Sign out error: `, false, false)
+                log.logError(error)
+            }
+        )
+    }
+
+    static signUpWithUsername = async (username, password) => {
+        if (!validateUsername(username))
+            log.logError(`${username} is an invalid user name. For more detail, please visit: https://stackoverflow.com/questions/12018245/regular-expression-to-validate-username/12019115`, false, true)
+
+        try {
+            let email = createFakeEmail(username);
+            await firebase.auth().createUserWithEmailAndPassword(email, password).then(
+                (credential) => {
+                    credential.user.updateProfile({ displayName: username }); // async, we don't event need it to be synced here :)
+                    Fire.update(`user/${username}`, {
+                        displayName: username,
+                    })
+                    log.logSuccess(`Created new user with username: ${username}`);
+                },
+                (error) => {
+                    log.logError(`Sign up error: `, false, false)
+                    log.logError(error)
+                }
+            );
+        }
+        catch (error) {
+            log.logError(`Sign up error: `, false, false)
+            log.logError(error)
+        }
+    }
+
+    static signInWithUsername = async (username, password) => {
+        let email = createFakeEmail(username);
+        try {
+            await firebase.auth().signInWithEmailAndPassword(email, password).then(
+                (credential) => {
+                    log.logSuccess(`user ${username} signed in successfully`)
+                },
+                (error) => {
+                    log.logError(`Sign in error: `, false, false)
+                    log.logError(error)
+                }
+            );
+        }
+        catch (error) {
+            log.logError(`Sign in error: `, false, false)
+            log.logError(error)
+        }
+    }
 
     static init = () => {
         Fire.initApp();
@@ -61,6 +123,14 @@ class Fire {
         let ref = firebase.database().ref().child(refPath);
         log.logInfo(`Unsubscribed to Firebase/${refPath}`, false, false)
         ref.off("value")
+    }
+
+    static get = async (refPath) => {
+        let ref = firebase.database().ref().child(refPath)
+        const item = await ref.get().catch((error) => {
+            log.logError(`Could not find item from ${refPath}:\nError: ${error}`)
+        })
+        return item
     }
 
     // push a new item to refPath (i.e value would be in child ref of refPath). auto generate new ID.
