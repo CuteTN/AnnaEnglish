@@ -10,6 +10,8 @@ import { reduxStore } from "./redux/store";
 import { LogBox } from "react-native";
 import { Provider } from "react-redux";
 import Tabbar from "./Screens/TabNavigation/Tabbar";
+import SignInScreen from "./Screens/SignInScreen/SignInScreen";
+import { NavigationContainer } from "@react-navigation/native";
 LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
 LogBox.ignoreAllLogs(); //Ignore all log notifications
 
@@ -18,6 +20,7 @@ dbSetUp();
 export default function App() {
   return (
     <Provider store={reduxStore}>
+
       <View style={styles.container}>
         {/* <Text>Open up App.js to start working on your app!</Text>
         <StatusBar style="auto" /> */}

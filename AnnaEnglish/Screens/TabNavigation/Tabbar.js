@@ -4,6 +4,11 @@ import React from "react";
 import { Text, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import styles from "./styles";
+// import StatisticsScreen from "../StatisticsScreen/StatisticsScreen"
+// import LeaderboardScreen from "../LeaderboardScreen/LeaderboardScreen"
+// import PlayScreen from "../PlayScreen/PlayScreen"
+// import DictionaryScreen from "../DictionaryScreen/DictionaryScreen"
+// import ProfileScreen from "../ProfileScreen/ProfileScreen"
 
 function StatisticsScreen() {
   return (
@@ -24,21 +29,21 @@ function LeaderboardScreen() {
 function PlayScreen() {
   return (
     <View style={styles.tabbar}>
-      <Text>Hodsdsdsfgg!</Text>
+      <Text>Play!</Text>
     </View>
   );
 }
 function DictionaryScreen() {
   return (
     <View style={styles.tabbar}>
-      <Text>Hdsdsdsds</Text>
+      <Text>Dictionary!</Text>
     </View>
   );
 }
 function ProfileScreen() {
   return (
     <View style={styles.tabbar}>
-      <Text>Home!</Text>
+      <Text>Profile!</Text>
     </View>
   );
 }
@@ -56,17 +61,17 @@ export default function Tabbar() {
             if (route.name === "Profile") {
               iconName = focused
                 ? "person-circle"
-       :"person-circle-outline"
+                : "person-circle-outline"
             } else if (route.name === "Play") {
               iconName = focused ? "game-controller" : "game-controller-outline";
-            } 
+            }
             else if (route.name === "Statistics") {
-                iconName = focused ? "game-controller" : "game-controller-outline";
-              } else if (route.name === "Leaderboard") {
-                iconName = focused ? "game-controller" : "game-controller-outline";
-              } else if (route.name === "Dictionary") {
-                iconName = focused ? "book" : "book-outline";
-              } 
+              iconName = focused ? "game-controller" : "game-controller-outline";
+            } else if (route.name === "Leaderboard") {
+              iconName = focused ? "game-controller" : "game-controller-outline";
+            } else if (route.name === "Dictionary") {
+              iconName = focused ? "book" : "book-outline";
+            }
 
             // You can return any component that you like here!
             return <Ionicons name={iconName} size={size} color={color} />;
