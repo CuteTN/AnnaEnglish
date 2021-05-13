@@ -8,7 +8,7 @@ import styles from "./styles";
 // import LeaderboardScreen from "../LeaderboardScreen/LeaderboardScreen"
 // import PlayScreen from "../PlayScreen/PlayScreen"
 // import DictionaryScreen from "../DictionaryScreen/DictionaryScreen"
-// import ProfileScreen from "../ProfileScreen/ProfileScreen"
+import ProfileScreen from "../ProfileScreen/ProfileScreen"
 
 function StatisticsScreen() {
   return (
@@ -21,7 +21,7 @@ function StatisticsScreen() {
 function LeaderboardScreen() {
   return (
     <View style={styles.tabbar}>
-      <Text>Home!</Text>
+      <Text>Leaderboard!</Text>
     </View>
   );
 }
@@ -40,54 +40,45 @@ function DictionaryScreen() {
     </View>
   );
 }
-function ProfileScreen() {
-  return (
-    <View style={styles.tabbar}>
-      <Text>Profile!</Text>
-    </View>
-  );
-}
 
 const Tab = createBottomTabNavigator();
 
 export default function Tabbar() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
 
-            if (route.name === "Profile") {
-              iconName = focused
-                ? "person-circle"
-                : "person-circle-outline"
-            } else if (route.name === "Play") {
-              iconName = focused ? "game-controller" : "game-controller-outline";
-            }
-            else if (route.name === "Statistics") {
-              iconName = focused ? "game-controller" : "game-controller-outline";
-            } else if (route.name === "Leaderboard") {
-              iconName = focused ? "game-controller" : "game-controller-outline";
-            } else if (route.name === "Dictionary") {
-              iconName = focused ? "book" : "book-outline";
-            }
+          if (route.name === "Profile") {
+            iconName = focused
+              ? "person-circle"
+              : "person-circle-outline"
+          } else if (route.name === "Play") {
+            iconName = focused ? "game-controller" : "game-controller-outline";
+          }
+          else if (route.name === "Statistics") {
+            iconName = focused ? "game-controller" : "game-controller-outline";
+          } else if (route.name === "Leaderboard") {
+            iconName = focused ? "game-controller" : "game-controller-outline";
+          } else if (route.name === "Dictionary") {
+            iconName = focused ? "book" : "book-outline";
+          }
 
-            // You can return any component that you like here!
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-        })}
-        tabBarOptions={{
-          activeTintColor: "tomato",
-          inactiveTintColor: "gray",
-        }}
-      >
-        <Tab.Screen name="Statistics" component={StatisticsScreen} />
-        <Tab.Screen name="Leaderboard" component={LeaderboardScreen} />
-        <Tab.Screen name="Play" component={PlayScreen} />
-        <Tab.Screen name="Dictionary" component={DictionaryScreen} />
-        <Tab.Screen name="Profile" component={ProfileScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
+          // You can return any component that you like here!
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: "tomato",
+        inactiveTintColor: "gray",
+      }}
+    >
+      <Tab.Screen name="Statistics" component={StatisticsScreen} />
+      <Tab.Screen name="Leaderboard" component={LeaderboardScreen} />
+      <Tab.Screen name="Play" component={PlayScreen} />
+      <Tab.Screen name="Dictionary" component={DictionaryScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
+    </Tab.Navigator>
   );
 }

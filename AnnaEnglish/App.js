@@ -11,21 +11,31 @@ import { LogBox } from "react-native";
 import { Provider } from "react-redux";
 import Tabbar from "./Screens/TabNavigation/Tabbar";
 import SignInScreen from "./Screens/SignInScreen/SignInScreen";
+
+// navigation
 import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from '@react-navigation/stack';
+
 LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
 LogBox.ignoreAllLogs(); //Ignore all log notifications
 
 dbSetUp();
 
+// Navigation
+const Stack = createStackNavigator();
+
 export default function App() {
   return (
     <Provider store={reduxStore}>
-
       <View style={styles.container}>
-        {/* <Text>Open up App.js to start working on your app!</Text>
-        <StatusBar style="auto" /> */}
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="SignIn" headerMode="none">
+            <Stack.Screen name="SignIn" component={SignInScreen} />
+            <Stack.Screen name="MainApp" component={Tabbar} />
+          </Stack.Navigator>
+        </NavigationContainer>
+
         {/* <TestFirebaseLoaded/> */}
-        <Tabbar></Tabbar>
       </View>
     </Provider>
   );

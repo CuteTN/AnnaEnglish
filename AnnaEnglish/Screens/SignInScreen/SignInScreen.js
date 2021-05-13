@@ -1,14 +1,17 @@
+import { useNavigation } from '@react-navigation/core';
 import React from 'react'
 import { Button, Text, View } from "react-native";
-import styleTabbar from "../TabNavigation/styles"
+import stylesTabbar from "../TabNavigation/styles"
 
-function SignInScreen({ navigation }) {
+function SignInScreen({ }) {
+  const navigation = useNavigation();
+
   const handleConfirmPress = () => {
     navigation.navigate("MainApp", {})
   }
 
   return (
-    <View style={styleTabbar.tabbar}>
+    <View style={stylesTabbar.tabbar}>
       <Text>SignIn</Text>
       <Button onPress={handleConfirmPress} title="Confirm" />
     </View>
