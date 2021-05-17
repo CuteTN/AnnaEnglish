@@ -18,20 +18,29 @@ class Fire {
     }
 
     static signOut = async () => {
+        let result = false;
+
         await firebase.auth().signOut().then(
             () => {
                 log.logSuccess(`Signed out successfully`)
+                result = true;
             },
             (error) => {
                 log.logError(`Sign out error: `, false, false)
                 log.logError(error)
             }
         )
+
+        return result;
     }
 
     static signUpWithUsername = async (username, password) => {
-        if (!validateUsername(username))
+        let result = false;
+
+        if (!validateUsername(username)) {
+            return result;
             log.logError(`${username} is an invalid user name. For more detail, please visit: https://stackoverflow.com/questions/12018245/regular-expression-to-validate-username/12019115`, false, true)
+        }
 
         try {
             let email = createFakeEmail(username);
@@ -42,6 +51,7 @@ class Fire {
                         displayName: username,
                     })
                     log.logSuccess(`Created new user with username: ${username}`);
+                    result = true;
                 },
                 (error) => {
                     log.logError(`Sign up error: `, false, false)
@@ -53,14 +63,19 @@ class Fire {
             log.logError(`Sign up error: `, false, false)
             log.logError(error)
         }
+
+        return result;
     }
 
     static signInWithUsername = async (username, password) => {
+        let result = false;
+
         let email = createFakeEmail(username);
         try {
             await firebase.auth().signInWithEmailAndPassword(email, password).then(
                 (credential) => {
                     log.logSuccess(`user ${username} signed in successfully`)
+                    result = true;
                 },
                 (error) => {
                     log.logError(`Sign in error: `, false, false)
@@ -72,6 +87,8 @@ class Fire {
             log.logError(`Sign in error: `, false, false)
             log.logError(error)
         }
+
+        return result;
     }
 
     static init = () => {

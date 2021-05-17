@@ -11,6 +11,7 @@ import { LogBox } from "react-native";
 import { Provider } from "react-redux";
 import Tabbar from "./Screens/TabNavigation/Tabbar";
 import SignInScreen from "./Screens/SignInScreen/SignInScreen";
+import SignUpScreen from "./Screens/SignUpScreen/SignUpScreen";
 
 // navigation
 import { NavigationContainer } from "@react-navigation/native";
@@ -31,6 +32,7 @@ export default function App() {
         <NavigationContainer>
           <Stack.Navigator initialRouteName="SignIn" headerMode="none">
             <Stack.Screen name="SignIn" component={SignInScreen} />
+            <Stack.Screen name="SignUp" component={SignUpScreen} />
             <Stack.Screen name="MainApp" component={Tabbar} />
           </Stack.Navigator>
         </NavigationContainer>

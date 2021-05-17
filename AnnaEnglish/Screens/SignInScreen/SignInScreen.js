@@ -1,20 +1,68 @@
 import { useNavigation } from '@react-navigation/core';
-import React from 'react'
-import { Button, Text, View } from "react-native";
-import stylesTabbar from "../TabNavigation/styles"
+import React, { useState } from 'react'
+import { Button, SafeAreaView, Text, TextInput } from "react-native";
+import { useDispatch } from 'react-redux';
+import Fire from '../../firebase/Fire';
+import { createActionSignIn } from '../../redux/actions/CreateActionSignedIn';
+import * as sharedStyle from "../../shared/styles"
+
+const styleTextInput = {
+  borderColor: "hotpink",
+  paddingBottom: 10,
+  height: "auto",
+  width: "80%",
+  borderWidth: 2,
+  fontSize: 20,
+}
 
 function SignInScreen({ }) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
-  const handleConfirmPress = () => {
-    navigation.navigate("MainApp", {})
+  const handleButtonSignInPress = () => {
+    Fire.signInWithUsername(username, password).then(
+      isSuccessful => {
+        if (isSuccessful) {
+          navigation.navigate("MainApp")
+          dispatch(createActionSignIn(username))
+        }
+      }
+    )
+  }
+
+  const handleButtonSignUpPress = () => {
+    navigation.navigate("SignUp")
   }
 
   return (
-    <View style={stylesTabbar.tabbar}>
-      <Text>SignIn</Text>
-      <Button onPress={handleConfirmPress} title="Confirm" />
-    </View>
+    <SafeAreaView style={sharedStyle.center}>
+
+      <Text>{"Hi kid! What's your name >w<"}</Text>
+      <TextInput
+        style={styleTextInput}
+        placeholder="Enter your name!"
+        onChangeText={setUsername}
+      />
+
+      <Text>{"Tell me your password UwU"}</Text>
+      <TextInput
+        style={styleTextInput}
+        placeholder="Enter your password!"
+        onChangeText={setPassword}
+      />
+
+      <Button
+        onPress={handleButtonSignInPress}
+        title="Sign In"
+      />
+
+      <Button
+        onPress={handleButtonSignUpPress}
+        title="Go to Sign Up"
+      />
+    </SafeAreaView >
   )
 }
 

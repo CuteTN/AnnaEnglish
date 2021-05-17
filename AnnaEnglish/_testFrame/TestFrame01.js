@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FlatList, TouchableOpacity, Text, SafeAreaView, Button, TextInput } from "react-native"
 import Fire from '../firebase/Fire';
 import { connectFirebase } from "../redux/connectors/ConnectFirebase"
-import { connectLoggedIn } from "../redux/connectors/ConnectLoggedIn"
+import { connectSignedIn } from "../redux/connectors/ConnectSignedIn"
 import { logDebug, logError, logInfo, logWarning } from '../Utils/ConsoleLog';
 
 const Item = ({ item, onPress, backgroundColor, textColor }) => {
@@ -42,7 +42,7 @@ const handleTestDeleteClick = () => {
 }
 
 
-const TestFirebaseLoaded = ({ db, isLoggedIn }) => {
+const TestFirebaseLoaded = ({ db, isSignedIn }) => {
     const [selectedId, setSelectedId] = useState(null);
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
@@ -67,7 +67,7 @@ const TestFirebaseLoaded = ({ db, isLoggedIn }) => {
 
     // logDebug(JSON.stringify(db), true, true)
     // logDebug(JSON.stringify(db.user)) // connected to redux firebase reducer
-    // logDebug(JSON.stringify(isLoggedIn)) // connected to redux loggedIn reducer
+    // logDebug(JSON.stringify(isSignedIn)) // connected to redux SignedIn reducer
 
     const renderItem = ({ item }) => {
         // logDebug(JSON.stringify(item))
@@ -124,4 +124,4 @@ const TestFirebaseLoaded = ({ db, isLoggedIn }) => {
     )
 }
 
-export default connectFirebase(connectLoggedIn(TestFirebaseLoaded))
+export default connectFirebase(connectSignedIn(TestFirebaseLoaded))
