@@ -14,3 +14,8 @@ export const validateUsername = (username) => {
 export const createFakeEmail = (username) => {
   return username.toLowerCase() + "@annaenglish.cute"
 }
+
+/**
+ * @param {string} fakeEmail 
+ */
+export const fakeEmailToUsername = (fakeEmail) => fakeEmail.replace("@annaenglish.cute", "");

@@ -3,9 +3,17 @@ import { reduxStore } from '../redux/store';
 import { createActionUpdateFirebase } from '../redux/actions/CreateActionUpdateFirebase'
 import * as log from '../Utils/ConsoleLog';
 import { firebaseConfig } from './FirebaseConfig';
-import { createFakeEmail, validateUsername } from '../Utils/Auth';
+import { createFakeEmail, fakeEmailToUsername, validateUsername } from '../Utils/Auth';
+import { createActionSignIn, createActionSignOut } from '../redux/actions/CreateActionSignedIn';
 
 class Fire {
+    static init = () => {
+        Fire.initApp();
+        this.subscribeCheckAuth();
+    };
+
+    static auth = () => firebase.auth();
+
     static initApp = () => {
         if (!firebase.apps.length)
             firebase.initializeApp(firebaseConfig);
@@ -47,7 +55,7 @@ class Fire {
             await firebase.auth().createUserWithEmailAndPassword(email, password).then(
                 (credential) => {
                     credential.user.updateProfile({ displayName: username }); // async, we don't event need it to be synced here :)
-                    Fire.update(`user/${username}`, {
+                    Fire.update(`user/${username.toLowerCase()}`, {
                         displayName: username,
                     })
                     log.logSuccess(`Created new user with username: ${username}`);
@@ -91,17 +99,20 @@ class Fire {
         return result;
     }
 
-    static init = () => {
-        Fire.initApp();
-        // this.checkAuth();
-    };
+
 
     static getRootRef = () => firebase.database().ref()
 
-    static checkAuth = () => {
-        firebase.auth().onAuthStateChanged(user => {
+    static subscribeCheckAuth = () => {
+        firebase.auth().onAuthStateChanged(async user => {
             if (!user) {
-                firebase.auth().signInAnonymously();
+                // firebase.auth().signInAnonymously();
+                await reduxStore.dispatch(createActionSignOut());
+            }
+            else {
+                const { email } = user;
+                const username = fakeEmailToUsername(email);
+                await reduxStore.dispatch(createActionSignIn(username));
             }
         })
     };
@@ -191,5 +202,4 @@ class Fire {
 
 }
 
-Fire.init()
 export default Fire

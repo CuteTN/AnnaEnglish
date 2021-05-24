@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/core';
 import React from 'react'
 import { Button, Text, View } from "react-native";
-import { useDispatch, useSelector } from 'react-redux';
 import Fire from '../../firebase/Fire';
 import { useSignedIn } from '../../hooks/useSignedIn';
 import { createActionSignOut } from '../../redux/actions/CreateActionSignedIn';
@@ -10,21 +9,19 @@ import style from "./styles"
 
 function ProfileScreen() {
   const navigation = useNavigation();
-  // const signedInInfo = useSelector(state => state.reducerSignedIn);
-  const dispatch = useDispatch();
   const { user, updateUser } = useSignedIn();
 
   const handleBackToSignInPressed = () => {
     Fire.signOut().then(
       isSuccessful => {
-        navigation.navigate("SignIn");
-        dispatch(createActionSignOut());
+        if (isSuccessful)
+          navigation.navigate("SignIn");
       }
     )
   }
 
   const handlTestHookPressed = () => {
-    if (!user.ok)
+    if (!user?.ok)
       updateUser({ ok: "okok" })
     else
       updateUser({ ok: "" })
