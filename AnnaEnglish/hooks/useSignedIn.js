@@ -7,7 +7,7 @@ import Fire from '../firebase/Fire';
  * @returns {{user: any, updateUser: (newValue: any) => void}}
  */
 export const useSignedIn = () => {
-  const { isSignedIn, username } = useSelector(state => state.reducerSignedIn);
+  const { username } = useSelector(state => state.reducerSignedIn);
   const [user, setUser] = useState()
 
   useEffect(() => {
