@@ -10,7 +10,7 @@
 // }
 
 // export default EditProfileScreen;
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -32,8 +32,11 @@ import BottomSheet from "reanimated-bottom-sheet";
 import Animated from "react-native-reanimated";
 import ImagePicker from "react-native-image-crop-picker";
 import DatePicker from "react-native-datepicker";
+import { useSignedIn } from "../../hooks/useSignedIn";
 
 const EditProfileScreen = () => {
+  const { user, updateUser } = useSignedIn();
+
   const [image, setImage] = useState(
     "https://scontent-hkg4-2.xx.fbcdn.net/v/t1.6435-1/p240x240/179048033_1139396113169332_2102843025754757575_n.jpg?_nc_cat=110&ccb=1-3&_nc_sid=7206a8&_nc_ohc=Mv9EpCXnTbMAX9FBuWV&_nc_ht=scontent-hkg4-2.xx&tp=6&oh=87ca291070c01550c51670d376e2d191&oe=60D44AB9"
   );
@@ -42,6 +45,15 @@ const EditProfileScreen = () => {
   const [date, setDate] = useState(new Date(1598051730000));
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
+  const [tempUser, setTempUser] = useState();
+
+  const { colors } = useTheme();
+
+  useEffect(() => {
+    // only load temp user the first time
+    if (!tempUser)
+      setTempUser(user);
+  }, [user, setTempUser]);
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -58,7 +70,32 @@ const EditProfileScreen = () => {
     showMode("date");
   };
 
-  const { colors } = useTheme();
+
+  //#region input fields
+  const handleChangeTextName = (value) => {
+    setTempUser(u => ({ ...u, name: value }));
+  }
+
+  const handleChangeTextCountry = (value) => {
+    setTempUser(u => ({ ...u, country: value }));
+  }
+
+  /**
+   * @param {string} dateStr 
+   * @param {Date} date 
+   */
+  const handleChangeDateBirthday = (dateStr, date) => {
+    setTempUser(u => ({ ...u, birthday: dateStr }));
+  }
+
+  const handleChangeGenderPicker = (value) => {
+    setTempUser(u => ({ ...u, gender: value }));
+  }
+  //#endregion
+
+  const handleSaveButtonPress = () => {
+    updateUser(tempUser);
+  }
 
   //   const takePhotoFromCamera = () => {
   //     ImagePicker.openCamera({
@@ -86,7 +123,7 @@ const EditProfileScreen = () => {
   //     });
   //   };
 
-  renderInner = () => (
+  const renderInner = () => (
     <View style={styles.panel}>
       <View style={{ alignItems: "center" }}>
         <Text style={styles.panelTitle}>Upload Photo</Text>
@@ -94,26 +131,26 @@ const EditProfileScreen = () => {
       </View>
       <TouchableOpacity
         style={styles.panelButton}
-        // onPress={takePhotoFromCamera}
+      // onPress={takePhotoFromCamera}
       >
         <Text style={styles.panelButtonTitle}>Take Photo</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.panelButton}
-        // onPress={choosePhotoFromLibrary}
+      // onPress={choosePhotoFromLibrary}
       >
         <Text style={styles.panelButtonTitle}>Choose From Library</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.panelButton}
-        // onPress={() => this.bs.current.snapTo(1)}
+      // onPress={() => this.bs.current.snapTo(1)}
       >
         <Text style={styles.panelButtonTitle}>Cancel</Text>
       </TouchableOpacity>
     </View>
   );
 
-  renderHeader = () => (
+  const renderHeader = () => (
     <View style={styles.header}>
       <View style={styles.panelHeader}>
         <View style={styles.panelHandle} />
@@ -121,8 +158,8 @@ const EditProfileScreen = () => {
     </View>
   );
 
-  bs = React.createRef();
-  fall = new Animated.Value(1);
+  const bs = React.createRef();
+  const fall = new Animated.Value(1);
 
   return (
     <View style={styles.container}>
@@ -211,6 +248,8 @@ const EditProfileScreen = () => {
                 color: colors.text,
               },
             ]}
+            value={tempUser?.name}
+            onChangeText={handleChangeTextName}
           />
         </View>
         <Text
@@ -235,6 +274,8 @@ const EditProfileScreen = () => {
                 color: colors.text,
               },
             ]}
+            value={tempUser?.country}
+            onChangeText={handleChangeTextCountry}
           />
         </View>
         <Text
@@ -262,25 +303,26 @@ const EditProfileScreen = () => {
             ]}
           /> */}
           <DatePicker
-            date="10-08-2000"
+            date={tempUser?.birthday}
             mode="date"
-            format="DD-MM-YYYY"
+            format="DD/MM/YYYY"
             cancelBtnText="Cancel"
             confirmBtnText="Confirm"
             minDate="01-01-1975"
             maxDate="01-01-2020"
-            // style={styles.input}
-            // customStyles={{
-            //   dateIcon: {
-            //     left: 0,
-            //     top: 4,
-            //     marginLeft: 0,
-            //   },
-            //   //   dateInput: [styles.input, { marginLeft: 0 }],
-            // }}
-            //   onDateChange={(date) => {
+            onDateChange={handleChangeDateBirthday}
+          // style={styles.input}
+          // customStyles={{
+          //   dateIcon: {
+          //     left: 0,
+          //     top: 4,
+          //     marginLeft: 0,
+          //   },
+          //   //   dateInput: [styles.input, { marginLeft: 0 }],
+          // }}
+          //   onDateChange={(date) => {
 
-            //   }}
+          //   }}
           />
         </View>
         <Text
@@ -307,22 +349,23 @@ const EditProfileScreen = () => {
             ]}
           /> */}
           <Picker
-            selectedValue={selectedValue}
+            selectedValue={tempUser?.gender}
             style={[
               styles.textInput,
               {
                 color: colors.text,
               },
             ]}
-            onValueChange={(itemValue, itemIndex) =>
+            onValueChange={(itemValue, itemIndex) => {
               setSelectedValue(itemValue)
-            }
+              handleChangeGenderPicker(itemValue);
+            }}
           >
-            <Picker.Item label="Nam" value="java" />
-            <Picker.Item label="Nữ" value="js" />
+            <Picker.Item label="Nam" value="Male" />
+            <Picker.Item label="Nữ" value="Female" />
           </Picker>
         </View>
-        <TouchableOpacity style={styles.commandButton} onPress={() => {}}>
+        <TouchableOpacity style={styles.commandButton} onPress={handleSaveButtonPress}>
           <Text style={styles.panelButtonTitle}>Lưu thay đổi</Text>
         </TouchableOpacity>
       </Animated.View>
