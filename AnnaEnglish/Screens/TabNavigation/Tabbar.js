@@ -3,12 +3,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
 import { Text, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import ProfileScreen from "../ProfileScreen/ProfileScreen";
 import styles from "./styles";
 // import StatisticsScreen from "../StatisticsScreen/StatisticsScreen"
 // import LeaderboardScreen from "../LeaderboardScreen/LeaderboardScreen"
 // import PlayScreen from "../PlayScreen/PlayScreen"
 // import DictionaryScreen from "../DictionaryScreen/DictionaryScreen"
-import ProfileScreen from "../ProfileScreen/ProfileScreen"
 
 function StatisticsScreen() {
   return (
@@ -51,13 +51,10 @@ export default function Tabbar() {
           let iconName;
 
           if (route.name === "Profile") {
-            iconName = focused
-              ? "person-circle"
-              : "person-circle-outline"
+            iconName = focused ? "person-circle" : "person-circle-outline";
           } else if (route.name === "Play") {
             iconName = focused ? "game-controller" : "game-controller-outline";
-          }
-          else if (route.name === "Statistics") {
+          } else if (route.name === "Statistics") {
             iconName = focused ? "game-controller" : "game-controller-outline";
           } else if (route.name === "Leaderboard") {
             iconName = focused ? "game-controller" : "game-controller-outline";

@@ -12,16 +12,16 @@ import { Provider } from "react-redux";
 import Tabbar from "./Screens/TabNavigation/Tabbar";
 import SignInScreen from "./Screens/SignInScreen/SignInScreen";
 import SignUpScreen from "./Screens/SignUpScreen/SignUpScreen";
-
+import EditProfileScreen from "./Screens/EditProfileScreen/EditProfileScreen";
 // navigation
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator } from "@react-navigation/stack";
 import StartUpScreen from "./Screens/StartUpScreen/StartUpScreen";
 
 LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
 LogBox.ignoreAllLogs(); //Ignore all log notifications
 
-Fire.init()
+Fire.init();
 dbSetUp();
 
 // Navigation
@@ -37,6 +37,7 @@ export default function App() {
             <Stack.Screen name="SignIn" component={SignInScreen} />
             <Stack.Screen name="SignUp" component={SignUpScreen} />
             <Stack.Screen name="MainApp" component={Tabbar} />
+            <Stack.Screen name="EditProfile" component={EditProfileScreen} />
           </Stack.Navigator>
         </NavigationContainer>
 
