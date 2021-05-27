@@ -25,6 +25,7 @@ import {
 
 import { useTheme } from "react-native-paper";
 
+import { useNavigation } from "@react-navigation/core";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
@@ -48,6 +49,7 @@ const EditProfileScreen = () => {
   const [tempUser, setTempUser] = useState();
 
   const { colors } = useTheme();
+  const navigation = useNavigation();
 
   useEffect(() => {
     // only load temp user the first time
@@ -95,6 +97,7 @@ const EditProfileScreen = () => {
 
   const handleSaveButtonPress = () => {
     updateUser(tempUser);
+    navigation.navigate("Profile");
   }
 
   //   const takePhotoFromCamera = () => {

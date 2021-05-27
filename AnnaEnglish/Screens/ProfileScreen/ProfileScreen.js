@@ -17,7 +17,7 @@ import style from "./styles";
 
 function ProfileScreen() {
   const navigation = useNavigation();
-  const { user, updateUser } = useSignedIn();
+  const { user } = useSignedIn();
 
   const handleSignOutPress = () => {
     Fire.signOut().then((isSuccessful) => {
@@ -25,7 +25,7 @@ function ProfileScreen() {
     });
   };
 
-  const handleEditProfilePress = () => {};
+  const handleEditProfilePress = () => { };
 
   // const handlTestHookPress = () => {
   //   if (!user?.ok)
@@ -61,9 +61,9 @@ function ProfileScreen() {
                 },
               ]}
             >
-              Thy cute đáng iu
+              {user?.name}
             </Title>
-            <Caption style={styles.caption}>@hellangel108</Caption>
+            <Caption style={styles.caption}>{"@" + user?.displayName}</Caption>
           </View>
         </View>
       </View>
@@ -71,15 +71,15 @@ function ProfileScreen() {
       <View style={styles.userInfoSection}>
         <View style={styles.row}>
           <Icon name="map-marker-radius" color="#777777" size={20} />
-          <Text style={{ color: "#777777", marginLeft: 20 }}>Viet Nam</Text>
+          <Text style={{ color: "#777777", marginLeft: 20 }}>{user?.country}</Text>
         </View>
         <View style={styles.row}>
           <Icon name="gender-male-female" color="#777777" size={20} />
-          <Text style={{ color: "#777777", marginLeft: 20 }}>Khác</Text>
+          <Text style={{ color: "#777777", marginLeft: 20 }}>{user?.gender === "Male" ? "Nam" : "Nữ"}</Text>
         </View>
         <View style={styles.row}>
           <Icon name="calendar-today" color="#777777" size={20} />
-          <Text style={{ color: "#777777", marginLeft: 20 }}>10/08/2000</Text>
+          <Text style={{ color: "#777777", marginLeft: 20 }}>{user?.birthday}</Text>
         </View>
         <View style={styles.row}>
           <Icon name="email" color="#777777" size={20} />
@@ -109,7 +109,7 @@ function ProfileScreen() {
       </View>
 
       <View style={styles.menuWrapper}>
-        <TouchableRipple onPress={() => {}}>
+        <TouchableRipple onPress={() => { }}>
           <View style={styles.menuItem}>
             <Icon name="lock" color="#0C2C71" size={25} />
             <Text style={styles.menuItemText}>Đổi mật khẩu</Text>
@@ -131,7 +131,7 @@ function ProfileScreen() {
             <Text style={styles.menuItemText}>Cái gì chưa biết</Text>
           </View>
         </TouchableRipple>
-        <TouchableRipple onPress={() => {}}>
+        <TouchableRipple onPress={handleSignOutPress}>
           <View style={styles.menuItem}>
             <Icon name="logout" color="#0C2C71" size={25} />
             <Text style={styles.menuItemText}>Đăng xuất</Text>
