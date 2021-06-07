@@ -3,13 +3,11 @@ import { reduxStore } from '../redux/store';
 import { createActionUpdateFirebase } from '../redux/actions/CreateActionUpdateFirebase'
 import * as log from '../Utils/ConsoleLog';
 import { firebaseConfig } from './FirebaseConfig';
-import { createFakeEmail, fakeEmailToUsername, validateUsername } from '../Utils/Auth';
-import { createActionSignIn, createActionSignOut } from '../redux/actions/CreateActionSignedIn';
+import { createFakeEmail, validateUsername } from '../Utils/Auth';
 
 class Fire {
     static init = () => {
         Fire.initApp();
-        this.subscribeCheckAuth();
     };
 
     static auth = () => firebase.auth();
@@ -101,20 +99,6 @@ class Fire {
 
 
     static getRootRef = () => firebase.database().ref()
-
-    static subscribeCheckAuth = () => {
-        firebase.auth().onAuthStateChanged(async user => {
-            if (!user) {
-                // firebase.auth().signInAnonymously();
-                await reduxStore.dispatch(createActionSignOut());
-            }
-            else {
-                const { email } = user;
-                const username = fakeEmailToUsername(email);
-                await reduxStore.dispatch(createActionSignIn(username));
-            }
-        })
-    };
 
     /// name: name of table from the root
     /// retouch: arr => arr: apply some change to the array of db before storing it to redux

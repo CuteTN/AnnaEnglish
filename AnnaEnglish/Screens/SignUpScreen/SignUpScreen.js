@@ -13,7 +13,6 @@ import {
 import { useDispatch } from "react-redux";
 import { SCREENS } from "..";
 import Fire from "../../firebase/Fire";
-import { createActionSignIn } from "../../redux/actions/CreateActionSignedIn";
 import { PrimaryButton } from "../../components/buttons/PrimaryButton/PrimaryButton";
 import { PrimaryInput } from "../../components/forms/PrimaryInput/PrimaryInput";
 import { SecondaryInput } from "../../components/forms/SecondaryInput/SecondaryInput";
@@ -29,7 +28,6 @@ function SignUpScreen({ }) {
     Fire.signUpWithUsername(username, password).then(({ error, successful }) => {
       if (successful) {
         navigation.navigate(SCREENS.mainApp.name);
-        dispatch(createActionSignIn(username));
       }
     });
   };

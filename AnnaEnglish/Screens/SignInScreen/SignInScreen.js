@@ -14,16 +14,18 @@ import {
 import { PrimaryButton } from "../../components/buttons/PrimaryButton/PrimaryButton";
 import { PrimaryInput } from "../../components/forms/PrimaryInput/PrimaryInput";
 import { colors } from "../../config/colors";
+import { useAutoNavAuth } from "../../hooks/useAutoNavAuth";
 
 export default SignInScreen = ({ }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
+  useAutoNavAuth();
 
   const handleButtonSignInPress = () => {
     Fire.signInWithUsername(username, password).then(({ error, successful }) => {
       if (successful) {
-        navigation.navigate(SCREENS.mainApp.name);
+        // navigation.navigate(SCREENS.mainApp.name);
       }
     });
   };

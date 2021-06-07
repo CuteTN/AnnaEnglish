@@ -2,11 +2,14 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { TAB_SCREENS } from "..";
+import { useAutoNavAuth } from "../../hooks/useAutoNavAuth";
 import styles from "./styles";
 
 const Tab = createBottomTabNavigator();
 
 export default function Tabbar() {
+  useAutoNavAuth();
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
