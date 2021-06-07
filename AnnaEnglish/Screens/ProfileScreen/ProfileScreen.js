@@ -14,6 +14,7 @@ import {
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import EditProfileScreen from "../EditProfileScreen/EditProfileScreen";
 import style from "./styles";
+import { SCREENS } from "..";
 
 function ProfileScreen() {
   const navigation = useNavigation();
@@ -21,7 +22,7 @@ function ProfileScreen() {
 
   const handleSignOutPress = () => {
     Fire.signOut().then((isSuccessful) => {
-      if (isSuccessful) navigation.navigate("SignIn");
+      if (isSuccessful) navigation.navigate(SCREENS.signIn.name);
     });
   };
 
@@ -117,7 +118,7 @@ function ProfileScreen() {
         </TouchableRipple>
         <TouchableRipple
           onPress={() => {
-            navigation.navigate("EditProfile");
+            navigation.navigate(SCREENS.editProfile.name);
           }}
         >
           <View style={styles.menuItem}>

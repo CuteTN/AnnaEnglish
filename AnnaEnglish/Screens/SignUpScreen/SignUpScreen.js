@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/core';
 import React, { useState } from 'react'
 import { Button, SafeAreaView, Text, TextInput } from "react-native";
 import { useDispatch } from 'react-redux';
+import { SCREENS } from '..';
 import Fire from '../../firebase/Fire';
 import { createActionSignIn } from '../../redux/actions/CreateActionSignedIn';
 import * as sharedStyle from "../../shared/styles"
@@ -26,7 +27,7 @@ function SignUpScreen({ }) {
     Fire.signUpWithUsername(username, password).then(
       isSuccessful => {
         if (isSuccessful) {
-          navigation.navigate("MainApp");
+          navigation.navigate(SCREENS.mainApp.name);
           dispatch(createActionSignIn(username))
         }
       }
@@ -34,7 +35,7 @@ function SignUpScreen({ }) {
   }
 
   const handleButtonSignInPress = () => {
-    navigation.navigate("SignIn");
+    navigation.navigate(SCREENS.signIn.name);
   }
 
   return (

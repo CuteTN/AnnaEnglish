@@ -17,6 +17,7 @@ import EditProfileScreen from "./Screens/EditProfileScreen/EditProfileScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import StartUpScreen from "./Screens/StartUpScreen/StartUpScreen";
+import { SCREENS } from "./Screens";
 
 LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
 LogBox.ignoreAllLogs(); //Ignore all log notifications
@@ -32,12 +33,8 @@ export default function App() {
     <Provider store={reduxStore}>
       <View style={styles.container}>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="StartUp" headerMode="none">
-            <Stack.Screen name="StartUp" component={StartUpScreen} />
-            <Stack.Screen name="SignIn" component={SignInScreen} />
-            <Stack.Screen name="SignUp" component={SignUpScreen} />
-            <Stack.Screen name="MainApp" component={Tabbar} />
-            <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+          <Stack.Navigator initialRouteName={SCREENS.startUp} headerMode="none">
+            {Object.values(SCREENS).map(scr => <Stack.Screen name={scr.name} component={scr.screen} />)}
           </Stack.Navigator>
         </NavigationContainer>
 

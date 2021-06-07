@@ -34,6 +34,7 @@ import Animated from "react-native-reanimated";
 import ImagePicker from "react-native-image-crop-picker";
 import DatePicker from "react-native-datepicker";
 import { useSignedIn } from "../../hooks/useSignedIn";
+import { SCREENS } from "..";
 
 const EditProfileScreen = () => {
   const { user, updateUser } = useSignedIn();
@@ -97,7 +98,7 @@ const EditProfileScreen = () => {
 
   const handleSaveButtonPress = () => {
     updateUser(tempUser);
-    navigation.navigate("Profile");
+    navigation.navigate(SCREENS.profile.name);
   }
 
   //   const takePhotoFromCamera = () => {

@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/core';
 import React, { useState } from 'react'
 import { Button, SafeAreaView, Text, TextInput } from "react-native";
+import { SCREENS } from '..';
 import Fire from '../../firebase/Fire';
 import { createActionSignIn } from '../../redux/actions/CreateActionSignedIn';
 import * as sharedStyle from "../../shared/styles"
@@ -14,7 +15,7 @@ const styleTextInput = {
   fontSize: 20,
 }
 
-function SignInScreen({ }) {
+export default function SignInScreen({ }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
@@ -23,14 +24,14 @@ function SignInScreen({ }) {
     Fire.signInWithUsername(username, password).then(
       isSuccessful => {
         if (isSuccessful) {
-          navigation.navigate("MainApp")
+          navigation.navigate(SCREENS.mainApp.name);
         }
       }
     )
   }
 
   const handleButtonSignUpPress = () => {
-    navigation.navigate("SignUp")
+    navigation.navigate(SCREENS.signUp.name);
   }
 
   return (
@@ -62,5 +63,3 @@ function SignInScreen({ }) {
     </SafeAreaView >
   )
 }
-
-export default SignInScreen
