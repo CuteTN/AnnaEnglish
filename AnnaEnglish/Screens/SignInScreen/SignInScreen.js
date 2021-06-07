@@ -16,7 +16,6 @@ import { PrimaryInput } from "../../components/forms/PrimaryInput/PrimaryInput";
 import { colors } from "../../config/colors";
 
 export default SignInScreen = ({ }) => {
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
@@ -61,7 +60,10 @@ export default SignInScreen = ({ }) => {
           />
         </View>
         <View style={styles.inputItem}>
-          <PrimaryInput placeHolder={"Enter your password!"} />
+          <PrimaryInput
+            placeHolder={"Enter your password!"}
+            onChangeText={setPassword}
+          />
         </View>
         <View style={styles.loginBtnWrapper}>
           <PrimaryButton label={"LOG IN"} onPress={handleButtonSignInPress} />

@@ -27,23 +27,24 @@ class Fire {
 
     static signOut = async () => {
         let result = false;
+        let error = undefined;
 
         await firebase.auth().signOut().then(
             () => {
                 log.logSuccess(`Signed out successfully`)
                 result = true;
             },
-            (error) => {
-                log.logError(`Sign out error: `, false, false)
-                log.logError(error)
+            (err) => {
+                error = err
             }
         )
 
-        return result;
+        return { result, error };
     }
 
     static signUpWithUsername = async (username, password) => {
-        let result = false;
+        let successful = false;
+        let error = undefined;
 
         if (!validateUsername(username)) {
             return result;
@@ -59,44 +60,42 @@ class Fire {
                         displayName: username,
                     })
                     log.logSuccess(`Created new user with username: ${username}`);
-                    result = true;
+                    successful = true;
                 },
-                (error) => {
-                    log.logError(`Sign up error: `, false, false)
-                    log.logError(error)
+                (err) => {
+                    error = err;
                 }
             );
         }
-        catch (error) {
-            log.logError(`Sign up error: `, false, false)
-            log.logError(error)
+        catch (err) {
+            error = err;
         }
 
-        return result;
+        return { successful, error };
     }
 
     static signInWithUsername = async (username, password) => {
-        let result = false;
+        let successful = false;
+        let error = undefined;
 
         let email = createFakeEmail(username);
+
         try {
             await firebase.auth().signInWithEmailAndPassword(email, password).then(
                 (credential) => {
                     log.logSuccess(`user ${username} signed in successfully`)
-                    result = true;
+                    successful = true;
                 },
-                (error) => {
-                    log.logError(`Sign in error: `, false, false)
-                    log.logError(error)
+                (err) => {
+                    error = err;
                 }
             );
         }
-        catch (error) {
-            log.logError(`Sign in error: `, false, false)
-            log.logError(error)
+        catch (err) {
+            error = err;
         }
 
-        return result;
+        return { successful, error };
     }
 
 
