@@ -1,15 +1,15 @@
-import { useNavigation } from '@react-navigation/core';
-import React, { useState } from 'react'
-import { SCREENS } from '..';
-import Fire from '../../firebase/Fire';
+import { useNavigation } from "@react-navigation/core";
+import React, { useState } from "react";
+import { SCREENS } from "..";
+import Fire from "../../firebase/Fire";
 import {
-  Button,
   View,
   Text,
-  TextInput,
   StyleSheet,
   Image,
   TouchableOpacity,
+  ScrollView,
+  KeyboardAvoidingView,
 } from "react-native";
 import { PrimaryButton } from "../../components/buttons/PrimaryButton/PrimaryButton";
 import { PrimaryInput } from "../../components/forms/PrimaryInput/PrimaryInput";
@@ -21,13 +21,11 @@ export default SignInScreen = ({ }) => {
   const navigation = useNavigation();
 
   const handleButtonSignInPress = () => {
-    Fire.signInWithUsername(username, password).then(
-      isSuccessful => {
-        if (isSuccessful) {
-          navigation.navigate(SCREENS.mainApp.name);
-        }
+    Fire.signInWithUsername(username, password).then(({ error, successful }) => {
+      if (successful) {
+        navigation.navigate(SCREENS.mainApp.name);
       }
-    );
+    });
   };
 
   const handleButtonSignUpPress = () => {
@@ -35,56 +33,59 @@ export default SignInScreen = ({ }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Image
-        style={styles.bg}
-        source={require("../../assets/images/bg1.png")}
-      />
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : null}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+    >
+      <ScrollView style={styles.container}>
+        <Image
+          style={styles.bg}
+          source={require("../../assets/images/bg1.png")}
+        />
 
-      <View style={styles.contentContainer}>
-        <Text style={styles.heading}>Anna English</Text>
-        <View style={styles.top}>
-          <Image
-            style={styles.welcomeImage}
-            source={require("../../assets/images/book.png")}
-          />
-          {/* <Image
+        <View style={styles.contentContainer}>
+          <Text style={styles.heading}>Anna English</Text>
+          <View style={styles.top}>
+            <Image
+              style={styles.welcomeImage}
+              source={require("../../assets/images/book.png")}
+            />
+            {/* <Image
             style={styles.imageWelcome}
             source={require("../../assets/images/enjoy.png")}
           /> */}
+          </View>
+          <View style={styles.inputItem}>
+            <PrimaryInput
+              placeHolder={"Enter your name!"}
+              onChangeText={setUsername}
+            />
+          </View>
+          <View style={styles.inputItem}>
+            <PrimaryInput
+              placeHolder={"Enter your password!"}
+              onChangeText={setPassword}
+            />
+          </View>
+          <View style={styles.loginBtnWrapper}>
+            <PrimaryButton label={"LOG IN"} onPress={handleButtonSignInPress} />
+          </View>
+          <Text style={styles.loginLinkWrapper}>
+            <TouchableOpacity onPress={handleButtonSignUpPress}>
+              <Text style={styles.notificationContent}>
+                ALREADY HAVE AN ACCOUNT? SIGN UP
+              </Text>
+            </TouchableOpacity>
+          </Text>
         </View>
-        <View style={styles.inputItem}>
-          <PrimaryInput
-            placeHolder={"Enter your name!"}
-            onChangeText={setUsername}
-          />
-        </View>
-        <View style={styles.inputItem}>
-          <PrimaryInput
-            placeHolder={"Enter your password!"}
-            onChangeText={setPassword}
-          />
-        </View>
-        <View style={styles.loginBtnWrapper}>
-          <PrimaryButton label={"LOG IN"} onPress={handleButtonSignInPress} />
-        </View>
-        <Text style={styles.loginLinkWrapper}>
-          <TouchableOpacity onPress={handleButtonSignUpPress}>
-            <Text style={styles.notificationContent}>
-              ALREADY HAVE AN ACCOUNT? SIGN UP
-            </Text>
-          </TouchableOpacity>
-        </Text>
-      </View>
-    </View>
+      </ScrollView >
+    </KeyboardAvoidingView >
   );
 };
 
 export const styles = StyleSheet.create({
   container: {
-    display: "flex",
-    flex: 1,
-    padding: 20,
+    padding: 10,
     backgroundColor: "#ffffff",
   },
   loginBtnWrapper: {
@@ -111,11 +112,10 @@ export const styles = StyleSheet.create({
   loginLinkWrapper: {
     textAlign: "center",
     marginTop: 20,
-    marginBottom: 90,
   },
   welcomeImage: {
     marginTop: 20,
-    marginBottom: 100,
+    marginBottom: 30,
     width: 280,
     alignSelf: "center",
     height: 280,
@@ -130,5 +130,9 @@ export const styles = StyleSheet.create({
     lineHeight: 40,
     textAlign: "center",
     color: colors.heading,
+  },
+  top: {
+    flex: 1,
+    marginBottom: 10,
   },
 });
