@@ -18,7 +18,7 @@ function StartUpScreen() {
 
     return () => {
       unsubscribe();
-    }
+    };
   }, []);
 
   return (
@@ -30,7 +30,7 @@ function StartUpScreen() {
     >
       <Text>Loading...</Text>
     </SafeAreaView>
-  )
+  );
 }
 
 export default StartUpScreen;
