@@ -109,7 +109,6 @@ export const styles = StyleSheet.create({
   loginLinkWrapper: {
     textAlign: "center",
     marginTop: 20,
-    marginBottom: 90,
   },
   welcomeImage: {
     marginTop: 20,

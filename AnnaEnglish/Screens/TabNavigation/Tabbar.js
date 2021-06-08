@@ -13,11 +13,11 @@ export default function Tabbar() {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          Object.values(TAB_SCREENS).forEach(scr => {
+          Object.values(TAB_SCREENS).forEach((scr) => {
             if (route.name === scr.name) {
               iconName = focused ? scr.iconName : scr.focusIconName;
             }
-          })
+          });
 
           // You can return any component that you like here!
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -28,7 +28,9 @@ export default function Tabbar() {
         inactiveTintColor: "gray",
       }}
     >
-      {Object.values(TAB_SCREENS).map(scr => <Tab.Screen name={scr.name} component={scr.screen} />)}
+      {Object.values(TAB_SCREENS).map((scr) => (
+        <Tab.Screen name={scr.name} component={scr.screen} />
+      ))}
     </Tab.Navigator>
   );
 }
