@@ -8,7 +8,7 @@ export const colors = {
   secondaryBg: "#E5E5E5",
   darkBg: "#333242",
   lightBg: "#ECD3C2",
-  heading: "#3F414E",
+  heading: "#3366CC",
   facebookBg: "#7583CA",
   black: "#000000",
 };

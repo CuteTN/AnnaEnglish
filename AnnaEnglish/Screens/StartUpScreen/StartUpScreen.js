@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { View, Text, SafeAreaView } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import Fire from "../../firebase/Fire";
 import { styleCenter, styleFullContainer } from "../../shared/styles.js";
 import { useAutoNavAuth } from "../../hooks/useAutoNavAuth";

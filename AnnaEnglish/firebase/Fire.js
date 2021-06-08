@@ -108,22 +108,13 @@ class Fire {
 
         ref.on("value",
             (snapshot) => {
-                let list = [];
-
-                snapshot.forEach((child) => {
-                    let item = {
-                        _key: child.key,
-                        _value: child.toJSON()
-                    }
-
-                    list.push(item);
-                })
+                let snapshotObj = snapshot.toJSON();
 
                 if (retouch && typeof retouch === "function")
-                    list = retouch(list)
+                    snapshotObj = retouch(snapshotObj)
 
                 // update to redux
-                reduxStore.dispatch(createActionUpdateFirebase(refPath, list));
+                reduxStore.dispatch(createActionUpdateFirebase(refPath, snapshotObj));
                 log.logSuccess(`Collection ${refPath} has been retrieved and updated globaly!`)
             },
             (error) => { log.logError(`Failed to retrieve collection ${refPath}: ${error}`) }

@@ -143,7 +143,7 @@ export const styles = StyleSheet.create({
     marginTop: 50,
   },
   heading: {
-    fontSize: 30,
+    fontSize: 26,
     fontWeight: "700",
     lineHeight: 40,
     textAlign: "center",

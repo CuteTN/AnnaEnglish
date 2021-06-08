@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     padding: 15,
   },
   headingWrapper: {
-    marginTop: 60,
+    marginTop: 35,
   },
   heading: {
     fontWeight: "bold",
@@ -32,12 +32,6 @@ export const styles = StyleSheet.create({
   scrollViewWrapper: {
     justifyContent: "space-between",
     marginTop: 40,
-  },
-  row: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 30,
   },
   itemContainer: {},
   label: {

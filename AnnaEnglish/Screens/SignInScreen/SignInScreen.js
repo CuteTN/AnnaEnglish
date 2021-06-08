@@ -127,7 +127,8 @@ export const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 30,
-    lineHeight: 30,
+    fontWeight: "700",
+    lineHeight: 40,
     textAlign: "center",
     color: "#3366CC",
   },
