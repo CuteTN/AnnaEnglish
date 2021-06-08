@@ -6,71 +6,8 @@ import { useNavigation } from "@react-navigation/core";
 
 function PlayScreen() {
   const navigation = useNavigation();
-  const handleButtonSignUpPress = () => {
-    navigation.navigate(SCREENS.signUp.name);
-  };
-  const topics = [
-    {
-      title: "Thy cute1",
-      url: require("../../assets/topics/topic11cardbg.png"),
-      background: "#E0FEFE",
-      labelColor: "#3F414E",
-    },
-    {
-      title: "Thy cute2",
-      url: require("../../assets/topics/topic2cardbg.png"),
-      background: "#C7CEEA",
-      labelColor: "#FEF9F3",
-    },
-    {
-      title: "Thy cute3",
-      url: require("../../assets/topics/topic15cardbg.png"),
-      background: "#FFDAC1",
-      labelColor: "#3F414E",
-    },
-    {
-      title: "Thy cute4",
-      url: require("../../assets/topics/topic3cardbg.png"),
-      background: "#FF9AA2",
-      labelColor: "#3F414E",
-    },
-    {
-      title: "Thy cute5",
-      url: require("../../assets/topics/topic13cardbg.png"),
-      background: "#FFFFD8",
-      labelColor: "#FFECCC",
-    },
-    {
-      title: "Thy cute6",
-      url: require("../../assets/topics/topic10cardbg.png"),
-      background: "#B5EAD7",
-      labelColor: "#EBEAEC",
-    },
-    {
-      title: "Thy cute7",
-      url: require("../../assets/topics/topic12cardbg.png"),
-      background: "#3F414E",
-      labelColor: "#EBEAEC",
-    },
-    {
-      title: "Thy cute8",
-      url: require("../../assets/topics/topic1cardbg.png"),
-      background: "#957DAD",
-      labelColor: "#EBEAEC",
-    },
-    {
-      title: "Thy cute9",
-      url: require("../../assets/topics/topic4cardbg.png"),
-      background: "#3F414E",
-      labelColor: "#EBEAEC",
-    },
-    {
-      title: "Thy cute10",
-      url: require("../../assets/topics/topic6cardbg.png"),
-      background: "#3F414E",
-      labelColor: "#EBEAEC",
-    },
-  ];
+  const handle = () => {};
+
   return (
     <View style={styles.container}>
       <Image
@@ -84,23 +21,28 @@ function PlayScreen() {
       </View>
       <ScrollView contentContainerStyle={styles.scrollViewWrapper}>
         <View style={styles.row}>
-          <View>
+          {/* <View>
             {topics.map((item, index) => {
               if (index % 2 == 0) {
                 return (
-                  <TouchableOpacity onPress={handleButtonSignUpPress}>
+                  <TouchableOpacity onPress={handle}>
                     <View
                       style={[
                         styles.card,
                         {
-                          backgroundColor: item.background,
+                          backgroundColor: topicColor[index].background,
                           marginRight: 15,
                           marginBottom: 15,
                         },
                       ]}
                     >
                       <Image style={styles.topicImage} source={item.url} />
-                      <Text style={[styles.label, { color: item.labelColor }]}>
+                      <Text
+                        style={[
+                          styles.label,
+                          { color: topicColor[index].labelColor },
+                        ]}
+                      >
                         {item.title}
                       </Text>
                     </View>
@@ -117,20 +59,25 @@ function PlayScreen() {
                     style={[
                       styles.card,
                       {
-                        backgroundColor: item.background,
+                        backgroundColor: topicColor[index].background,
                         marginBottom: 15,
                       },
                     ]}
                   >
                     <Image style={styles.topicImage} source={item.url} />
-                    <Text style={[styles.label, { color: item.labelColor }]}>
+                    <Text
+                      style={[
+                        styles.label,
+                        { color: topicColor[index].labelColor },
+                      ]}
+                    >
                       {item.title}
                     </Text>
                   </View>
                 );
               }
             })}
-          </View>
+          </View> */}
         </View>
       </ScrollView>
     </View>

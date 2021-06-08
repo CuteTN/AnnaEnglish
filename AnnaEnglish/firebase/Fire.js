@@ -3,13 +3,11 @@ import { reduxStore } from '../redux/store';
 import { createActionUpdateFirebase } from '../redux/actions/CreateActionUpdateFirebase'
 import * as log from '../Utils/ConsoleLog';
 import { firebaseConfig } from './FirebaseConfig';
-import { createFakeEmail, fakeEmailToUsername, validateUsername } from '../Utils/Auth';
-import { createActionSignIn, createActionSignOut } from '../redux/actions/CreateActionSignedIn';
+import { createFakeEmail, validateUsername } from '../Utils/Auth';
 
 class Fire {
     static init = () => {
         Fire.initApp();
-        this.subscribeCheckAuth();
     };
 
     static auth = () => firebase.auth();
@@ -27,23 +25,24 @@ class Fire {
 
     static signOut = async () => {
         let result = false;
+        let error = undefined;
 
         await firebase.auth().signOut().then(
             () => {
                 log.logSuccess(`Signed out successfully`)
                 result = true;
             },
-            (error) => {
-                log.logError(`Sign out error: `, false, false)
-                log.logError(error)
+            (err) => {
+                error = err
             }
         )
 
-        return result;
+        return { result, error };
     }
 
     static signUpWithUsername = async (username, password) => {
-        let result = false;
+        let successful = false;
+        let error = undefined;
 
         if (!validateUsername(username)) {
             return result;
@@ -59,63 +58,47 @@ class Fire {
                         displayName: username,
                     })
                     log.logSuccess(`Created new user with username: ${username}`);
-                    result = true;
+                    successful = true;
                 },
-                (error) => {
-                    log.logError(`Sign up error: `, false, false)
-                    log.logError(error)
+                (err) => {
+                    error = err;
                 }
             );
         }
-        catch (error) {
-            log.logError(`Sign up error: `, false, false)
-            log.logError(error)
+        catch (err) {
+            error = err;
         }
 
-        return result;
+        return { successful, error };
     }
 
     static signInWithUsername = async (username, password) => {
-        let result = false;
+        let successful = false;
+        let error = undefined;
 
         let email = createFakeEmail(username);
+
         try {
             await firebase.auth().signInWithEmailAndPassword(email, password).then(
                 (credential) => {
                     log.logSuccess(`user ${username} signed in successfully`)
-                    result = true;
+                    successful = true;
                 },
-                (error) => {
-                    log.logError(`Sign in error: `, false, false)
-                    log.logError(error)
+                (err) => {
+                    error = err;
                 }
             );
         }
-        catch (error) {
-            log.logError(`Sign in error: `, false, false)
-            log.logError(error)
+        catch (err) {
+            error = err;
         }
 
-        return result;
+        return { successful, error };
     }
 
 
 
     static getRootRef = () => firebase.database().ref()
-
-    static subscribeCheckAuth = () => {
-        firebase.auth().onAuthStateChanged(async user => {
-            if (!user) {
-                // firebase.auth().signInAnonymously();
-                await reduxStore.dispatch(createActionSignOut());
-            }
-            else {
-                const { email } = user;
-                const username = fakeEmailToUsername(email);
-                await reduxStore.dispatch(createActionSignIn(username));
-            }
-        })
-    };
 
     /// name: name of table from the root
     /// retouch: arr => arr: apply some change to the array of db before storing it to redux

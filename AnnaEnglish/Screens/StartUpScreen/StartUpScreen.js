@@ -3,21 +3,10 @@ import { View, Text, SafeAreaView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Fire from "../../firebase/Fire";
 import { styleCenter, styleFullContainer } from "../../shared/styles.js";
-import { SCREENS } from "..";
+import { useAutoNavAuth } from "../../hooks/useAutoNavAuth";
 
 function StartUpScreen() {
-  const navigation = useNavigation();
-
-  useEffect(() => {
-    const unsubscribe = Fire.auth().onAuthStateChanged((user) => {
-      if (user) navigation.navigate(SCREENS.mainApp.name);
-      else navigation.navigate(SCREENS.signIn.name);
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+  useAutoNavAuth();
 
   return (
     <SafeAreaView

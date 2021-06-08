@@ -13,7 +13,6 @@ import {
 import { useDispatch } from "react-redux";
 import { SCREENS } from "..";
 import Fire from "../../firebase/Fire";
-import { createActionSignIn } from "../../redux/actions/CreateActionSignedIn";
 import { PrimaryButton } from "../../components/buttons/PrimaryButton/PrimaryButton";
 import { PrimaryInput } from "../../components/forms/PrimaryInput/PrimaryInput";
 import { SecondaryInput } from "../../components/forms/SecondaryInput/SecondaryInput";
@@ -26,12 +25,13 @@ function SignUpScreen({}) {
   const dispatch = useDispatch();
 
   const handleButtonSignUpPress = () => {
-    Fire.signUpWithUsername(username, password).then((isSuccessful) => {
-      if (isSuccessful) {
-        navigation.navigate(SCREENS.mainApp.name);
-        dispatch(createActionSignIn(username));
+    Fire.signUpWithUsername(username, password).then(
+      ({ error, successful }) => {
+        if (successful) {
+          navigation.navigate(SCREENS.mainApp.name);
+        }
       }
-    });
+    );
   };
 
   const handleButtonSignInPress = () => {
@@ -40,6 +40,7 @@ function SignUpScreen({}) {
 
   return (
     <KeyboardAvoidingView
+      style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
       keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
     >
@@ -75,7 +76,7 @@ function SignUpScreen({}) {
           style={styles.back}
           source={require("../../assets/images/back.png")}
         /> */}
-          <Text style={styles.heading}>Create your account </Text>
+          <Text style={styles.heading}>CREATE YOUR ACCOUNT</Text>
           <View style={styles.inputItem}>
             <PrimaryInput
               placeHolder={"Enter your name!"}
@@ -148,11 +149,10 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     color: colors.heading,
     marginTop: 40,
-    marginBottom: 40,
+    marginBottom: 30,
   },
   inputItem: {
     marginBottom: 10,
-    margin: 10,
   },
   getStartedbtnItemWrapper: {
     marginTop: 30,
@@ -160,7 +160,6 @@ export const styles = StyleSheet.create({
   loginLinkWrapper: {
     textAlign: "center",
     marginTop: 20,
-    marginBottom: 90,
   },
   notificationContent: {
     color: colors.gray,
@@ -171,5 +170,6 @@ export const styles = StyleSheet.create({
     width: 280,
     alignSelf: "center",
     height: 280,
+    margin: -20,
   },
 });

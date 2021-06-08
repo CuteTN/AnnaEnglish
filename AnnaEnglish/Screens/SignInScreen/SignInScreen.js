@@ -14,18 +14,22 @@ import {
 import { PrimaryButton } from "../../components/buttons/PrimaryButton/PrimaryButton";
 import { PrimaryInput } from "../../components/forms/PrimaryInput/PrimaryInput";
 import { colors } from "../../config/colors";
+import { useAutoNavAuth } from "../../hooks/useAutoNavAuth";
 
 export default SignInScreen = ({}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
+  useAutoNavAuth();
 
   const handleButtonSignInPress = () => {
-    Fire.signInWithUsername(username, password).then((isSuccessful) => {
-      if (isSuccessful) {
-        navigation.navigate(SCREENS.mainApp.name);
+    Fire.signInWithUsername(username, password).then(
+      ({ error, successful }) => {
+        if (successful) {
+          // navigation.navigate(SCREENS.mainApp.name);
+        }
       }
-    });
+    );
   };
 
   const handleButtonSignUpPress = () => {
@@ -34,6 +38,7 @@ export default SignInScreen = ({}) => {
 
   return (
     <KeyboardAvoidingView
+      style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
       keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
     >
@@ -44,7 +49,8 @@ export default SignInScreen = ({}) => {
         />
 
         <View style={styles.contentContainer}>
-          <Text style={styles.heading}>Anna English</Text>
+          <Text style={styles.heading}>ANNA ENGLISH</Text>
+
           <View style={styles.top}>
             <Image
               style={styles.welcomeImage}
@@ -62,7 +68,10 @@ export default SignInScreen = ({}) => {
             />
           </View>
           <View style={styles.inputItem}>
-            <PrimaryInput placeHolder={"Enter your password!"} />
+            <PrimaryInput
+              placeHolder={"Enter your password!"}
+              onChangeText={setPassword}
+            />
           </View>
           <View style={styles.loginBtnWrapper}>
             <PrimaryButton label={"LOG IN"} onPress={handleButtonSignInPress} />
@@ -82,7 +91,6 @@ export default SignInScreen = ({}) => {
 
 export const styles = StyleSheet.create({
   container: {
-    padding: 10,
     backgroundColor: "#ffffff",
   },
   loginBtnWrapper: {
@@ -112,21 +120,16 @@ export const styles = StyleSheet.create({
   },
   welcomeImage: {
     marginTop: 20,
-    marginBottom: 100,
+    marginBottom: 30,
     width: 280,
     alignSelf: "center",
     height: 280,
   },
-  imageWelcome: {
-    marginBottom: 130,
-    marginTop: 20,
-  },
   heading: {
     fontSize: 30,
-    fontWeight: "700",
-    lineHeight: 40,
+    lineHeight: 30,
     textAlign: "center",
-    color: colors.heading,
+    color: "#3366CC",
   },
   top: {
     flex: 1,

@@ -1,8 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, TextInput, Image } from "react-native";
 import { colors } from "../../../config/colors";
-export const SecondaryInput = (props) => {
-  const { placeHolder, value } = props;
+export const SecondaryInput = ({ placeHolder, value, onChangeText }) => {
   return (
     <View style={styles.container}>
       <TextInput
@@ -10,6 +9,7 @@ export const SecondaryInput = (props) => {
         secureTextEntry={true}
         style={styles.input}
         placeholder={placeHolder}
+        onChangeText={onChangeText}
       />
       <View style={styles.eyeWrapper}>
         <Image source={require("../../../assets/images/eye.png")} />
