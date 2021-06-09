@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { TAB_SCREENS } from "..";
+import { SCREENS, TAB_SCREENS } from "..";
 import { useAutoNavAuth } from "../../hooks/useAutoNavAuth";
 import styles from "./styles";
 
@@ -11,7 +11,7 @@ export default function Tabbar() {
   useAutoNavAuth();
 
   return (
-    <Tab.Navigator
+    <Tab.Navigator initialRouteName={SCREENS.play.name}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;

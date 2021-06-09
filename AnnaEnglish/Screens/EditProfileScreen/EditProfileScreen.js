@@ -98,7 +98,7 @@ const EditProfileScreen = () => {
 
   const handleSaveButtonPress = () => {
     updateUser(tempUser);
-    navigation.navigate(SCREENS.profile.name);
+    navigation.navigate(SCREENS.mainApp.name);
   }
 
   //   const takePhotoFromCamera = () => {

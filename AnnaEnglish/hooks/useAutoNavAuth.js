@@ -14,6 +14,8 @@ export const useAutoNavAuth = () => {
       newRoute = SCREENS.mainApp.name;
     if (status === "NotSignedIn")
       newRoute = SCREENS.signIn.name;
+    if (status === "NoInfo")
+      newRoute = SCREENS.editProfile.name;
 
     if (newRoute && useRoute.name !== newRoute)
       navigation.navigate(newRoute);

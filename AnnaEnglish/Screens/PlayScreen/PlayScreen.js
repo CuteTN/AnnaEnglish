@@ -11,9 +11,10 @@ import { useFiredux } from "../../hooks/useFiredux";
 import { styles } from "./styles";
 import { SCREENS } from "..";
 import { useNavigation } from "@react-navigation/core";
+import { isBrightColor } from "../../Utils/color";
 
 function PlayScreen() {
-  const listTopics = Object.values(useFiredux("topic"));
+  const listTopics = Object.entries(useFiredux("topic")).map(entry => ({ _id: entry[0], ...entry[1] }));
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -25,7 +26,7 @@ function PlayScreen() {
       <TouchableOpacity
         style={{ flex: 1 }}
         onPress={() => {
-          navigation.navigate(SCREENS.course.name);
+          navigation.navigate(SCREENS.course.name, { topicId: topic._id });
         }}
       >
         <View
