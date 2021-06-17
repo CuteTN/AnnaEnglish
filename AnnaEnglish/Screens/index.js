@@ -8,6 +8,7 @@ import SignInScreen from "./SignInScreen/SignInScreen";
 import SignUpScreen from "./SignUpScreen/SignUpScreen";
 import StartUpScreen from "./StartUpScreen/StartUpScreen";
 import StatisticsScreen from "./StatisticsScreen/StatisticsScreen";
+import GameScreen from "./GameScreen/GameScreen";
 import Tabbar from "./TabNavigation/Tabbar";
 
 export const TAB_SCREENS = {
@@ -76,6 +77,11 @@ export const SCREENS = {
   topic: {
     name: "topic",
     screen: TopicScreen,
+  },
+
+  game: {
+    name: "game",
+    screen: GameScreen,
   },
 
   ...TAB_SCREENS,
