@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
   },
   btn: {
     backgroundColor: colors.facebookBg,
-    borderRadius: 30,
+    borderRadius: 20,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",

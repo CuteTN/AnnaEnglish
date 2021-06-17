@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, TextInput, Image } from "react-native";
 import { colors } from "../../../config/colors";
 
-export const PrimaryInput = ({ placeHolder, isValid, value, onChangeText }) => {
+export const EditInput = ({ placeHolder, isValid, value, onChangeText }) => {
   return (
     <View style={styles.container}>
       <TextInput
@@ -23,14 +23,14 @@ export const PrimaryInput = ({ placeHolder, isValid, value, onChangeText }) => {
 export const styles = StyleSheet.create({
   container: {
     display: "flex",
-    backgroundColor: colors.bg,
-    borderRadius: 15,
+    backgroundColor: "#ECD4D4",
+
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
   input: {
-    padding: 20,
+    padding: 12,
     fontSize: 16,
   },
   validityShowWrapper: {

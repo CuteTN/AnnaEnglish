@@ -21,13 +21,12 @@ export const styles = StyleSheet.create({
     display: "flex",
   },
   btn: {
-    borderRadius: 30,
+    borderRadius: 20,
   },
   label: {
     textAlign: "center",
     fontSize: 14,
     fontWeight: "400",
-
     padding: 20,
   },
 });

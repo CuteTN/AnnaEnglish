@@ -11,7 +11,8 @@ export default function Tabbar() {
   useAutoNavAuth();
 
   return (
-    <Tab.Navigator initialRouteName={SCREENS.play.name}
+    <Tab.Navigator
+      initialRouteName={SCREENS.play.name}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;

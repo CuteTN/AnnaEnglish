@@ -1,15 +1,3 @@
-// import React from "react";
-// import { Text, View } from "react-native";
-// import styles from "./styles";
-// function EditProfileScreen() {
-//   return (
-//     <View style={styles.tabbar}>
-//       <Text>Leaderboard</Text>
-//     </View>
-//   );
-// }
-
-// export default EditProfileScreen;
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -18,13 +6,14 @@ import {
   ImageBackground,
   TextInput,
   StyleSheet,
-  Picker,
   Button,
   Platform,
+  ScrollView,
+  KeyboardAvoidingView,
 } from "react-native";
 
 import { useTheme } from "react-native-paper";
-
+import Combobox from "combobox-react-native";
 import { useNavigation } from "@react-navigation/core";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -35,7 +24,12 @@ import ImagePicker from "react-native-image-crop-picker";
 import DatePicker from "react-native-datepicker";
 import { useSignedIn } from "../../hooks/useSignedIn";
 import { SCREENS } from "..";
-
+import { EditInput } from "../../components/forms/EditButton/EditInput";
+import { EditInputName } from "../../components/forms/EditInputName/EditInputName";
+import { colors } from "../../config/colors";
+import { Picker } from "@react-native-community/picker";
+import { PrimaryButton } from "../../components/buttons/PrimaryButton/PrimaryButton";
+import { styles } from "./styles";
 const EditProfileScreen = () => {
   const { user, updateUser } = useSignedIn();
 
@@ -49,13 +43,11 @@ const EditProfileScreen = () => {
   const [show, setShow] = useState(false);
   const [tempUser, setTempUser] = useState();
 
-  const { colors } = useTheme();
   const navigation = useNavigation();
 
   useEffect(() => {
     // only load temp user the first time
-    if (!tempUser)
-      setTempUser(user);
+    if (!tempUser) setTempUser(user);
   }, [user, setTempUser]);
 
   const onChange = (event, selectedDate) => {
@@ -73,33 +65,32 @@ const EditProfileScreen = () => {
     showMode("date");
   };
 
-
   //#region input fields
   const handleChangeTextName = (value) => {
-    setTempUser(u => ({ ...u, name: value }));
-  }
+    setTempUser((u) => ({ ...u, name: value }));
+  };
 
   const handleChangeTextCountry = (value) => {
-    setTempUser(u => ({ ...u, country: value }));
-  }
+    setTempUser((u) => ({ ...u, country: value }));
+  };
 
   /**
-   * @param {string} dateStr 
-   * @param {Date} date 
+   * @param {string} dateStr
+   * @param {Date} date
    */
   const handleChangeDateBirthday = (dateStr, date) => {
-    setTempUser(u => ({ ...u, birthday: dateStr }));
-  }
+    setTempUser((u) => ({ ...u, birthday: dateStr }));
+  };
 
   const handleChangeGenderPicker = (value) => {
-    setTempUser(u => ({ ...u, gender: value }));
-  }
+    setTempUser((u) => ({ ...u, gender: value }));
+  };
   //#endregion
 
   const handleSaveButtonPress = () => {
     updateUser(tempUser);
     navigation.navigate(SCREENS.mainApp.name);
-  }
+  };
 
   //   const takePhotoFromCamera = () => {
   //     ImagePicker.openCamera({
@@ -135,19 +126,19 @@ const EditProfileScreen = () => {
       </View>
       <TouchableOpacity
         style={styles.panelButton}
-      // onPress={takePhotoFromCamera}
+        // onPress={takePhotoFromCamera}
       >
         <Text style={styles.panelButtonTitle}>Take Photo</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.panelButton}
-      // onPress={choosePhotoFromLibrary}
+        // onPress={choosePhotoFromLibrary}
       >
         <Text style={styles.panelButtonTitle}>Choose From Library</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.panelButton}
-      // onPress={() => this.bs.current.snapTo(1)}
+        // onPress={() => this.bs.current.snapTo(1)}
       >
         <Text style={styles.panelButtonTitle}>Cancel</Text>
       </TouchableOpacity>
@@ -166,307 +157,154 @@ const EditProfileScreen = () => {
   const fall = new Animated.Value(1);
 
   return (
-    <View style={styles.container}>
-      <BottomSheet
-        // ref={this.bs}
-        snapPoints={[330, 0]}
-        // renderContent={this.renderInner}
-        // renderHeader={this.renderHeader}
-        initialSnap={1}
-        // callbackNode={this.fall}
-        enabledGestureInteraction={true}
-      />
-      <Animated.View
-        style={{
-          margin: 20,
-          //   opacity: Animated.add(0.1, Animated.multiply(this.fall, 1.0)),
-        }}
-      >
-        <View style={{ alignItems: "center" }}>
-          {/* <TouchableOpacity onPress={() => this.bs.current.snapTo(0)}> */}
-          <TouchableOpacity>
-            <View
-              style={{
-                height: 100,
-                width: 100,
-                borderRadius: 15,
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: 50,
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : null}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+    >
+      <ScrollView style={styles.container}>
+        <BottomSheet
+          // ref={this.bs}
+          snapPoints={[330, 0]}
+          // renderContent={this.renderInner}
+          // renderHeader={this.renderHeader}
+          initialSnap={1}
+          // callbackNode={this.fall}
+          enabledGestureInteraction={true}
+        />
+        <Animated.View
+          style={{
+            margin: 20,
+            //   opacity: Animated.add(0.1, Animated.multiply(this.fall, 1.0)),
+          }}
+        >
+          <View style={{ alignItems: "center" }}>
+            {/* <TouchableOpacity onPress={() => this.bs.current.snapTo(0)}> */}
+            <TouchableOpacity>
+              <View
+                style={{
+                  height: 100,
+                  width: 100,
+                  borderRadius: 15,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: 50,
+                }}
+              >
+                <ImageBackground
+                  source={{
+                    uri: image,
+                  }}
+                  style={{ height: 100, width: 100 }}
+                  imageStyle={{ borderRadius: 15 }}
+                >
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Icon
+                      name="camera"
+                      size={35}
+                      color="#fff"
+                      style={{
+                        opacity: 0.7,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        borderWidth: 1,
+                        borderColor: "#fff",
+                        borderRadius: 10,
+                      }}
+                    />
+                  </View>
+                </ImageBackground>
+              </View>
+            </TouchableOpacity>
+            <Text style={{ marginTop: 10, fontSize: 18, fontWeight: "bold" }}>
+              Thy cute đáng iu
+            </Text>
+          </View>
+          <Text
+            style={[
+              styles.text_footer,
+              {
+                marginTop: 15,
+              },
+            ]}
+          >
+            Full Name
+          </Text>
+          <View style={styles.inputItem}>
+            <EditInputName
+              placeHolder={"Full Name"}
+              value={tempUser?.name}
+              onChangeText={handleChangeTextName}
+            />
+          </View>
+          <Text style={[styles.text_footer]}>Country</Text>
+          <View style={styles.inputItem}>
+            {/* <FontAwesome name="globe" color={colors.text} size={20} /> */}
+            <EditInput
+              placeHolder={"Country"}
+              value={tempUser?.country}
+              onChangeText={handleChangeTextCountry}
+            />
+          </View>
+          <Text style={[styles.text_footer]}>Birthday</Text>
+          <View style={styles.inputItem}>
+            <DatePicker
+              style={styles.datepicker}
+              date={tempUser?.birthday}
+              mode="date"
+              format="DD/MM/YYYY"
+              cancelBtnText="Cancel"
+              confirmBtnText="Confirm"
+              minDate="01-01-1975"
+              maxDate="01-01-2020"
+              onDateChange={handleChangeDateBirthday}
+              customStyles={{
+                dateInput: styles.dateInput,
+                dateIcon: styles.dateIcon,
+              }}
+            />
+          </View>
+          <Text style={[styles.text_footer]}>Gender</Text>
+          <View style={styles.inputItem1}>
+            {/* <Icon name="gender-male-female" color={colors.text} size={20} /> */}
+
+            <Picker
+              selectedValue={tempUser?.gender}
+              style={[
+                styles.textInput,
+                {
+                  color: colors.black,
+                  borderColor: colors.primary,
+                  borderEndColor: colors.primary,
+                },
+              ]}
+              itemStyle={{ width: 100 }}
+              onValueChange={(itemValue, itemIndex) => {
+                setSelectedValue(itemValue);
+                handleChangeGenderPicker(itemValue);
               }}
             >
-              <ImageBackground
-                source={{
-                  uri: image,
-                }}
-                style={{ height: 100, width: 100 }}
-                imageStyle={{ borderRadius: 15 }}
-              >
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Icon
-                    name="camera"
-                    size={35}
-                    color="#fff"
-                    style={{
-                      opacity: 0.7,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      borderWidth: 1,
-                      borderColor: "#fff",
-                      borderRadius: 10,
-                    }}
-                  />
-                </View>
-              </ImageBackground>
-            </View>
-          </TouchableOpacity>
-          <Text style={{ marginTop: 10, fontSize: 18, fontWeight: "bold" }}>
-            Thy cute đáng iu
-          </Text>
-        </View>
-        <Text
-          style={[
-            styles.text_footer,
-            {
-              marginTop: 15,
-            },
-          ]}
-        >
-          Tên
-        </Text>
-        <View style={styles.action}>
-          <FontAwesome name="user-o" color={colors.text} size={20} />
-          <TextInput
-            placeholder="Tên"
-            placeholderTextColor="#666666"
-            autoCorrect={false}
-            style={[
-              styles.textInput,
-              {
-                color: colors.text,
-              },
-            ]}
-            value={tempUser?.name}
-            onChangeText={handleChangeTextName}
-          />
-        </View>
-        <Text
-          style={[
-            styles.text_footer,
-            {
-              marginTop: 15,
-            },
-          ]}
-        >
-          Quốc gia
-        </Text>
-        <View style={styles.action}>
-          <FontAwesome name="globe" color={colors.text} size={20} />
-          <TextInput
-            placeholder="Quốc Gia"
-            placeholderTextColor="#666666"
-            autoCorrect={false}
-            style={[
-              styles.textInput,
-              {
-                color: colors.text,
-              },
-            ]}
-            value={tempUser?.country}
-            onChangeText={handleChangeTextCountry}
-          />
-        </View>
-        <Text
-          style={[
-            styles.text_footer,
-            {
-              marginTop: 15,
-            },
-          ]}
-        >
-          Ngày sinh
-        </Text>
-        <View style={styles.action}>
-          <FontAwesome name="birthday-cake" color={colors.text} size={20} />
-          {/* <TextInput
-            placeholder="Ngày sinh"
-            placeholderTextColor="#666666"
-            keyboardType="email-address"
-            autoCorrect={false}
-            style={[
-              styles.textInput,
-              {
-                color: colors.text,
-              },
-            ]}
-          /> */}
-          <DatePicker
-            date={tempUser?.birthday}
-            mode="date"
-            format="DD/MM/YYYY"
-            cancelBtnText="Cancel"
-            confirmBtnText="Confirm"
-            minDate="01-01-1975"
-            maxDate="01-01-2020"
-            onDateChange={handleChangeDateBirthday}
-          // style={styles.input}
-          // customStyles={{
-          //   dateIcon: {
-          //     left: 0,
-          //     top: 4,
-          //     marginLeft: 0,
-          //   },
-          //   //   dateInput: [styles.input, { marginLeft: 0 }],
-          // }}
-          //   onDateChange={(date) => {
+              <Picker.Item label="Male" value="Male" />
+              <Picker.Item label="Female" value="Female" />
+            </Picker>
+          </View>
 
-          //   }}
-          />
-        </View>
-        <Text
-          style={[
-            styles.text_footer,
-            {
-              marginTop: 15,
-            },
-          ]}
-        >
-          Giới tính
-        </Text>
-        <View style={styles.action}>
-          <Icon name="gender-male-female" color={colors.text} size={20} />
-          {/* <TextInput
-            placeholder="Giới tính"
-            placeholderTextColor="#666666"
-            autoCorrect={false}
-            style={[
-              styles.textInput,
-              {
-                color: colors.text,
-              },
-            ]}
-          /> */}
-          <Picker
-            selectedValue={tempUser?.gender}
-            style={[
-              styles.textInput,
-              {
-                color: colors.text,
-              },
-            ]}
-            onValueChange={(itemValue, itemIndex) => {
-              setSelectedValue(itemValue)
-              handleChangeGenderPicker(itemValue);
-            }}
-          >
-            <Picker.Item label="Nam" value="Male" />
-            <Picker.Item label="Nữ" value="Female" />
-          </Picker>
-        </View>
-        <TouchableOpacity style={styles.commandButton} onPress={handleSaveButtonPress}>
-          <Text style={styles.panelButtonTitle}>Lưu thay đổi</Text>
-        </TouchableOpacity>
-      </Animated.View>
-    </View>
+          <View style={styles.getStartedbtnItemWrapper}>
+            <PrimaryButton
+              label={"LƯU THAY ĐỔI"}
+              onPress={handleSaveButtonPress}
+            />
+          </View>
+        </Animated.View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
 export default EditProfileScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  commandButton: {
-    padding: 15,
-    borderRadius: 10,
-    backgroundColor: "#FF6347",
-    alignItems: "center",
-    marginTop: 10,
-  },
-  text_footer: {
-    color: "#05375a",
-    fontSize: 14,
-  },
-  panel: {
-    padding: 20,
-    backgroundColor: "#FFFFFF",
-    paddingTop: 20,
-    // borderTopLeftRadius: 20,
-    // borderTopRightRadius: 20,
-    // shadowColor: '#000000',
-    // shadowOffset: {width: 0, height: 0},
-    // shadowRadius: 5,
-    // shadowOpacity: 0.4,
-  },
-  header: {
-    backgroundColor: "#FFFFFF",
-    shadowColor: "#333333",
-    shadowOffset: { width: -1, height: -3 },
-    shadowRadius: 2,
-    shadowOpacity: 0.4,
-    // elevation: 5,
-    paddingTop: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-  },
-  panelHeader: {
-    alignItems: "center",
-  },
-  panelHandle: {
-    width: 40,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: "#00000040",
-    marginBottom: 10,
-  },
-  panelTitle: {
-    fontSize: 27,
-    height: 35,
-  },
-  panelSubtitle: {
-    fontSize: 14,
-    color: "gray",
-    height: 30,
-    marginBottom: 10,
-  },
-  panelButton: {
-    padding: 13,
-    borderRadius: 10,
-    backgroundColor: "#FF6347",
-    alignItems: "center",
-    marginVertical: 7,
-  },
-  panelButtonTitle: {
-    fontSize: 17,
-    fontWeight: "bold",
-    color: "white",
-  },
-  action: {
-    flexDirection: "row",
-    marginTop: 10,
-    marginBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#f2f2f2",
-    paddingBottom: 5,
-  },
-  actionError: {
-    flexDirection: "row",
-    marginTop: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#FF0000",
-    paddingBottom: 5,
-  },
-  textInput: {
-    flex: 1,
-    marginTop: Platform.OS === "ios" ? 0 : -12,
-    paddingLeft: 10,
-    color: "#05375a",
-  },
-});
