@@ -1,4 +1,4 @@
-import CourseScreen from "./CourseScreen/CourseScreen";
+import TopicScreen from "./TopicScreen/TopicScreen";
 import DictionaryScreen from "./DictionaryScreen/DictionaryScreen";
 import EditProfileScreen from "./EditProfileScreen/EditProfileScreen";
 import LeaderboardScreen from "./LeaderboardScreen/LeaderboardScreen";
@@ -73,9 +73,9 @@ export const SCREENS = {
     screen: Tabbar,
   },
 
-  course: {
-    name: "course",
-    screen: CourseScreen,
+  topic: {
+    name: "topic",
+    screen: TopicScreen,
   },
 
   ...TAB_SCREENS,

@@ -26,7 +26,7 @@ function PlayScreen() {
       <TouchableOpacity
         style={{ flex: 1 }}
         onPress={() => {
-          navigation.navigate(SCREENS.course.name, { topicId: topic._id });
+          navigation.navigate(SCREENS.topic.name, { topicId: topic._id });
         }}
       >
         <View

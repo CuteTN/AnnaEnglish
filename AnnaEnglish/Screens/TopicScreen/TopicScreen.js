@@ -1,6 +1,5 @@
 import React from "react";
-import { View, SafeAreaView, Image, Text, StyleSheet } from "react-native";
-import { Button } from "react-native-paper";
+import { View, SafeAreaView, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { colors } from "../../config/colors";
 import { useRealtimeFire } from "../../hooks/useRealtimeFire";
 
@@ -16,8 +15,15 @@ export default TopicScreen = ({ route }) => {
         backgroundColor: colors.white,
       }}
     >
-      <Text>Thy cute dang iu</Text>
-      <Button>yo</Button>
+      <TouchableOpacity style={{ marginTop: 50 }}>
+        <Text
+          style={{
+            flex: 1,
+          }}
+        >
+          To game
+        </Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
