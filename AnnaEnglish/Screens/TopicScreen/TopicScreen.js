@@ -1,12 +1,13 @@
 import React from "react";
 import { View, SafeAreaView, Image, Text, StyleSheet } from "react-native";
+import { Button } from "react-native-paper";
 import { colors } from "../../config/colors";
 import { useRealtimeFire } from "../../hooks/useRealtimeFire";
 
-export default CourseScreen = ({ route }) => {
+export default TopicScreen = ({ route }) => {
   const [topic,] = useRealtimeFire("topic", route?.params?.topicId)
 
-  console.log("current topic:", topic);
+
 
   return (
     <SafeAreaView
@@ -15,7 +16,8 @@ export default CourseScreen = ({ route }) => {
         backgroundColor: colors.white,
       }}
     >
-      <Text>Thy</Text>
+      <Text>Thy cute dang iu</Text>
+      <Button>yo</Button>
     </SafeAreaView>
   );
 };
