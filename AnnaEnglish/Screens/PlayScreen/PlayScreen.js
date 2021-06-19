@@ -14,12 +14,8 @@ import { useNavigation } from "@react-navigation/core";
 import { isBrightColor } from "../../Utils/color";
 
 function PlayScreen() {
-  const listTopics = Object.entries(useFiredux("topic")).map(entry => ({ _id: entry[0], ...entry[1] }));
+  const listTopics = Object.entries(useFiredux("topic") ?? {}).map(entry => ({ _id: entry[0], ...entry[1] }));
   const navigation = useNavigation();
-
-  useEffect(() => {
-    console.log(listTopics);
-  }, [listTopics]);
 
   const Card = ({ topic }) => {
     return (

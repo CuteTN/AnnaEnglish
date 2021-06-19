@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { View, Text, SafeAreaView } from "react-native";
 import Fire from "../../firebase/Fire";
-import { styleCenter, styleFullContainer } from "../../shared/styles.js";
+import { styles } from "../../shared/styles.js";
 import { useAutoNavAuth } from "../../hooks/useAutoNavAuth";
 
 function StartUpScreen() {
@@ -10,8 +10,8 @@ function StartUpScreen() {
   return (
     <SafeAreaView
       style={{
-        ...styleFullContainer,
-        ...styleCenter,
+        ...styles.fullContainer,
+        ...styles.center,
       }}
     >
       <Text>Loading...</Text>

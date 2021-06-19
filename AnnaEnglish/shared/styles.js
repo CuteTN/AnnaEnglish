@@ -1,9 +1,24 @@
-export const styleCenter = {
-  justifyContent: "center",
-  alignItems: "center",
-}
+import { StyleSheet } from "react-native";
 
-export const styleFullContainer = {
-  height: "100%",
-  width: "100%",
-}
+export const styles = StyleSheet.create({
+  container: {
+    display: "flex",
+    flex: 1,
+  },
+
+  container: {
+    display: "flex",
+    flex: 1,
+  },
+
+  center: {
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+  },
+
+  fullContainer: {
+    height: "100%",
+    width: "100%",
+  }
+})

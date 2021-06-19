@@ -4,6 +4,7 @@ import { styles } from './styles';
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from '@react-navigation/native';
 import { SCREENS } from '..';
+import Game from '../../components/games/'
 
 export default GameScreen = ({ route }) => {
   const { game } = route?.params ?? {};
@@ -44,9 +45,9 @@ export default GameScreen = ({ route }) => {
 
       {/* game component goes from here */}
       <View
-        style={[styles.container, { backgroundColor: "purple", margin: 5 }]}
+        style={[styles.container, { margin: 5 }]}
       >
-
+        <Game gameData={game} />
       </View>
 
       <View
