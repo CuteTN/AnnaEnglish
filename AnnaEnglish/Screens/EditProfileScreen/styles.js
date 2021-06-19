@@ -84,21 +84,22 @@ export const styles = StyleSheet.create({
     paddingBottom: 5,
   },
   textInput: {
+    //CAF6F7 C9CBE0
     width: sizeFactor * 23,
-    backgroundColor: "#C9CBE0",
-    width: 350,
+    backgroundColor: "#CAF6F7",
   },
   inputItem: {
     marginBottom: 20,
   },
   datepicker: {
+    //FFE2E6 CCDBE2
     width: sizeFactor * 23,
     justifyContent: "space-between",
-    backgroundColor: "#CCDBE2",
+    backgroundColor: "#FFE2E6",
     height: 50,
   },
   dateInput: {
-    borderColor: "#CCDBE2",
+    borderColor: "#FFE2E6",
     marginLeft: 15,
     marginTop: 5,
     alignItems: "flex-start",

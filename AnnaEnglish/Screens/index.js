@@ -10,41 +10,42 @@ import StartUpScreen from "./StartUpScreen/StartUpScreen";
 import StatisticsScreen from "./StatisticsScreen/StatisticsScreen";
 import GameScreen from "./GameScreen/GameScreen";
 import Tabbar from "./TabNavigation/Tabbar";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 export const TAB_SCREENS = {
   statistic: {
-    name: "statistic",
+    name: "Statistic",
     screen: StatisticsScreen,
-    iconName: "game-controller",
-    focusIconName: "game-controller-outline",
+    iconName: "ios-pie-chart",
+    focusIconName: "ios-pie-chart-outline",
   },
 
   leaderboard: {
-    name: "leaderboard",
+    name: "Leaderboard",
     screen: LeaderboardScreen,
-    iconName: "game-controller",
-    focusIconName: "game-controller-outline",
+    iconName: "md-podium",
+    focusIconName: "md-podium-outline",
   },
 
   play: {
-    name: "play",
+    name: "Play",
     screen: PlayScreen,
     iconName: "game-controller",
     focusIconName: "game-controller-outline",
   },
 
   dictionary: {
-    name: "dictionary",
+    name: "Dictionary",
     screen: DictionaryScreen,
     iconName: "book",
     focusIconName: "book-outline",
   },
 
   profile: {
-    name: "profile",
+    name: "Profile",
     screen: ProfileScreen,
-    iconName: "person-circle",
-    focusIconName: "person-circle-outline",
+    iconName: "person",
+    focusIconName: "person-outline",
   },
 };
 

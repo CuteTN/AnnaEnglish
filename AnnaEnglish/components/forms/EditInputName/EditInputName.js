@@ -28,8 +28,8 @@ export const EditInputName = ({
 export const styles = StyleSheet.create({
   container: {
     display: "flex",
-    backgroundColor: "#EFEFF1",
-
+    // backgroundColor: "#EFEFF1",FFF464
+    backgroundColor: "#FFF4C8",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",

@@ -11,9 +11,6 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from "react-native";
-
-import { useTheme } from "react-native-paper";
-import Combobox from "combobox-react-native";
 import { useNavigation } from "@react-navigation/core";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -24,7 +21,7 @@ import ImagePicker from "react-native-image-crop-picker";
 import DatePicker from "react-native-datepicker";
 import { useSignedIn } from "../../hooks/useSignedIn";
 import { SCREENS } from "..";
-import { EditInput } from "../../components/forms/EditButton/EditInput";
+import { EditInput } from "../../components/forms/EditInputCountry/EditInput";
 import { EditInputName } from "../../components/forms/EditInputName/EditInputName";
 import { colors } from "../../config/colors";
 import { Picker } from "@react-native-community/picker";
@@ -281,7 +278,6 @@ const EditProfileScreen = () => {
                 {
                   color: colors.black,
                   borderColor: colors.primary,
-                  borderEndColor: colors.primary,
                 },
               ]}
               itemStyle={{ width: 100 }}
@@ -293,13 +289,6 @@ const EditProfileScreen = () => {
               <Picker.Item label="Male" value="Male" />
               <Picker.Item label="Female" value="Female" />
             </Picker>
-          </View>
-
-          <View style={styles.getStartedbtnItemWrapper}>
-            <PrimaryButton
-              label={"LƯU THAY ĐỔI"}
-              onPress={handleSaveButtonPress}
-            />
           </View>
         </Animated.View>
       </ScrollView>

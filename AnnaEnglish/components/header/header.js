@@ -8,7 +8,8 @@ import { colors } from "../../config/colors";
 export default function Header({ title }) {
   const navigation = useNavigation();
   const openMenu = () => {
-    navigation.navigate(SCREENS.mainApp.name);
+    // navigation.navigate(SCREENS.mainApp.name);
+    navigation.goBack();
   };
 
   return (
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.facebookBg,
+    backgroundColor: colors.primary,
   },
   headerText: {
     fontWeight: "bold",

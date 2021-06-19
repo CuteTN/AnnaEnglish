@@ -2,6 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { SCREENS, TAB_SCREENS } from "..";
+import { colors } from "../../config/colors";
 import { useAutoNavAuth } from "../../hooks/useAutoNavAuth";
 import styles from "./styles";
 
@@ -28,8 +29,8 @@ export default function Tabbar() {
         },
       })}
       tabBarOptions={{
-        activeTintColor: "tomato",
-        inactiveTintColor: "gray",
+        activeTintColor: colors.primary,
+        inactiveTintColor: colors.primary,
       }}
     >
       {Object.values(TAB_SCREENS).map((scr) => (

@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { colors } from "../../config/colors";
 import { useRealtimeFire } from "../../hooks/useRealtimeFire";
-import Header from "../../components/header/header";
+import Header from "../../components/Header/Header";
 import { styles } from "./styles";
 import Fire from "../../firebase/Fire";
 import { useNavigation } from "@react-navigation/native";
@@ -37,8 +37,8 @@ export default TopicScreen = ({ route }) => {
   }, [topic]);
 
   const handleEnterGame = (game) => {
-    navigation.navigate(SCREENS.game.name, { game })
-  }
+    navigation.navigate(SCREENS.game.name, { game });
+  };
 
   const Card = ({ game }) => {
     return (

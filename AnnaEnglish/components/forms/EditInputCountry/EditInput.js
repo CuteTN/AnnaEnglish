@@ -23,7 +23,8 @@ export const EditInput = ({ placeHolder, isValid, value, onChangeText }) => {
 export const styles = StyleSheet.create({
   container: {
     display: "flex",
-    backgroundColor: "#ECD4D4",
+    backgroundColor: "#E0F0FF",
+    //E0F0FF ECD4D4
 
     flexDirection: "row",
     alignItems: "center",
