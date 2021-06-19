@@ -25,6 +25,7 @@ const GameOne = ({ data }) => {
               marginBottom: 10,
               margin: 5,
               borderRadius: 10,
+              marginTop: 10,
             },
           ]}
         >
@@ -37,7 +38,9 @@ const GameOne = ({ data }) => {
   return (
     <View style={styles.container}>
       <View style={styles.container}>
-        <Text style={{ textAlign: "center", fontSize: 40 }}>{thydangiu}</Text>
+        <Text style={{ textAlign: "center", fontSize: 40, marginTop: 30 }}>
+          {thydangiu}
+        </Text>
       </View>
       <View>
         <FlatList

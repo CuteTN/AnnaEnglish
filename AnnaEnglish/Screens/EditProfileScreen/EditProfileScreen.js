@@ -26,6 +26,7 @@ import { EditInputName } from "../../components/forms/EditInputName/EditInputNam
 import { colors } from "../../config/colors";
 import { Picker } from "@react-native-community/picker";
 import { PrimaryButton } from "../../components/buttons/PrimaryButton/PrimaryButton";
+import Header from "../../components/Header/Header";
 import { styles } from "./styles";
 const EditProfileScreen = () => {
   const { user, updateUser } = useSignedIn();
@@ -159,6 +160,9 @@ const EditProfileScreen = () => {
       behavior={Platform.OS === "ios" ? "padding" : null}
       keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
     >
+      <View style={{ marginTop: 30 }}>
+        <Header title="EDIT PROFILE" />
+      </View>
       <ScrollView style={styles.container}>
         <BottomSheet
           // ref={this.bs}
@@ -185,7 +189,7 @@ const EditProfileScreen = () => {
                   borderRadius: 15,
                   justifyContent: "center",
                   alignItems: "center",
-                  marginTop: 50,
+                  marginTop: 20,
                 }}
               >
                 <ImageBackground
@@ -219,7 +223,14 @@ const EditProfileScreen = () => {
                 </ImageBackground>
               </View>
             </TouchableOpacity>
-            <Text style={{ marginTop: 10, fontSize: 18, fontWeight: "bold" }}>
+            <Text
+              style={{
+                marginTop: 10,
+                marginBottom: 20,
+                fontSize: 18,
+                fontWeight: "bold",
+              }}
+            >
               Thy cute đáng iu
             </Text>
           </View>
@@ -289,6 +300,12 @@ const EditProfileScreen = () => {
               <Picker.Item label="Male" value="Male" />
               <Picker.Item label="Female" value="Female" />
             </Picker>
+          </View>
+          <View style={styles.getStartedbtnItemWrapper}>
+            <PrimaryButton
+              label={"SAVE CHANGES "}
+              onPress={handleSaveButtonPress}
+            />
           </View>
         </Animated.View>
       </ScrollView>
