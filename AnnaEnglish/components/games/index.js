@@ -6,7 +6,12 @@ const games = {
   // multiple: GameMultiple,
 }
 
-export default Game = ({ gameData }) => {
+export default Game = ({ gameData, onComplete }) => {
   const GameComponent = useRef(games[gameData?.type ?? ""]).current;
-  return (<GameComponent data={gameData} />)
+  return (
+    <GameComponent
+      data={gameData}
+      onComplete={onComplete}
+    />
+  )
 }

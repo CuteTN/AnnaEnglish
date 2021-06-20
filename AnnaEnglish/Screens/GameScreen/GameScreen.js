@@ -21,6 +21,11 @@ export default GameScreen = ({ route }) => {
     navigation.goBack();
   };
 
+  const handleCompleteGame = () => {
+    console.info("Thy cute wins");
+    navigation.goBack();
+  }
+
   return (
     <SafeAreaView
       style={{
@@ -44,7 +49,7 @@ export default GameScreen = ({ route }) => {
 
       {/* game component goes from here */}
       <View style={[styles.container, { margin: 5 }]}>
-        <Game gameData={game} />
+        <Game gameData={game} onComplete={handleCompleteGame} />
       </View>
 
       <View style={[styles.header, { backgroundColor: "violet" }]}></View>
