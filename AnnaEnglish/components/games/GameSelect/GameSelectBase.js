@@ -8,10 +8,7 @@ import { shuffle } from "../../../Utils/shuffle";
 
 const Card = ({ label, onPress, isSelected }) => {
   return (
-    <TouchableOpacity
-      style={{ flex: 1, borderRadius: 15 }}
-      onPress={onPress}
-    >
+    <TouchableOpacity style={{ flex: 1, borderRadius: 15 }} onPress={onPress}>
       <View
         style={[
           styles.card,
@@ -24,16 +21,23 @@ const Card = ({ label, onPress, isSelected }) => {
           },
         ]}
       >
-        <Text style={[styles.label, { color: colors.black }]}>{label}</Text>
+        <Text style={[styles.label, { color: colors.black,  textAlign:"center"  }]}>{label}</Text>
       </View>
     </TouchableOpacity>
   );
 };
 
-const GameSelectBase = ({ data, allowMultiSelect, onStepChange, onComplete }) => {
+const GameSelectBase = ({
+  data,
+  allowMultiSelect,
+  onStepChange,
+  onComplete,
+}) => {
   // const thycute = ["thy cute", "thycute", "thycute", "thycute"];
   // const thydangiu = "thy dang iu nhat qua dat";
-  const maxSteps = React.useRef(Object.values(data?.questions ?? {}).length).current;
+  const maxSteps = React.useRef(
+    Object.values(data?.questions ?? {}).length
+  ).current;
   const questions = React.useRef(Object.values(data?.questions ?? {})).current;
 
   // counting start from 1 here
@@ -49,21 +53,18 @@ const GameSelectBase = ({ data, allowMultiSelect, onStepChange, onComplete }) =>
     }
 
     onStepChange?.(currentStep, maxSteps);
-  }, [currentStep])
+  }, [currentStep]);
 
   const handleToggleSelectAnswer = (answer) => {
     if (allowMultiSelect) {
-      setSelections(prev => {
-        if (prev.includes(answer))
-          return prev.filter(a => a !== answer);
-        else
-          return [...prev, answer];
-      })
-    }
-    else {
+      setSelections((prev) => {
+        if (prev.includes(answer)) return prev.filter((a) => a !== answer);
+        else return [...prev, answer];
+      });
+    } else {
       setSelections([answer]);
     }
-  }
+  };
 
   const checkAnswer = () => {
     result = true;
@@ -72,10 +73,11 @@ const GameSelectBase = ({ data, allowMultiSelect, onStepChange, onComplete }) =>
       const answer = Object.values(questions[currentStep - 1].answer).sort();
       const sortedSelection = [...selections].sort();
 
-      answer.forEach((a, i) => result &= (a === sortedSelection[i]));
-    }
-    else {
-      result &= (selections.length !== 0) && (selections[0] === questions[currentStep - 1].answer)
+      answer.forEach((a, i) => (result &= a === sortedSelection[i]));
+    } else {
+      result &=
+        selections.length !== 0 &&
+        selections[0] === questions[currentStep - 1].answer;
     }
 
     return result;
@@ -84,8 +86,7 @@ const GameSelectBase = ({ data, allowMultiSelect, onStepChange, onComplete }) =>
   const handleSubmitButtonPress = () => {
     if (checkAnswer()) {
       handleCorrect();
-    }
-    else {
+    } else {
       handleWrong();
     }
   };
@@ -93,25 +94,22 @@ const GameSelectBase = ({ data, allowMultiSelect, onStepChange, onComplete }) =>
   const handleCorrect = () => {
     if (currentStep < maxSteps) {
       setSelections([]);
-      setCurrentStep(prev => prev + 1);
-    }
-    else {
+      setCurrentStep((prev) => prev + 1);
+    } else {
       handleComplete();
     }
-  }
+  };
 
-  const handleWrong = () => {
-
-  }
+  const handleWrong = () => {};
 
   const handleComplete = () => {
     onComplete?.();
-  }
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.container}>
-        <Text style={{ textAlign: "center", fontSize: 40, marginTop: 30 }}>
+        <Text style={{ textAlign: "center", fontSize: 40 }}>
           {questions[currentStep - 1].question}
         </Text>
       </View>

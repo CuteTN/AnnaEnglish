@@ -5,14 +5,10 @@ import { colors } from "../../../config/colors";
 import { styles } from "./styles";
 import { PrimaryButton } from "../../buttons/PrimaryButton/PrimaryButton";
 import GameSelectBase from "../GameSelect/GameSelectBase";
+import GameSort from "../GameSort/GameSort"
 
 const GameOne = ({ data, onComplete }) => {
-  return (
-    <GameSelectBase
-      data={data}
-      onComplete={onComplete}
-    />
-  )
-}
+  return <GameSelectBase data={data} onComplete={onComplete} />;
+};
 
 export default GameOne;
