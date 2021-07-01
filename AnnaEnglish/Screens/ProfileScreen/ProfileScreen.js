@@ -126,10 +126,14 @@ function ProfileScreen() {
             <Text style={styles.menuItemText}>Đổi thông tin cá nhân</Text>
           </View>
         </TouchableRipple>
-        <TouchableRipple>
+        <TouchableRipple
+          onPress={() => {
+            navigation.navigate(SCREENS.note.name);
+          }}
+        >
           <View style={styles.menuItem}>
-            <Icon name="share-outline" color="#0C2C71" size={25} />
-            <Text style={styles.menuItemText}>Cái gì chưa biết</Text>
+            <Icon name="note-outline" color="#0C2C71" size={25} />
+            <Text style={styles.menuItemText}>Ghi chú</Text>
           </View>
         </TouchableRipple>
         <TouchableRipple onPress={handleSignOutPress}>

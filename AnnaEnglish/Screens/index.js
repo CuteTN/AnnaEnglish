@@ -11,6 +11,7 @@ import StatisticsScreen from "./StatisticsScreen/StatisticsScreen";
 import GameScreen from "./GameScreen/GameScreen";
 import Tabbar from "./TabNavigation/Tabbar";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import NoteScreen from "./NoteScreen/NoteScreen";
 
 export const TAB_SCREENS = {
   statistic: {
@@ -83,6 +84,11 @@ export const SCREENS = {
   game: {
     name: "game",
     screen: GameScreen,
+  },
+
+  note: {
+    name: "note",
+    screen: NoteScreen,
   },
 
   ...TAB_SCREENS,
