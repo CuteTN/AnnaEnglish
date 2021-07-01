@@ -1,13 +1,13 @@
 import React from "react";
 import GameSelectBase from "../GameSelect/GameSelectBase";
 
-const GameOne = (props) => {
+const GameMultiple = (props) => {
   return (
     <GameSelectBase
-      {...(props ?? {})}
-      allowMultiSelect={false}
+      {...props}
+      allowMultiSelect
     />
   )
 }
 
-export default GameOne;
+export default GameMultiple;

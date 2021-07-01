@@ -28,6 +28,7 @@ export const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     marginBottom: 0,
+    height: 60,
   },
   headingWrapper: {
     marginTop: 35,
