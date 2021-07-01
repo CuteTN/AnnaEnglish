@@ -22,7 +22,7 @@ function ProfileScreen() {
 
   const handleSignOutPress = () => {
     Fire.signOut().then((isSuccessful) => {
-      // if (isSuccessful) navigation.navigate(SCREENS.signIn.name);
+      if (isSuccessful) navigation.replace(SCREENS.signIn.name);
     });
   };
 
