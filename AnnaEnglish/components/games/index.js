@@ -3,11 +3,13 @@ import { View } from "react-native";
 import GameFill from "./GameFill/GameFill";
 import GameMultiple from "./GameMultiple/GameMultiple";
 import GameOne from "./GameOne/GameOne";
+import GameSort from "./GameSort/GameSort";
 
 const games = {
   one: GameOne,
   multiple: GameMultiple,
   fill: GameFill,
+  sort: GameSort,
 }
 
 /**
