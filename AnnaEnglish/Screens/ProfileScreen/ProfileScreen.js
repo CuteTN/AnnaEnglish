@@ -71,21 +71,21 @@ function ProfileScreen() {
 
       <View style={styles.userInfoSection}>
         <View style={styles.row}>
-          <Icon name="map-marker-radius" color="#777777" size={20} />
-          <Text style={{ color: "#777777", marginLeft: 20 }}>{user?.country}</Text>
+          <Icon name="map-marker-radius" color="#777777" size={30} />
+          <Text style={{ color: "#777777", marginLeft: 20, fontSize: 18 }}>
+            {user?.country}
+          </Text>
         </View>
         <View style={styles.row}>
-          <Icon name="gender-male-female" color="#777777" size={20} />
-          <Text style={{ color: "#777777", marginLeft: 20 }}>{user?.gender === "Male" ? "Nam" : "Nữ"}</Text>
+          <Icon name="gender-male-female" color="#777777" size={30} />
+          <Text style={{ color: "#777777", marginLeft: 20, fontSize: 18 }}>
+            {user?.gender === "Male" ? "Nam" : "Nữ"}
+          </Text>
         </View>
         <View style={styles.row}>
-          <Icon name="calendar-today" color="#777777" size={20} />
-          <Text style={{ color: "#777777", marginLeft: 20 }}>{user?.birthday}</Text>
-        </View>
-        <View style={styles.row}>
-          <Icon name="email" color="#777777" size={20} />
-          <Text style={{ color: "#777777", marginLeft: 20 }}>
-            Còn cái gì đó k biết
+          <Icon name="calendar-today" color="#777777" size={30} />
+          <Text style={{ color: "#777777", marginLeft: 20, fontSize: 18 }}>
+            {user?.birthday}
           </Text>
         </View>
       </View>
@@ -112,7 +112,7 @@ function ProfileScreen() {
       <View style={styles.menuWrapper}>
         <TouchableRipple onPress={() => { }}>
           <View style={styles.menuItem}>
-            <Icon name="lock" color="#0C2C71" size={25} />
+            <Icon name="lock" color="#0C2C71" size={30} />
             <Text style={styles.menuItemText}>Đổi mật khẩu</Text>
           </View>
         </TouchableRipple>
@@ -122,7 +122,7 @@ function ProfileScreen() {
           }}
         >
           <View style={styles.menuItem}>
-            <Icon name="account-edit" color="#0C2C71" size={25} />
+            <Icon name="account-edit" color="#0C2C71" size={30} />
             <Text style={styles.menuItemText}>Đổi thông tin cá nhân</Text>
           </View>
         </TouchableRipple>
@@ -132,13 +132,13 @@ function ProfileScreen() {
           }}
         >
           <View style={styles.menuItem}>
-            <Icon name="note-outline" color="#0C2C71" size={25} />
+            <Icon name="note-outline" color="#0C2C71" size={30} />
             <Text style={styles.menuItemText}>Ghi chú</Text>
           </View>
         </TouchableRipple>
         <TouchableRipple onPress={handleSignOutPress}>
           <View style={styles.menuItem}>
-            <Icon name="logout" color="#0C2C71" size={25} />
+            <Icon name="logout" color="#0C2C71" size={30} />
             <Text style={styles.menuItemText}>Đăng xuất</Text>
           </View>
         </TouchableRipple>
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
     color: "#777777",
     marginLeft: 20,
     fontWeight: "600",
-    fontSize: 16,
+    fontSize: 18,
     lineHeight: 26,
   },
 });

@@ -97,7 +97,7 @@ export default SignInScreen = ({ }) => {
           <Text style={styles.loginLinkWrapper}>
             <TouchableOpacity onPress={handleButtonSignUpPress}>
               <Text style={styles.notificationContent}>
-                ALREADY HAVE AN ACCOUNT? SIGN UP
+                DON'T HAVE AN ACCOUNT? SIGN UP
               </Text>
             </TouchableOpacity>
           </Text>

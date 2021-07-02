@@ -1,5 +1,6 @@
 import React from "react";
 import GameSelectBase from "../GameSelect/GameSelectBase";
+import GameSort from "../GameSort/GameSort"
 
 const GameOne = (props) => {
   return (

@@ -30,7 +30,7 @@ export default GameScreen = ({ route }) => {
   const handleCompleteGame = () => {
     console.info("Thy cute wins");
     navigation.goBack();
-  }
+  };
 
   return (
     <SafeAreaView

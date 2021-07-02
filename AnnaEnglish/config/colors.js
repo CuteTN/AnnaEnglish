@@ -12,3 +12,19 @@ export const colors = {
   facebookBg: "#7583CA",
   black: "#000000",
 };
+
+export const colorAnswer = [
+ "#52C2F2",
+ "#00aefd",
+ "#FFA400",
+ "#07a787",
+ "#ff7870",
+ "pink",
+ "yellow",
+ "#e74c3c",
+ "#2979ff",
+];
+
+export const randomColor = () => {
+  return colorAnswer[Math.floor(Math.random() * colorAnswer.length)];
+};
