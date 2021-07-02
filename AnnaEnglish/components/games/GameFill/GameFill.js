@@ -5,6 +5,7 @@ import { colors } from "../../../config/colors";
 import { styles } from "./styles";
 import { PrimaryButton } from "../../buttons/PrimaryButton/PrimaryButton";
 import { shuffle } from "../../../Utils/shuffle";
+import { TextInput } from "react-native-paper";
 
 const Card = ({ label, onPress, isSelected }) => {
   return (
@@ -30,51 +31,24 @@ const Card = ({ label, onPress, isSelected }) => {
   );
 };
 
-const GameSelectBase = ({ data, allowMultiSelect, onStepChange, onComplete }) => {
+export default GameFill = ({ data, allowMultiSelect, onStepChange, onComplete }) => {
   const countSteps = React.useRef(Object.values(data?.questions ?? {}).length).current;
   const questions = React.useRef(Object.values(data?.questions ?? {})).current;
 
   // counting start from 0 here
   const [currentStep, setCurrentStep] = React.useState(0);
 
-  const [options, setOptions] = React.useState([]);
-  const [selections, setSelections] = React.useState([]);
+  const [userAnswer, setUserAnswer] = React.useState("");
 
   React.useEffect(() => {
-    if (currentStep < countSteps) {
-      console.log("dooo");
-      setOptions(shuffle(Object.values(questions[currentStep].options ?? {})));
-    }
-
     onStepChange?.(currentStep, countSteps);
   }, [currentStep, countSteps])
 
-  const handleToggleSelectAnswer = (answer) => {
-    if (allowMultiSelect) {
-      setSelections(prev => {
-        if (prev.includes(answer))
-          return prev.filter(a => a !== answer);
-        else
-          return [...prev, answer];
-      })
-    }
-    else {
-      setSelections([answer]);
-    }
-  }
 
   const checkAnswer = () => {
-    const result = true;
-
-    if (allowMultiSelect) {
-      const answer = Object.values(questions[currentStep].answer ?? {}).sort();
-      const sortedSelection = [...selections].sort();
-
-      answer.forEach((a, i) => result &= (a === sortedSelection[i]));
-    }
-    else {
-      result &= (selections.length !== 0) && (selections[0] === questions[currentStep].answer)
-    }
+    /** @type {[string]} */
+    const answers = Object.values(questions[currentStep].answer ?? {});
+    const result = answers.some(a => a?.trim().toLowerCase() === userAnswer?.trim().toLowerCase());
 
     return result;
   };
@@ -90,7 +64,7 @@ const GameSelectBase = ({ data, allowMultiSelect, onStepChange, onComplete }) =>
 
   const handleCorrect = () => {
     if (currentStep < countSteps - 1) {
-      setSelections([]);
+      setUserAnswer("");
       setCurrentStep(prev => prev + 1);
     }
     else {
@@ -114,21 +88,23 @@ const GameSelectBase = ({ data, allowMultiSelect, onStepChange, onComplete }) =>
         </Text>
       </View>
       <View>
-        <FlatList
-          columnWrapperStyle={{ justifyContent: "space-between" }}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            marginBottom: 50,
-          }}
-          numColumns={2}
-          data={options}
-          renderItem={({ item }) => (
-            <Card
-              label={item}
-              onPress={() => handleToggleSelectAnswer(item)}
-              isSelected={selections.includes(item)}
-            />
-          )}
+        <TextInput
+          style={[
+            {
+              backgroundColor: "#C9D8E5",
+              marginBottom: 10,
+              margin: 5,
+              borderRadius: 10,
+              marginTop: 10,
+              height: 80,
+              fontSize: 30,
+              flexDirection: "row",
+              justifyContent: "center",
+            },
+          ]}
+          textAlign={"center"} // doesn't work
+          value={userAnswer}
+          onChangeText={setUserAnswer}
         />
       </View>
       <View style={styles.getStartedbtnItemWrapper}>
@@ -138,4 +114,4 @@ const GameSelectBase = ({ data, allowMultiSelect, onStepChange, onComplete }) =>
   );
 };
 
-export default GameSelectBase;
+

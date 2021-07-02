@@ -1,10 +1,13 @@
 import React, { useRef } from "react";
+import { View } from "react-native";
+import GameFill from "./GameFill/GameFill";
 import GameMultiple from "./GameMultiple/GameMultiple";
 import GameOne from "./GameOne/GameOne";
 
 const games = {
   one: GameOne,
   multiple: GameMultiple,
+  fill: GameFill,
 }
 
 /**
@@ -12,15 +15,20 @@ const games = {
  */
 const Game = ({ gameData, onComplete, onStepChange, onCorrect, onIncorrect }) => {
   const GameComponent = useRef(games[gameData?.type ?? ""]).current;
-  return (
-    <GameComponent
-      data={gameData}
-      onComplete={onComplete}
-      onStepChange={onStepChange}
-      onCorrect={onCorrect}
-      onIncorrect={onIncorrect}
-    />
-  )
+  return GameComponent ?
+    (
+      <GameComponent
+        data={gameData}
+        onComplete={onComplete}
+        onStepChange={onStepChange}
+        onCorrect={onCorrect}
+        onIncorrect={onIncorrect}
+      />
+    )
+    :
+    (
+      <View />
+    )
 }
 
 export default Game;
