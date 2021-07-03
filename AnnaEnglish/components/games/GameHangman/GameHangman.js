@@ -35,33 +35,31 @@ const ResultWordButton = ({ word, backgroundColor, onPress, numflex }) => {
   );
 };
 
-const GameHangman = ({ data, onComplete, onStepChange }) => {
+const GameHangman = ({ data, onComplete, onStepChange, onCorrect, onIncorrect }) => {
   const countSteps = React.useRef(
     Object.values(data?.questions ?? {}).length
   ).current;
   const questions = React.useRef(Object.values(data?.questions ?? {})).current;
 
-  const [words, setWords] = React.useState([]);
-  const [selectedIndices, setSelectedIndices] = React.useState([]);
+  const [selectedCharacters, setSelectedCharacter] = React.useState([]);
+
+  const MAX_LIFE = React.useRef(3).current;
+  const [lifeLeft, setLifeLeft] = React.useState(MAX_LIFE);
 
   // counting start from 0 here
   const [currentStep, setCurrentStep] = React.useState(0);
 
+  const userAnswer = React.useMemo(() => {
+    const answer = questions[currentStep]?.answer;
+
+    return answer
+      ?.split("")
+      ?.map(c => selectedCharacters.includes(c.toUpperCase()) ? c : "");
+  }, [currentStep, selectedCharacters])
+
   React.useEffect(() => {
     if (currentStep < countSteps) {
-      const newAnswer = questions[currentStep]?.answer;
-      const newSelectedIndices = [];
-
-      for (let i = 0; i < newAnswer.length; i++) newSelectedIndices.push(-1);
-
-      let newWords = (newAnswer ?? "").toUpperCase?.().split?.("");
-      while (newWords.length < NUMBER_OF_WORDS)
-        newWords.push(String.fromCharCode(randomInt(65, 90)));
-
-      newWords = shuffle(newWords);
-
-      setWords(newWords);
-      setSelectedIndices(newSelectedIndices);
+      setSelectedCharacter([]);
     }
 
     onStepChange?.(currentStep, countSteps);
@@ -81,48 +79,68 @@ const GameHangman = ({ data, onComplete, onStepChange }) => {
     uri: "https://tiengtrunganhduong.com/Images/images/635766289191430000.jpg",
   };
 
+  const checkAnswerHasChar = (c) => {
+    return questions[currentStep]?.answer?.toUpperCase()
+      .includes(c.toUpperCase());
+  }
+
   const checkAnswer = () => {
     const answer = questions[currentStep]?.answer;
-    const userAnswer = selectedIndices
-      .map((index) => words[index] ?? " ")
-      .join("");
-
-    return answer.toLowerCase() === userAnswer.toLowerCase();
+    return answer
+      ?.split("")
+      ?.every(c => selectedCharacters.includes(c.toUpperCase()));
   };
 
   const handleSubmitButtonPress = () => {
     if (checkAnswer()) {
       handleCorrect();
     } else {
-      handleWrong();
+      handleIncorrect();
     }
   };
 
   const handleCorrect = () => {
     if (currentStep < countSteps - 1) {
-      setSelectedIndices([]);
+      setLifeLeft(MAX_LIFE);
+      setSelectedCharacter([]);
       setCurrentStep((prev) => prev + 1);
+      onCorrect?.();
     } else {
       handleComplete();
     }
   };
 
-  const handleWrong = () => {};
+  const handleIncorrect = () => {
+    setLifeLeft(MAX_LIFE);
+    setSelectedCharacter([]);
+    onIncorrect?.();
+  };
 
   const handleComplete = () => {
     onComplete?.();
   };
 
-  // index in words
-  const handleSelect = (index) => {};
+  const handleSelect = (character) => {
+    if (!selectedCharacters.includes(character)) {
+      setSelectedCharacter(prev => [...prev, character])
+
+      if (!checkAnswerHasChar(character)) {
+        if (lifeLeft <= 0) {
+          handleIncorrect();
+        } else {
+          setLifeLeft(prev => prev - 1);
+        }
+      }
+    }
+  };
 
   // position: position in user's answer
-  const handleDeselect = (position) => {};
+  // const handleDeselect = (position) => { };
 
   const [alphabet, setAlphabet] = React.useState([]);
   React.useEffect(() => {
     setAlphabet(
-      [...Array(26)].map((_) => String.fromCharCode(i++), (i = 65)).join``
+      [...Array(26)].map((x, i) => String.fromCharCode(65 + i)).join(``)
     );
   }, []);
 
@@ -150,12 +168,12 @@ const GameHangman = ({ data, onComplete, onStepChange }) => {
           }}
           key={"selectedWords__" + numcolResultWordButton}
           numColumns={numcolResultWordButton}
-          data={selectedIndices}
+          data={userAnswer}
           renderItem={({ item, index }) => (
             <ResultWordButton
-              word={words[item] ?? ""}
+              word={item}
               backgroundColor={backgroundColorResult}
-              onPress={() => handleDeselect(index)}
+              // onPress={() => handleDeselect(index)}
               numflex={numcolResultWordButton}
             />
           )}
@@ -174,9 +192,9 @@ const GameHangman = ({ data, onComplete, onStepChange }) => {
           data={alphabet}
           renderItem={({ item, index }) => (
             <WordButton
-              word={selectedIndices?.includes(index) ? "" : item}
+              word={selectedCharacters?.includes(item) ? "" : item}
               backgroundColor={backgroundColorWords}
-              onPress={() => {}}
+              onPress={() => handleSelect(item)}
             />
           )}
         />
