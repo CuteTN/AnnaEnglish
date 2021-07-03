@@ -5,6 +5,7 @@ import { colors } from "../../../config/colors";
 import { styles } from "./styles";
 import { PrimaryButton } from "../../buttons/PrimaryButton/PrimaryButton";
 import { shuffle } from "../../../Utils/shuffle";
+import CheckModal from "../CheckModal/CheckModal";
 
 const Card = ({ label, onPress, isSelected }) => {
   return (
@@ -21,7 +22,11 @@ const Card = ({ label, onPress, isSelected }) => {
           },
         ]}
       >
-        <Text style={[styles.label, { color: colors.black,  textAlign:"center"  }]}>{label}</Text>
+        <Text
+          style={[styles.label, { color: colors.black, textAlign: "center" }]}
+        >
+          {label}
+        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -45,6 +50,9 @@ const GameSelectBase = ({
 
   const [options, setOptions] = React.useState([]);
   const [selections, setSelections] = React.useState([]);
+  const [isCorrect, setIsCorrect] = React.useState(false);
+
+  const setVisible = React.useRef();
 
   React.useEffect(() => {
     if (currentStep <= maxSteps) {
@@ -54,6 +62,10 @@ const GameSelectBase = ({
 
     onStepChange?.(currentStep, maxSteps);
   }, [currentStep]);
+
+  React.useEffect(() => {
+    setVisible.current(false);
+  }, []);
 
   const handleToggleSelectAnswer = (answer) => {
     if (allowMultiSelect) {
@@ -92,6 +104,8 @@ const GameSelectBase = ({
   };
 
   const handleCorrect = () => {
+    setIsCorrect(true);
+    setVisible.current(true);
     if (currentStep < maxSteps) {
       setSelections([]);
       setCurrentStep((prev) => prev + 1);
@@ -100,7 +114,10 @@ const GameSelectBase = ({
     }
   };
 
-  const handleWrong = () => {};
+  const handleWrong = () => {
+    setIsCorrect(false);
+    setVisible.current(true);
+  };
 
   const handleComplete = () => {
     onComplete?.();
@@ -108,6 +125,12 @@ const GameSelectBase = ({
 
   return (
     <View style={styles.container}>
+      <CheckModal
+        getVisible={(visible, setVisible_) =>
+          (setVisible.current = setVisible_)
+        }
+        isCorrect={isCorrect}
+      />
       <View style={styles.container}>
         <Text style={{ textAlign: "center", fontSize: 40 }}>
           {questions[currentStep - 1].question}

@@ -1,9 +1,16 @@
 import { useNavigation } from "@react-navigation/core";
-import React from "react";
+import React, { useState } from "react";
 import Fire from "../../firebase/Fire";
 import { useSignedIn } from "../../hooks/useSignedIn";
 import stylesTabbar from "../TabNavigation/styles";
-import { View, SafeAreaView, StyleSheet } from "react-native";
+import {
+  View,
+  SafeAreaView,
+  StyleSheet,
+  Button,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import {
   Avatar,
   Title,
@@ -36,19 +43,12 @@ function ProfileScreen() {
   // }
 
   return (
-    // <View style={stylesTabbar.tabbar}>
-    //   <Text>Profile</Text>
-    //   <Text>{JSON.stringify(user)}</Text>
-    //   <Button onPress={handleSignOutPress} title="Back to sign in" />
-
-    //   {/* <Button onPress={handlTestHookPress} title="Test Signed In hook" /> */}
-    // </View>
     <SafeAreaView style={styles.container}>
       <View style={styles.userInfoSection}>
         <View style={{ flexDirection: "row", marginTop: 15 }}>
           <Avatar.Image
             source={{
-              uri: "https://scontent-hkg4-2.xx.fbcdn.net/v/t1.6435-9/179048033_1139396113169332_2102843025754757575_n.jpg?_nc_cat=110&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=Mv9EpCXnTbMAX9FBuWV&_nc_ht=scontent-hkg4-2.xx&oh=cec25d4ac42898a48ae88de4cbb58ede&oe=60D517BD",
+              uri: "https://imgur.com/Dtm2ZfO.png",
             }}
             size={80}
           />
