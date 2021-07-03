@@ -15,8 +15,7 @@ import {
 } from "react-native";
 import { useSignedIn } from "../../../hooks/useSignedIn";
 
-export default function CheckModal({ getVisible, onVisibleChange, isCorrect }) {
-  const [visible, setVisible] = React.useState();
+export default function CheckModal({ visible, isCorrect, onButtonPress }) {
   const { user } = useSignedIn();
   const backgroundColor = isCorrect ? "green" : "red";
   const label = isCorrect ? "TIẾP TỤC" : "CHỌN LẠI";
@@ -40,20 +39,12 @@ export default function CheckModal({ getVisible, onVisibleChange, isCorrect }) {
         ? imageCorrect_Male_Url
         : imageWrong_Male_Url
       : isCorrect
-      ? imageCorrect_Female_Url
-      : imageWrong_Female_Url;
-
-  React.useEffect(() => {
-    getVisible?.(visible, setVisible);
-  }, []);
+        ? imageCorrect_Female_Url
+        : imageWrong_Female_Url;
 
   const handleButtonPress = () => {
-    setVisible(false);
-  };
-
-  React.useEffect(() => {
-    onVisibleChange?.(visible);
-  }, [visible]);
+    onButtonPress?.();
+  }
 
   return (
     <Modal transparent visible={visible}>

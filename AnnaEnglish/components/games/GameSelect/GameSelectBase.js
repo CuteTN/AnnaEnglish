@@ -37,6 +37,8 @@ const GameSelectBase = ({
   allowMultiSelect,
   onStepChange,
   onComplete,
+  onCorrect,
+  onIncorrect,
 }) => {
   const countSteps = React.useRef(
     Object.values(data?.questions ?? {}).length
@@ -48,22 +50,14 @@ const GameSelectBase = ({
 
   const [options, setOptions] = React.useState([]);
   const [selections, setSelections] = React.useState([]);
-  const [isCorrect, setIsCorrect] = React.useState(false);
-
-  const setVisible = React.useRef();
 
   React.useEffect(() => {
     if (currentStep < countSteps) {
-      console.log("dooo");
       setOptions(shuffle(Object.values(questions[currentStep].options ?? {})));
     }
 
     onStepChange?.(currentStep, countSteps);
   }, [currentStep, countSteps]);
-
-  React.useEffect(() => {
-    setVisible.current(false);
-  }, []);
 
   const handleToggleSelectAnswer = (answer) => {
     if (allowMultiSelect) {
@@ -97,24 +91,22 @@ const GameSelectBase = ({
     if (checkAnswer()) {
       handleCorrect();
     } else {
-      handleWrong();
+      handleIncorrect();
     }
   };
 
   const handleCorrect = () => {
-    setIsCorrect(true);
-    setVisible.current(true);
     if (currentStep < countSteps - 1) {
       setSelections([]);
       setCurrentStep((prev) => prev + 1);
+      onCorrect?.();
     } else {
       handleComplete();
     }
   };
 
-  const handleWrong = () => {
-    setIsCorrect(false);
-    setVisible.current(true);
+  const handleIncorrect = () => {
+    onIncorrect?.();
   };
 
   const handleComplete = () => {
@@ -123,12 +115,6 @@ const GameSelectBase = ({
 
   return (
     <View style={styles.container}>
-      <CheckModal
-        getVisible={(visible, setVisible_) =>
-          (setVisible.current = setVisible_)
-        }
-        isCorrect={isCorrect}
-      />
       <View style={styles.container}>
         <Text style={{ textAlign: "center", fontSize: 40 }}>
           {questions[currentStep].question}

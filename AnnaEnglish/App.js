@@ -15,6 +15,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import StartUpScreen from "./Screens/StartUpScreen/StartUpScreen";
 import { SCREENS } from "./Screens";
 import { CompleteModalProvider } from "./components/games/CompleteModal/CompleteModalProvider";
+import { CheckModalProvider } from "./components/games/CheckModal/CheckModalProvider";
 
 LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
 LogBox.ignoreAllLogs(); //Ignore all log notifications
@@ -30,11 +31,13 @@ export default function App() {
     <Provider store={reduxStore}>
       <View style={styles.container}>
         <CompleteModalProvider>
-          <NavigationContainer>
-            <Stack.Navigator initialRouteName={SCREENS.startUp} headerMode="none">
-              {Object.values(SCREENS).map(scr => <Stack.Screen name={scr.name} component={scr.screen} />)}
-            </Stack.Navigator>
-          </NavigationContainer>
+          <CheckModalProvider>
+            <NavigationContainer>
+              <Stack.Navigator initialRouteName={SCREENS.startUp} headerMode="none">
+                {Object.values(SCREENS).map(scr => <Stack.Screen name={scr.name} component={scr.screen} />)}
+              </Stack.Navigator>
+            </NavigationContainer>
+          </CheckModalProvider>
         </CompleteModalProvider>
       </View>
     </Provider>

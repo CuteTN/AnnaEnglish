@@ -35,7 +35,7 @@ const ResultWordButton = ({ word, backgroundColor, onPress, numflex }) => {
   );
 };
 
-const GameSort = ({ data, onComplete, onStepChange }) => {
+const GameSort = ({ data, onComplete, onStepChange, onCorrect, onIncorrect }) => {
   const countSteps = React.useRef(
     Object.values(data?.questions ?? {}).length
   ).current;
@@ -101,7 +101,7 @@ const GameSort = ({ data, onComplete, onStepChange }) => {
     if (checkAnswer()) {
       handleCorrect();
     } else {
-      handleWrong();
+      handleIncorrect();
     }
   };
 
@@ -109,12 +109,15 @@ const GameSort = ({ data, onComplete, onStepChange }) => {
     if (currentStep < countSteps - 1) {
       setSelectedIndices([]);
       setCurrentStep((prev) => prev + 1);
+      onCorrect?.();
     } else {
       handleComplete();
     }
   };
 
-  const handleWrong = () => {};
+  const handleIncorrect = () => {
+    onIncorrect?.();
+  };
 
   const handleComplete = () => {
     onComplete?.();

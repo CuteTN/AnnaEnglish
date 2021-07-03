@@ -9,12 +9,14 @@ import Header from "../../components/Header/Header";
 import GameProgress from "../../components/progressSteps/GameProgress/GameProgress";
 import CompleteModal from "../../components/games/CompleteModal/CompleteModal";
 import { useCompleteModal } from "../../components/games/CompleteModal/CompleteModalProvider";
+import { useCheckModal } from "../../components/games/CheckModal/CheckModalProvider"
 
 export default GameScreen = ({ route }) => {
   const { game } = route?.params ?? {};
   const [progress, setProgress] = useState({ currentStep: 0, countSteps: 0 });
   const navigation = useNavigation();
   const { showCompleteModal } = useCompleteModal();
+  const { showCheckModal } = useCheckModal()
 
   useEffect(() => {
     if (!game) {
@@ -36,6 +38,18 @@ export default GameScreen = ({ route }) => {
       onClose: () => navigation.goBack(),
     })
   };
+
+  const handleCorrectAnswer = () => {
+    showCheckModal({
+      isCorrect: true,
+    })
+  }
+
+  const handleIncorrectAnswer = () => {
+    showCheckModal({
+      isCorrect: false,
+    })
+  }
 
   return (
     <SafeAreaView
@@ -63,6 +77,8 @@ export default GameScreen = ({ route }) => {
         <Game
           gameData={game}
           onComplete={handleCompleteGame}
+          onCorrect={handleCorrectAnswer}
+          onIncorrect={handleIncorrectAnswer}
           onStepChange={handleStepChange}
         />
       </View>

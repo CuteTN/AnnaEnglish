@@ -31,7 +31,7 @@ const Card = ({ label, onPress, isSelected }) => {
   );
 };
 
-export default GameFill = ({ data, allowMultiSelect, onStepChange, onComplete }) => {
+export default GameFill = ({ data, allowMultiSelect, onStepChange, onComplete, onCorrect, onIncorrect }) => {
   const countSteps = React.useRef(Object.values(data?.questions ?? {}).length).current;
   const questions = React.useRef(Object.values(data?.questions ?? {})).current;
 
@@ -58,7 +58,7 @@ export default GameFill = ({ data, allowMultiSelect, onStepChange, onComplete })
       handleCorrect();
     }
     else {
-      handleWrong();
+      handleIncorrect();
     }
   };
 
@@ -66,14 +66,15 @@ export default GameFill = ({ data, allowMultiSelect, onStepChange, onComplete })
     if (currentStep < countSteps - 1) {
       setUserAnswer("");
       setCurrentStep(prev => prev + 1);
+      onCorrect?.();
     }
     else {
       handleComplete();
     }
   }
 
-  const handleWrong = () => {
-
+  const handleIncorrect = () => {
+    onIncorrect?.();
   }
 
   const handleComplete = () => {
