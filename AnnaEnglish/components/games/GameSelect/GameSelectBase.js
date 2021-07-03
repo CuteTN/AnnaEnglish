@@ -5,6 +5,7 @@ import { colors } from "../../../config/colors";
 import { styles } from "./styles";
 import { PrimaryButton } from "../../buttons/PrimaryButton/PrimaryButton";
 import { shuffle } from "../../../Utils/shuffle";
+import CheckModal from "../CheckModal/CheckModal";
 
 const Card = ({ label, onPress, isSelected }) => {
   return (
@@ -21,14 +22,25 @@ const Card = ({ label, onPress, isSelected }) => {
           },
         ]}
       >
-        <Text style={[styles.label, { color: colors.black, textAlign: "center" }]}>{label}</Text>
+        <Text
+          style={[styles.label, { color: colors.black, textAlign: "center" }]}
+        >
+          {label}
+        </Text>
       </View>
     </TouchableOpacity>
   );
 };
 
-const GameSelectBase = ({ data, allowMultiSelect, onStepChange, onComplete }) => {
-  const countSteps = React.useRef(Object.values(data?.questions ?? {}).length).current;
+const GameSelectBase = ({
+  data,
+  allowMultiSelect,
+  onStepChange,
+  onComplete,
+}) => {
+  const countSteps = React.useRef(
+    Object.values(data?.questions ?? {}).length
+  ).current;
   const questions = React.useRef(Object.values(data?.questions ?? {})).current;
 
   // counting start from 0 here
@@ -36,6 +48,9 @@ const GameSelectBase = ({ data, allowMultiSelect, onStepChange, onComplete }) =>
 
   const [options, setOptions] = React.useState([]);
   const [selections, setSelections] = React.useState([]);
+  const [isCorrect, setIsCorrect] = React.useState(false);
+
+  const setVisible = React.useRef();
 
   React.useEffect(() => {
     if (currentStep < countSteps) {
@@ -44,7 +59,11 @@ const GameSelectBase = ({ data, allowMultiSelect, onStepChange, onComplete }) =>
     }
 
     onStepChange?.(currentStep, countSteps);
-  }, [currentStep, countSteps])
+  }, [currentStep, countSteps]);
+
+  React.useEffect(() => {
+    setVisible.current(false);
+  }, []);
 
   const handleToggleSelectAnswer = (answer) => {
     if (allowMultiSelect) {
@@ -64,10 +83,11 @@ const GameSelectBase = ({ data, allowMultiSelect, onStepChange, onComplete }) =>
       const answer = Object.values(questions[currentStep].answer ?? {}).sort();
       const sortedSelection = [...selections].sort();
 
-      answer.forEach((a, i) => result &= (a === sortedSelection[i]));
-    }
-    else {
-      result &= (selections.length !== 0) && (selections[0] === questions[currentStep].answer)
+      answer.forEach((a, i) => (result &= a === sortedSelection[i]));
+    } else {
+      result &=
+        selections.length !== 0 &&
+        selections[0] === questions[currentStep].answer;
     }
 
     return result;
@@ -82,6 +102,8 @@ const GameSelectBase = ({ data, allowMultiSelect, onStepChange, onComplete }) =>
   };
 
   const handleCorrect = () => {
+    setIsCorrect(true);
+    setVisible.current(true);
     if (currentStep < countSteps - 1) {
       setSelections([]);
       setCurrentStep((prev) => prev + 1);
@@ -90,7 +112,10 @@ const GameSelectBase = ({ data, allowMultiSelect, onStepChange, onComplete }) =>
     }
   };
 
-  const handleWrong = () => { };
+  const handleWrong = () => {
+    setIsCorrect(false);
+    setVisible.current(true);
+  };
 
   const handleComplete = () => {
     onComplete?.();
@@ -98,6 +123,12 @@ const GameSelectBase = ({ data, allowMultiSelect, onStepChange, onComplete }) =>
 
   return (
     <View style={styles.container}>
+      <CheckModal
+        getVisible={(visible, setVisible_) =>
+          (setVisible.current = setVisible_)
+        }
+        isCorrect={isCorrect}
+      />
       <View style={styles.container}>
         <Text style={{ textAlign: "center", fontSize: 40 }}>
           {questions[currentStep].question}

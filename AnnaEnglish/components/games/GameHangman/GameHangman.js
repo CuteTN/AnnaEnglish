@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, FlatList, Text, TouchableOpacity, Image } from "react-native";
 import { colors, randomColor } from "../../../config/colors";
 // import { styles } from "../../../shared/styles";
@@ -13,7 +13,7 @@ const WordButton = ({ word, backgroundColor, onPress }) => {
   };
 
   return (
-    <TouchableOpacity style={{ flex: 1 }} onPress={handlePress}>
+    <TouchableOpacity style={{ flex: 1 / 7 }} onPress={handlePress}>
       <View style={[styles.card, { backgroundColor: backgroundColor }]}>
         <Text style={[styles.label]}>{word}</Text>
       </View>
@@ -35,7 +35,7 @@ const ResultWordButton = ({ word, backgroundColor, onPress, numflex }) => {
   );
 };
 
-const GameSort = ({ data, onComplete, onStepChange }) => {
+const GameHangman = ({ data, onComplete, onStepChange }) => {
   const countSteps = React.useRef(
     Object.values(data?.questions ?? {}).length
   ).current;
@@ -69,19 +69,12 @@ const GameSort = ({ data, onComplete, onStepChange }) => {
 
   const backgroundColorWords = React.useRef(randomColor()).current;
   const backgroundColorResult = React.useRef(randomColor()).current;
-  const numcolWordButton =
-    words.length < 8 ? 7 : Math.floor((words.length + 1) / 2);
   const numcolResultWordButton =
     questions[currentStep]?.answer.length < 8
       ? 7
       : Math.floor((questions[currentStep]?.answer.length + 1) / 2);
 
   const NUMBER_OF_WORDS = 12;
-
-  // nếu nó là cái string thì ?? viết thêm tách ra chứ sao giờ :D
-  // Hàm tách nó tên là .split("") :D
-  // const result = ["B", "E", "Y", "Y", "B", "E"];
-  // const words = ["B", "E", "Y", "Y", "B", "E", "B", "E", "Y", "Y", "A", "B"];
 
   //data.image
   const imageUrl = {
@@ -121,29 +114,17 @@ const GameSort = ({ data, onComplete, onStepChange }) => {
   };
 
   // index in words
-  const handleSelect = (index) => {
-    if (selectedIndices.includes(index)) return;
-
-    const newSelectedIndices = [...selectedIndices];
-    for (let i = 0; i < newSelectedIndices.length; i++) {
-      if (newSelectedIndices[i] < 0) {
-        newSelectedIndices[i] = index;
-        setSelectedIndices(newSelectedIndices);
-        return;
-      }
-    }
-  };
+  const handleSelect = (index) => {};
 
   // position: position in user's answer
-  const handleDeselect = (position) => {
-    const newSelectedIndices = [...selectedIndices];
-    for (let i = position; i < newSelectedIndices.length - 1; i++) {
-      newSelectedIndices[i] = newSelectedIndices[i + 1];
-    }
+  const handleDeselect = (position) => {};
 
-    newSelectedIndices[newSelectedIndices.length - 1] = -1;
-    setSelectedIndices(newSelectedIndices);
-  };
+  const [alphabet, setAlphabet] = React.useState([]);
+  React.useEffect(() => {
+    setAlphabet(
+      [...Array(26)].map((_) => String.fromCharCode(i++), (i = 65)).join``
+    );
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -174,26 +155,28 @@ const GameSort = ({ data, onComplete, onStepChange }) => {
             <ResultWordButton
               word={words[item] ?? ""}
               backgroundColor={backgroundColorResult}
-              numflex={numcolResultWordButton}
               onPress={() => handleDeselect(index)}
+              numflex={numcolResultWordButton}
             />
           )}
         />
         <FlatList
           style={{ flexDirection: "column-reverse" }}
-          columnWrapperStyle={{ justifyContent: "center" }}
+          columnWrapperStyle={{
+            justifyContent: "center",
+          }}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             marginBottom: 10,
           }}
-          key={"words__" + numcolWordButton}
-          numColumns={numcolWordButton}
-          data={words}
+          key={"words__"}
+          numColumns={7}
+          data={alphabet}
           renderItem={({ item, index }) => (
             <WordButton
               word={selectedIndices?.includes(index) ? "" : item}
               backgroundColor={backgroundColorWords}
-              onPress={() => handleSelect(index)}
+              onPress={() => {}}
             />
           )}
         />
@@ -205,4 +188,4 @@ const GameSort = ({ data, onComplete, onStepChange }) => {
   );
 };
 
-export default GameSort;
+export default GameHangman;

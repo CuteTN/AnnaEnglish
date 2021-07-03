@@ -4,34 +4,38 @@ import GameFill from "./GameFill/GameFill";
 import GameMultiple from "./GameMultiple/GameMultiple";
 import GameOne from "./GameOne/GameOne";
 import GameSort from "./GameSort/GameSort";
+import GameHangman from "./GameHangman/GameHangman";
 
 const games = {
   one: GameOne,
   multiple: GameMultiple,
   fill: GameFill,
   sort: GameSort,
-}
+};
 
 /**
  * @type {(props: GameComponentPropsType)=>any}
  */
-const Game = ({ gameData, onComplete, onStepChange, onCorrect, onIncorrect }) => {
+const Game = ({
+  gameData,
+  onComplete,
+  onStepChange,
+  onCorrect,
+  onIncorrect,
+}) => {
   const GameComponent = useRef(games[gameData?.type ?? ""]).current;
-  return GameComponent ?
-    (
-      <GameComponent
-        data={gameData}
-        onComplete={onComplete}
-        onStepChange={onStepChange}
-        onCorrect={onCorrect}
-        onIncorrect={onIncorrect}
-      />
-    )
-    :
-    (
-      <View />
-    )
-}
+  return GameComponent ? (
+    <GameComponent
+      data={gameData}
+      onComplete={onComplete}
+      onStepChange={onStepChange}
+      onCorrect={onCorrect}
+      onIncorrect={onIncorrect}
+    />
+  ) : (
+    <View />
+  );
+};
 
 export default Game;
 
