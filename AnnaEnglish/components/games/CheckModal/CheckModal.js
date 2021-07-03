@@ -18,7 +18,7 @@ import { useSignedIn } from "../../../hooks/useSignedIn";
 export default function CheckModal({ visible, isCorrect, onButtonPress }) {
   const { user } = useSignedIn();
   const backgroundColor = isCorrect ? "green" : "red";
-  const label = isCorrect ? "TIẾP TỤC" : "CHỌN LẠI";
+  const label = isCorrect ? "CHÍNH XÁC" : "CHƯA ĐÚNG NHA";
 
   const imageCorrect_Male_Url = {
     uri: "https://imgur.com/LptBavo.png",
