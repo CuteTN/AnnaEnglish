@@ -22,6 +22,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import EditProfileScreen from "../EditProfileScreen/EditProfileScreen";
 import style from "./styles";
 import { SCREENS } from "..";
+import CompleteModal from "../../components/games/CompleteModal/CompleteModal";
 
 function ProfileScreen() {
   const navigation = useNavigation();
@@ -29,7 +30,7 @@ function ProfileScreen() {
 
   const handleSignOutPress = () => {
     Fire.signOut().then((isSuccessful) => {
-      // if (isSuccessful) navigation.navigate(SCREENS.signIn.name);
+      if (isSuccessful) navigation.replace(SCREENS.signIn.name);
     });
   };
 
@@ -41,6 +42,8 @@ function ProfileScreen() {
   //   else
   //     updateUser({ ok: "" })
   // }
+
+  const handle = () => {};
 
   return (
     <SafeAreaView style={styles.container}>
@@ -110,7 +113,7 @@ function ProfileScreen() {
       </View>
 
       <View style={styles.menuWrapper}>
-        <TouchableRipple onPress={() => {}}>
+        <TouchableRipple onPress={handle}>
           <View style={styles.menuItem}>
             <Icon name="lock" color="#0C2C71" size={30} />
             <Text style={styles.menuItemText}>Đổi mật khẩu</Text>
@@ -126,9 +129,13 @@ function ProfileScreen() {
             <Text style={styles.menuItemText}>Đổi thông tin cá nhân</Text>
           </View>
         </TouchableRipple>
-        <TouchableRipple>
+        <TouchableRipple
+          onPress={() => {
+            navigation.navigate(SCREENS.note.name);
+          }}
+        >
           <View style={styles.menuItem}>
-            <Icon name="share-outline" color="#0C2C71" size={30} />
+            <Icon name="note-outline" color="#0C2C71" size={30} />
             <Text style={styles.menuItemText}>Ghi chú</Text>
           </View>
         </TouchableRipple>

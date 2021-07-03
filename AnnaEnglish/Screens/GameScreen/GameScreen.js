@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { SafeAreaView, View, Text, Alert } from "react-native";
 import { styles } from "./styles";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -6,24 +6,34 @@ import { useNavigation } from "@react-navigation/native";
 import { SCREENS } from "..";
 import Game from "../../components/games/";
 import Header from "../../components/Header/Header";
+import GameProgress from "../../components/progressSteps/GameProgress/GameProgress";
+import CompleteModal from "../../components/games/CompleteModal/CompleteModal";
 
 export default GameScreen = ({ route }) => {
   const { game } = route?.params ?? {};
+  const [progress, setProgress] = useState({ currentStep: 0, countSteps: 0 });
   const navigation = useNavigation();
+  const setVisible = useRef();
 
   useEffect(() => {
     if (!game) {
       navigation.goBack();
     }
+    setVisible.current(false);
   }, []);
 
   const handleQuitButtonPress = () => {
     navigation.goBack();
   };
 
+  const handleStepChange = (currentStep, countSteps) => {
+    setProgress({ currentStep, countSteps });
+  };
+
   const handleCompleteGame = () => {
-    console.info("Thy cute wins");
-    navigation.goBack();
+    setVisible.current(true);
+    // Thyyyy: xử lý cái goback, với lại bỏ hộ cái correct modal đúng của câu cuối cùng nha.
+    // navigation.goBack();
   };
 
   return (
@@ -33,6 +43,11 @@ export default GameScreen = ({ route }) => {
         justifyContent: "flex-start",
       }}
     >
+      <CompleteModal
+        getVisible={(visible, setVisible_) =>
+          (setVisible.current = setVisible_)
+        }
+      />
       <View style={{ marginTop: 30 }}>
         <Header title={game?.name} />
       </View>
@@ -48,11 +63,25 @@ export default GameScreen = ({ route }) => {
       </View> */}
 
       {/* game component goes from here */}
-      <View style={[styles.container, { margin: 5 }]}>
-        <Game gameData={game} onComplete={handleCompleteGame} />
+      <View style={[styles.container]}>
+        <Game
+          gameData={game}
+          onComplete={handleCompleteGame}
+          onStepChange={handleStepChange}
+        />
       </View>
 
-      <View style={[styles.header, { backgroundColor: "violet" }]}></View>
+      {/* progress steps from here */}
+      <View style={[styles.footer, { backgroundColor: "white" }]}>
+        {progress.countSteps ? (
+          <GameProgress
+            countSteps={progress.countSteps}
+            currentStep={progress.currentStep}
+          />
+        ) : (
+          <View></View>
+        )}
+      </View>
     </SafeAreaView>
   );
 };

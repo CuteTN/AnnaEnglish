@@ -5,31 +5,6 @@ export const styles = StyleSheet.create({
     display: "flex",
     flex: 1,
   },
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    marginTop: 0,
-    height: 90,
-  },
-
-  gameNameText: {
-    alignSelf: "center",
-    marginTop: 20,
-    fontSize: 30,
-  },
-
-  quitIcon: {
-    alignSelf: "center",
-    marginTop: 20,
-    marginHorizontal: 20,
-  },
-
-  footer: {
-    display: "flex",
-    flexDirection: "row",
-    marginBottom: 0,
-    height: 60,
-  },
   headingWrapper: {
     marginTop: 35,
   },
@@ -69,10 +44,16 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
   },
   card: {
-    padding: 10,
+    padding: 20,
     flex: 1,
     borderRadius: 10,
     flexDirection: "column",
     justifyContent: "space-between",
   },
+  textInput: {
+    margin: 20,
+    padding: 10,
+    fontSize: 20,
+    backgroundColor: "#FFFAF0"
+  }
 });

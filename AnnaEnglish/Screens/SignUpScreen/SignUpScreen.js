@@ -18,7 +18,7 @@ import { PrimaryInput } from "../../components/forms/PrimaryInput/PrimaryInput";
 import { SecondaryInput } from "../../components/forms/SecondaryInput/SecondaryInput";
 import { colors } from "../../config/colors";
 
-function SignUpScreen({}) {
+function SignUpScreen({ }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
@@ -28,7 +28,7 @@ function SignUpScreen({}) {
     Fire.signUpWithUsername(username, password).then(
       ({ error, successful }) => {
         if (successful) {
-          navigation.navigate(SCREENS.mainApp.name);
+          navigation.replace(SCREENS.editProfile.name);
         }
       }
     );

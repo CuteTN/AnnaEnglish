@@ -3,14 +3,11 @@ import React from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { SCREENS, TAB_SCREENS } from "..";
 import { colors } from "../../config/colors";
-import { useAutoNavAuth } from "../../hooks/useAutoNavAuth";
 import styles from "./styles";
 
 const Tab = createBottomTabNavigator();
 
 export default function Tabbar() {
-  useAutoNavAuth();
-
   return (
     <Tab.Navigator
       initialRouteName={SCREENS.play.name}

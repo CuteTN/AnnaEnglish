@@ -38,15 +38,13 @@ const GameSelectBase = ({
   onStepChange,
   onComplete,
 }) => {
-  // const thycute = ["thy cute", "thycute", "thycute", "thycute"];
-  // const thydangiu = "thy dang iu nhat qua dat";
-  const maxSteps = React.useRef(
+  const countSteps = React.useRef(
     Object.values(data?.questions ?? {}).length
   ).current;
   const questions = React.useRef(Object.values(data?.questions ?? {})).current;
 
-  // counting start from 1 here
-  const [currentStep, setCurrentStep] = React.useState(1);
+  // counting start from 0 here
+  const [currentStep, setCurrentStep] = React.useState(0);
 
   const [options, setOptions] = React.useState([]);
   const [selections, setSelections] = React.useState([]);
@@ -55,13 +53,13 @@ const GameSelectBase = ({
   const setVisible = React.useRef();
 
   React.useEffect(() => {
-    if (currentStep <= maxSteps) {
+    if (currentStep < countSteps) {
       console.log("dooo");
-      setOptions(shuffle(Object.values(questions[currentStep - 1].options)));
+      setOptions(shuffle(Object.values(questions[currentStep].options ?? {})));
     }
 
-    onStepChange?.(currentStep, maxSteps);
-  }, [currentStep]);
+    onStepChange?.(currentStep, countSteps);
+  }, [currentStep, countSteps]);
 
   React.useEffect(() => {
     setVisible.current(false);
@@ -79,17 +77,17 @@ const GameSelectBase = ({
   };
 
   const checkAnswer = () => {
-    result = true;
+    let result = true;
 
     if (allowMultiSelect) {
-      const answer = Object.values(questions[currentStep - 1].answer).sort();
+      const answer = Object.values(questions[currentStep].answer ?? {}).sort();
       const sortedSelection = [...selections].sort();
 
       answer.forEach((a, i) => (result &= a === sortedSelection[i]));
     } else {
       result &=
         selections.length !== 0 &&
-        selections[0] === questions[currentStep - 1].answer;
+        selections[0] === questions[currentStep].answer;
     }
 
     return result;
@@ -106,7 +104,7 @@ const GameSelectBase = ({
   const handleCorrect = () => {
     setIsCorrect(true);
     setVisible.current(true);
-    if (currentStep < maxSteps) {
+    if (currentStep < countSteps - 1) {
       setSelections([]);
       setCurrentStep((prev) => prev + 1);
     } else {
@@ -133,7 +131,7 @@ const GameSelectBase = ({
       />
       <View style={styles.container}>
         <Text style={{ textAlign: "center", fontSize: 40 }}>
-          {questions[currentStep - 1].question}
+          {questions[currentStep].question}
         </Text>
       </View>
       <View>

@@ -2,7 +2,6 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/core";
-import { SCREENS } from "../../Screens";
 import { colors } from "../../config/colors";
 
 export default function Header({ title }) {

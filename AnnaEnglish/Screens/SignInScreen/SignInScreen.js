@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SCREENS } from "..";
 import Fire from "../../firebase/Fire";
 import {
@@ -14,19 +14,37 @@ import {
 import { PrimaryButton } from "../../components/buttons/PrimaryButton/PrimaryButton";
 import { PrimaryInput } from "../../components/forms/PrimaryInput/PrimaryInput";
 import { colors } from "../../config/colors";
-import { useAutoNavAuth } from "../../hooks/useAutoNavAuth";
+import { useSignedIn } from "../../hooks/useSignedIn";
+import { useRoute } from "@react-navigation/native";
 
-export default SignInScreen = ({}) => {
+export default SignInScreen = ({ }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
-  useAutoNavAuth();
+
+  const { user, status } = useSignedIn();
+
+  const navAuth = () => {
+    let newRoute = null;
+
+    if (status === "SignedIn")
+      newRoute = SCREENS.mainApp.name;
+    if (status === "NoInfo")
+      newRoute = SCREENS.editProfile.name;
+
+    if (newRoute && useRoute.name !== newRoute)
+      navigation.replace(newRoute);
+  }
+
+  useEffect(() => {
+    navAuth();
+  }, [status, user]);
+
 
   const handleButtonSignInPress = () => {
     Fire.signInWithUsername(username, password).then(
       ({ error, successful }) => {
         if (successful) {
-          // navigation.navigate(SCREENS.mainApp.name);
         }
       }
     );

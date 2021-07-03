@@ -2,35 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Fire from '../firebase/Fire';
 import { fakeEmailToUsername } from '../Utils/Auth';
+import { checkEnoughUserInfo } from '../Utils/user';
 import { useRealtimeFire } from './useRealtimeFire';
 
 /**
  * @typedef {"Unknown"|"SignedIn"|"NotSignedIn"|"NoInfo"} StatusType
 */
 
-
-/**
- * @param {object} user 
- * @returns boolean
- */
-const checkEnoughUserInfo = (user) => {
-  if (!user)
-    return false;
-
-  if (!user.name)
-    return false;
-
-  if (!user.birthday)
-    return false;
-
-  if (!user.country)
-    return false;
-
-  if (!user.gender)
-    return false;
-
-  return true;
-}
 
 /**
  * Get/Set current user info
@@ -65,7 +43,7 @@ export const useSignedIn = () => {
 
   useEffect(() => {
     if (user)
-      setStatus(checkEnoughUserInfo(user) ? "SignedIn" : "NoInfo");
+      setStatus(checkEnoughUserInfo(user).isValid ? "SignedIn" : "NoInfo");
   }, [user])
 
   // useEffect(() => {

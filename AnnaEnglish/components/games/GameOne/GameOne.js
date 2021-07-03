@@ -1,14 +1,14 @@
 import React from "react";
-import { View, FlatList, Text, TouchableOpacity } from "react-native";
-import { colors } from "../../../config/colors";
-// import { styles } from "../../../shared/styles";
-import { styles } from "./styles";
-import { PrimaryButton } from "../../buttons/PrimaryButton/PrimaryButton";
 import GameSelectBase from "../GameSelect/GameSelectBase";
 import GameSort from "../GameSort/GameSort"
 
-const GameOne = ({ data, onComplete }) => {
-  return <GameSelectBase data={data} onComplete={onComplete} />;
-};
+const GameOne = (props) => {
+  return (
+    <GameSelectBase
+      {...(props ?? {})}
+      allowMultiSelect={false}
+    />
+  )
+}
 
 export default GameOne;

@@ -28,6 +28,7 @@ import { Picker } from "@react-native-community/picker";
 import { PrimaryButton } from "../../components/buttons/PrimaryButton/PrimaryButton";
 import Header from "../../components/Header/Header";
 import { styles } from "./styles";
+import { checkEnoughUserInfo } from "../../Utils/user";
 const EditProfileScreen = () => {
   const { user, updateUser } = useSignedIn();
 
@@ -86,8 +87,10 @@ const EditProfileScreen = () => {
   //#endregion
 
   const handleSaveButtonPress = () => {
-    updateUser(tempUser);
-    navigation.navigate(SCREENS.mainApp.name);
+    if (checkEnoughUserInfo({ ...user, ...tempUser }).isValid) {
+      updateUser(tempUser);
+      navigation.navigate(SCREENS.mainApp.name);
+    }
   };
 
   //   const takePhotoFromCamera = () => {
@@ -124,19 +127,19 @@ const EditProfileScreen = () => {
       </View>
       <TouchableOpacity
         style={styles.panelButton}
-        // onPress={takePhotoFromCamera}
+      // onPress={takePhotoFromCamera}
       >
         <Text style={styles.panelButtonTitle}>Take Photo</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.panelButton}
-        // onPress={choosePhotoFromLibrary}
+      // onPress={choosePhotoFromLibrary}
       >
         <Text style={styles.panelButtonTitle}>Choose From Library</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.panelButton}
-        // onPress={() => this.bs.current.snapTo(1)}
+      // onPress={() => this.bs.current.snapTo(1)}
       >
         <Text style={styles.panelButtonTitle}>Cancel</Text>
       </TouchableOpacity>

@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
   },
   label: {
     textAlign: "center",
-    fontSize: 14,
+    fontSize: 18,
     fontWeight: "400",
     padding: 20,
   },
