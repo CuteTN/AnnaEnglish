@@ -33,6 +33,9 @@ export const useSignedIn = () => {
         const { email } = user;
         const newUsername = fakeEmailToUsername(email);
         setUsername(newUsername);
+
+        // fix realtime lose data
+        Fire.update(`user/${newUsername}`, { activated: true });
       }
     })
 
