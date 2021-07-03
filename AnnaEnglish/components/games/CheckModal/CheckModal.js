@@ -19,7 +19,7 @@ export default function CheckModal({ getVisible, onVisibleChange, isCorrect }) {
   const [visible, setVisible] = React.useState();
   const { user } = useSignedIn();
   const backgroundColor = isCorrect ? "green" : "red";
-  const label = isCorrect ? "TIẾP TỤC" : "CHỌN LẠI";
+  const label = isCorrect ? "CHÍNH XÁC" : "CHƯA ĐÚNG NHA";
 
   const imageCorrect_Male_Url = {
     uri: "https://imgur.com/LptBavo.png",

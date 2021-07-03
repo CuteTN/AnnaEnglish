@@ -5,7 +5,7 @@ import GameMultiple from "./GameMultiple/GameMultiple";
 import GameOne from "./GameOne/GameOne";
 import GameSort from "./GameSort/GameSort";
 import GameHangman from "./GameHangman/GameHangman";
-
+import GameMatch from "./GameMatch/GameMatch";
 const games = {
   one: GameOne,
   multiple: GameMultiple,
