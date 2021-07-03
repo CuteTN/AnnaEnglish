@@ -13,24 +13,14 @@ import {
   BackHandler,
   ImageBackground,
 } from "react-native";
-export default function CompleteModal({ getVisible, onVisibleChange }) {
-  const [visible, setVisible] = React.useState();
-
+export default function CompleteModal({ visible, onButtonPress }) {
   const imageUrl = {
     uri: "https://imgur.com/PKhGUBQ.png",
   };
 
-  React.useEffect(() => {
-    getVisible?.(visible, setVisible);
-  }, []);
-
   const handleButtonPress = () => {
-    setVisible(false);
+    onButtonPress?.();
   };
-
-  React.useEffect(() => {
-    onVisibleChange?.(visible);
-  }, [visible]);
 
   return (
     <Modal transparent visible={visible}>

@@ -6,7 +6,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { useSignedIn } from "../../hooks/useSignedIn";
 import { SCREENS } from "..";
 
-function StartUpScreen() {
+export default function StartUpScreen() {
   const navigation = useNavigation();
   const { user, status } = useSignedIn();
 
@@ -41,5 +41,3 @@ function StartUpScreen() {
     </SafeAreaView>
   );
 }
-
-export default StartUpScreen;

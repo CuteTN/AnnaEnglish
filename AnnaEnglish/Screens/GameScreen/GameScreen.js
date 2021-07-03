@@ -8,18 +8,18 @@ import Game from "../../components/games/";
 import Header from "../../components/Header/Header";
 import GameProgress from "../../components/progressSteps/GameProgress/GameProgress";
 import CompleteModal from "../../components/games/CompleteModal/CompleteModal";
+import { useCompleteModal } from "../../components/games/CompleteModal/CompleteModalProvider";
 
 export default GameScreen = ({ route }) => {
   const { game } = route?.params ?? {};
   const [progress, setProgress] = useState({ currentStep: 0, countSteps: 0 });
   const navigation = useNavigation();
-  const setVisible = useRef();
+  const { showCompleteModal } = useCompleteModal();
 
   useEffect(() => {
     if (!game) {
       navigation.goBack();
     }
-    setVisible.current(false);
   }, []);
 
   const handleQuitButtonPress = () => {
@@ -31,9 +31,10 @@ export default GameScreen = ({ route }) => {
   };
 
   const handleCompleteGame = () => {
-    setVisible.current(true);
-    // Thyyyy: xử lý cái goback, với lại bỏ hộ cái correct modal đúng của câu cuối cùng nha.
-    // navigation.goBack();
+    // setVisible.current(true);
+    showCompleteModal({
+      onClose: () => navigation.goBack(),
+    })
   };
 
   return (
@@ -43,11 +44,6 @@ export default GameScreen = ({ route }) => {
         justifyContent: "flex-start",
       }}
     >
-      <CompleteModal
-        getVisible={(visible, setVisible_) =>
-          (setVisible.current = setVisible_)
-        }
-      />
       <View style={{ marginTop: 30 }}>
         <Header title={game?.name} />
       </View>
