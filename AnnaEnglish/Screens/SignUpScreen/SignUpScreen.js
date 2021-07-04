@@ -18,7 +18,7 @@ import { PrimaryInput } from "../../components/forms/PrimaryInput/PrimaryInput";
 import { SecondaryInput } from "../../components/forms/SecondaryInput/SecondaryInput";
 import { colors } from "../../config/colors";
 
-function SignUpScreen({ }) {
+function SignUpScreen({}) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
@@ -79,7 +79,7 @@ function SignUpScreen({ }) {
           <Text style={styles.heading}>CREATE YOUR ACCOUNT</Text>
           <View style={styles.inputItem}>
             <PrimaryInput
-              placeHolder={"Enter your name!"}
+              placeHolder={"Nhập tên đăng nhập!"}
               // isValid={true}
               // value={userName}
               onChangeText={setUsername}
@@ -87,19 +87,21 @@ function SignUpScreen({ }) {
           </View>
           <View style={styles.inputItem}>
             <SecondaryInput
-              placeHolder={"Enter your password!"}
+              placeHolder={"Nhập mật khẩu!"}
               onChangeText={setPassword}
             />
           </View>
           <View style={styles.getStartedbtnItemWrapper}>
             <PrimaryButton
-              label={"SIGN UP"}
+              label={"ĐĂNG KÝ"}
               onPress={handleButtonSignUpPress}
             />
           </View>
           <Text style={styles.loginLinkWrapper}>
             <TouchableOpacity onPress={handleButtonSignInPress}>
-              <Text style={styles.notificationContent}>BACK TO SIGN IN</Text>
+              <Text style={styles.notificationContent}>
+                BẠN ĐÃ CÓ TÀI KHOẢN?
+              </Text>
             </TouchableOpacity>
           </Text>
         </View>
@@ -144,12 +146,13 @@ export const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 26,
-    fontWeight: "700",
+
     lineHeight: 40,
     textAlign: "center",
     color: colors.heading,
     marginTop: 40,
     marginBottom: 30,
+    fontFamily: "Pony",
   },
   inputItem: {
     marginBottom: 10,
@@ -164,6 +167,7 @@ export const styles = StyleSheet.create({
   notificationContent: {
     color: colors.gray,
     fontSize: 14,
+    fontFamily: "Cucho",
   },
   welcomeImage: {
     marginTop: 40,

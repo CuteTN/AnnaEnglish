@@ -3,26 +3,15 @@ import React, { useState } from "react";
 import Fire from "../../firebase/Fire";
 import { useSignedIn } from "../../hooks/useSignedIn";
 import stylesTabbar from "../TabNavigation/styles";
-import {
-  View,
-  SafeAreaView,
-  StyleSheet,
-  Button,
-  Image,
-  TouchableOpacity,
-} from "react-native";
-import {
-  Avatar,
-  Title,
-  Caption,
-  Text,
-  TouchableRipple,
-} from "react-native-paper";
+import { View, SafeAreaView, StyleSheet } from "react-native";
+import { Text, TouchableRipple } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import EditProfileScreen from "../EditProfileScreen/EditProfileScreen";
 import style from "./styles";
 import { SCREENS } from "..";
 import CompleteModal from "../../components/games/CompleteModal/CompleteModal";
+import AvatarCard from "../../components/card/AvatarCard/AvatarCard";
+import { colors } from "../../config/colors";
 
 function ProfileScreen() {
   const navigation = useNavigation();
@@ -47,75 +36,28 @@ function ProfileScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.userInfoSection}>
-        <View style={{ flexDirection: "row", marginTop: 15 }}>
-          <Avatar.Image
-            source={{
-              uri: "https://imgur.com/Dtm2ZfO.png",
-            }}
-            size={80}
-          />
-          <View style={{ marginLeft: 20 }}>
-            <Title
-              style={[
-                styles.title,
-                {
-                  marginTop: 15,
-                  marginBottom: 5,
-                },
-              ]}
-            >
-              {user?.name}
-            </Title>
-            <Caption style={styles.caption}>{"@" + user?.displayName}</Caption>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.userInfoSection}>
+      <View style={styles.card}>
+        <AvatarCard user={user}></AvatarCard>
         <View style={styles.row}>
-          <Icon name="map-marker-radius" color="#777777" size={30} />
-          <Text style={{ color: "#777777", marginLeft: 20, fontSize: 18 }}>
-            {user?.country}
-          </Text>
+          <Icon name="map-marker-radius" color={colors.icon} size={28} />
+          <Text style={styles.textItem}>{user?.country}</Text>
         </View>
         <View style={styles.row}>
-          <Icon name="gender-male-female" color="#777777" size={30} />
-          <Text style={{ color: "#777777", marginLeft: 20, fontSize: 18 }}>
+          <Icon name="gender-male-female" color={colors.icon} size={28} />
+          <Text style={styles.textItem}>
             {user?.gender === "Male" ? "Nam" : "Nữ"}
           </Text>
         </View>
         <View style={styles.row}>
-          <Icon name="calendar-today" color="#777777" size={30} />
-          <Text style={{ color: "#777777", marginLeft: 20, fontSize: 18 }}>
-            {user?.birthday}
-          </Text>
+          <Icon name="calendar-today" color={colors.icon} size={28} />
+          <Text style={styles.textItem}>{user?.birthday}</Text>
         </View>
-      </View>
-
-      <View style={styles.infoBoxWrapper}>
-        {/* <View
-          style={[
-            styles.infoBox,
-            {
-              borderRightColor: "#dddddd",
-              borderRightWidth: 1,
-            },
-          ]}
-        >
-          <Title>₹140.50</Title>
-          <Caption>Wallet</Caption>
-        </View>
-        <View style={styles.infoBox}>
-          <Title>12</Title>
-          <Caption>Orders</Caption>
-        </View> */}
       </View>
 
       <View style={styles.menuWrapper}>
         <TouchableRipple onPress={handle}>
           <View style={styles.menuItem}>
-            <Icon name="lock" color="#0C2C71" size={30} />
+            <Icon name="lock" color={colors.primary} size={30} />
             <Text style={styles.menuItemText}>Đổi mật khẩu</Text>
           </View>
         </TouchableRipple>
@@ -155,24 +97,27 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.white,
+  },
+  card: {
+    margin: 30,
+    marginTop: 50,
+    backgroundColor: colors.card,
+    borderRadius: 15,
+    borderWidth: 2,
+    borderColor: colors.border,
+    elevation: 5,
+    position: "relative",
   },
   userInfoSection: {
     paddingHorizontal: 30,
     marginBottom: 10,
-    marginTop: 30,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-  caption: {
-    fontSize: 14,
-    lineHeight: 14,
-    fontWeight: "500",
+    marginTop: 20,
   },
   row: {
     flexDirection: "row",
-    marginBottom: 12,
+    marginBottom: 10,
+    marginLeft: 40,
   },
   infoBoxWrapper: {
     borderBottomColor: "#dddddd",
@@ -201,5 +146,11 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 18,
     lineHeight: 26,
+  },
+  textItem: {
+    color: colors.text,
+    marginLeft: 20,
+    fontSize: 18,
+    fontFamily: "Cucho",
   },
 });

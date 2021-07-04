@@ -1,126 +1,132 @@
-import React, { useState } from 'react';
-import { FlatList, TouchableOpacity, Text, SafeAreaView, Button, TextInput } from "react-native"
-import Fire from '../firebase/Fire';
-import { connectFirebase } from "../redux/connectors/ConnectFirebase"
-import { logDebug, logError, logInfo, logWarning } from '../Utils/ConsoleLog';
+import React, { useState } from "react";
+import {
+  FlatList,
+  TouchableOpacity,
+  Text,
+  SafeAreaView,
+  Button,
+  TextInput,
+} from "react-native";
+import Fire from "../firebase/Fire";
+import { connectFirebase } from "../redux/connectors/ConnectFirebase";
+import { logDebug, logError, logInfo, logWarning } from "../Utils/ConsoleLog";
 
 const Item = ({ item, onPress, backgroundColor, textColor }) => {
-    const userName = item?._value?.userName
-    logDebug("UserName: " + userName)
+  const userName = item?._value?.userName;
+  logDebug("UserName: " + userName);
 
-    return (
-        <TouchableOpacity onPress={onPress} style={[backgroundColor]}>
-            <Text style={[textColor]}>{userName}</Text>
-        </TouchableOpacity>
-    )
-}
+  return (
+    <TouchableOpacity onPress={onPress} style={[backgroundColor]}>
+      <Text style={[textColor]}>{userName}</Text>
+    </TouchableOpacity>
+  );
+};
 
 const handleTestLogClick = () => {
-    logWarning("Thao cuteeeeee", false, false)
-}
+  logWarning("Thao cuteeeeee", false, false);
+};
 
 const handleTestPushClick = () => {
-    Fire.push("user", { userName: "push co dao Chun" })
-}
+  Fire.push("user", { userName: "push co dao Chun" });
+};
 
 const handleTestAddZClick = () => {
-    Fire.set("user/z", { userName: "add In cute" })
-    Fire.set("user/z/z/z/z", { "z": "z" })
-}
+  Fire.set("user/z", { userName: "add In cute" });
+  Fire.set("user/z/z/z/z", { z: "z" });
+};
 
 const handleTestSetClick = () => {
-    Fire.set("user/a", { userName: "set Chun cute" })
-}
+  Fire.set("user/a", { userName: "set Chun cute" });
+};
 
 const handleTestUpdateClick = () => {
-    Fire.update("user/a", { updatedAt: Date.now() })
-}
+  Fire.update("user/a", { updatedAt: Date.now() });
+};
 
 const handleTestDeleteClick = () => {
-    Fire.remove("user/z")
-}
-
+  Fire.remove("user/z");
+};
 
 const TestFirebaseLoaded = ({ db, isSignedIn }) => {
-    const [selectedId, setSelectedId] = useState(null);
-    const [username, setUsername] = useState();
-    const [password, setPassword] = useState();
+  const [selectedId, setSelectedId] = useState(null);
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
 
-    const handleSignUpClick = () => {
-        Fire.signUpWithUsername(username, password);
-    }
+  const handleSignUpClick = () => {
+    Fire.signUpWithUsername(username, password);
+  };
 
-    const handleSignInClick = () => {
-        logDebug(username);
-        logDebug(password);
-        Fire.signInWithUsername(username, password)
-    }
+  const handleSignInClick = () => {
+    logDebug(username);
+    logDebug(password);
+    Fire.signInWithUsername(username, password);
+  };
 
-    const handleTestCurrentUserClick = () => {
-        logDebug(Fire.getCurrentUser());
-    }
+  const handleTestCurrentUserClick = () => {
+    logDebug(Fire.getCurrentUser());
+  };
 
-    const handleSignOutClick = () => {
-        Fire.signOut();
-    }
+  const handleSignOutClick = () => {
+    Fire.signOut();
+  };
 
-    // logDebug(JSON.stringify(db), true, true)
-    // logDebug(JSON.stringify(db.user)) // connected to redux firebase reducer
-    // logDebug(JSON.stringify(isSignedIn)) // connected to redux SignedIn reducer
+  // logDebug(JSON.stringify(db), true, true)
+  // logDebug(JSON.stringify(db.user)) // connected to redux firebase reducer
+  // logDebug(JSON.stringify(isSignedIn)) // connected to redux SignedIn reducer
 
-    const renderItem = ({ item }) => {
-        // logDebug(JSON.stringify(item))
-        const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#f9c2ff";
-        const color = item.id === selectedId ? 'white' : 'black';
-
-        return (
-            <Item
-                item={item}
-                onPress={() => setSelectedId(item.id)}
-                backgroundColor={{ backgroundColor }}
-                textColor={{ color }}
-            />
-        );
-    };
+  const renderItem = ({ item }) => {
+    // logDebug(JSON.stringify(item))
+    const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#f9c2ff";
+    const color = item.id === selectedId ? "white" : "black";
 
     return (
-        <SafeAreaView style={{ margin: 50, backgroundColor: "hotpink" }}>
-            {/* <Button title="filler button" disabled={true}/>
+      <Item
+        item={item}
+        onPress={() => setSelectedId(item.id)}
+        backgroundColor={{ backgroundColor }}
+        textColor={{ color }}
+      />
+    );
+  };
+
+  return (
+    <SafeAreaView style={{ margin: 50, backgroundColor: "hotpink" }}>
+      {/* <Button title="filler button" disabled={true}/>
             <Button title="filler button" disabled={true}/>
             <Button title="filler button" disabled={true}/> */}
-            {/* <FlatList
+      {/* <FlatList
                 style={{ marginTop: 100 }}
                 data={db.user}
                 renderItem={renderItem}
             /> */}
-            {/* <Button title="test log" onPress={handleTestLogClick}/>
+      {/* <Button title="test log" onPress={handleTestLogClick}/>
             <Button title="test Push" onPress={handleTestPushClick}/>
             <Button title="test Add z" onPress={handleTestAddZClick}/>
             <Button title="test Set" onPress={handleTestSetClick}/>
             <Button title="test Update" onPress={handleTestUpdateClick}/>
             <Button title="test Delete" onPress={handleTestDeleteClick}/> */}
 
-            <TextInput
-                style={{ backgroundColor: "white" }}
-                placeholder="Enter your username"
-                value={username}
-                onChangeText={setUsername}
-            />
+      <TextInput
+        style={{ backgroundColor: "white" }}
+        placeholder="Enter your username"
+        value={username}
+        onChangeText={setUsername}
+      />
 
-            <TextInput
-                style={{ backgroundColor: "white" }}
-                placeholder="Enter your password"
-                secureTextEntry={true}
-                value={password}
-                onChangeText={setPassword}
-            />
+      <TextInput
+        style={{ backgroundColor: "white" }}
+        placeholder="Enter your password"
+        secureTextEntry={true}
+        value={password}
+        onChangeText={setPassword}
+      />
 
-            <Button title="Sign Up" onPress={handleSignUpClick} />
-            <Button title="Sign In" onPress={handleSignInClick} />
-            <Button title="Test current user" onPress={handleTestCurrentUserClick} />
-            <Button title="Sign Out" onPress={handleSignOutClick} />
-        </SafeAreaView>
-    )
-}
+      <Button title="Sign Up" onPress={handleSignUpClick} />
+      <Button title="Sign In" onPress={handleSignInClick} />
+      <Button title="Test current user" onPress={handleTestCurrentUserClick} />
+      <Button title="Sign Out" onPress={handleSignOutClick} />
+    </SafeAreaView>
+  );
+};
 
-export default connectFirebase(TestFirebaseLoaded)
+export default connectFirebase(TestFirebaseLoaded);

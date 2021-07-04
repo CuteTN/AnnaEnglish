@@ -32,6 +32,7 @@ export const styles = StyleSheet.create({
   input: {
     padding: 20,
     fontSize: 16,
+    fontFamily: "Cucho",
   },
   validityShowWrapper: {
     marginRight: 15,

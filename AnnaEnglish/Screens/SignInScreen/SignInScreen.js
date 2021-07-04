@@ -17,7 +17,7 @@ import { colors } from "../../config/colors";
 import { useSignedIn } from "../../hooks/useSignedIn";
 import { useRoute } from "@react-navigation/native";
 
-export default SignInScreen = ({ }) => {
+export default SignInScreen = ({}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
@@ -27,19 +27,15 @@ export default SignInScreen = ({ }) => {
   const navAuth = () => {
     let newRoute = null;
 
-    if (status === "SignedIn")
-      newRoute = SCREENS.mainApp.name;
-    if (status === "NoInfo")
-      newRoute = SCREENS.editProfile.name;
+    if (status === "SignedIn") newRoute = SCREENS.mainApp.name;
+    if (status === "NoInfo") newRoute = SCREENS.editProfile.name;
 
-    if (newRoute && useRoute.name !== newRoute)
-      navigation.replace(newRoute);
-  }
+    if (newRoute && useRoute.name !== newRoute) navigation.replace(newRoute);
+  };
 
   useEffect(() => {
     navAuth();
   }, [status, user]);
-
 
   const handleButtonSignInPress = () => {
     Fire.signInWithUsername(username, password).then(
@@ -81,23 +77,26 @@ export default SignInScreen = ({ }) => {
           </View>
           <View style={styles.inputItem}>
             <PrimaryInput
-              placeHolder={"Enter your name!"}
+              placeHolder={"Nhập tên đăng nhập!"}
               onChangeText={setUsername}
             />
           </View>
           <View style={styles.inputItem}>
             <PrimaryInput
-              placeHolder={"Enter your password!"}
+              placeHolder={"Nhập mật khẩu!"}
               onChangeText={setPassword}
             />
           </View>
           <View style={styles.loginBtnWrapper}>
-            <PrimaryButton label={"LOG IN"} onPress={handleButtonSignInPress} />
+            <PrimaryButton
+              label={"ĐĂNG NHẬP"}
+              onPress={handleButtonSignInPress}
+            />
           </View>
           <Text style={styles.loginLinkWrapper}>
             <TouchableOpacity onPress={handleButtonSignUpPress}>
               <Text style={styles.notificationContent}>
-                DON'T HAVE AN ACCOUNT? SIGN UP
+                BẠN CHƯA CÓ TÀI KHOẢN
               </Text>
             </TouchableOpacity>
           </Text>
@@ -131,6 +130,7 @@ export const styles = StyleSheet.create({
   notificationContent: {
     color: colors.gray,
     fontSize: 14,
+    fontFamily: "Cucho",
   },
   loginLinkWrapper: {
     textAlign: "center",
@@ -145,10 +145,11 @@ export const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 30,
-    fontWeight: "700",
-    lineHeight: 40,
+    // fontWeight: "700",
+    // lineHeight: 40,
     textAlign: "center",
     color: "#3366CC",
+    fontFamily: "Pony",
   },
   top: {
     flex: 1,
