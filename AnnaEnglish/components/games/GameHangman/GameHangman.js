@@ -44,7 +44,6 @@ const GameHangman = ({ data, onComplete, onStepChange, onCorrect, onIncorrect })
   const [selectedCharacters, setSelectedCharacter] = React.useState([]);
 
   const MAX_LIFE = React.useRef(3).current;
-  const [lifeLeft, setLifeLeft] = React.useState(MAX_LIFE);
 
   // counting start from 0 here
   const [currentStep, setCurrentStep] = React.useState(0);
@@ -91,17 +90,20 @@ const GameHangman = ({ data, onComplete, onStepChange, onCorrect, onIncorrect })
       ?.every(c => selectedCharacters.includes(c.toUpperCase()));
   };
 
-  const handleSubmitButtonPress = () => {
-    if (checkAnswer()) {
+  const countWrongCharacters = () => {
+    return selectedCharacters.filter(c => !checkAnswerHasChar(c)).length;
+  }
+
+  React.useEffect(() => {
+    if (checkAnswer())
       handleCorrect();
-    } else {
+    else if (countWrongCharacters() > MAX_LIFE)
       handleIncorrect();
-    }
-  };
+
+  }, [selectedCharacters])
 
   const handleCorrect = () => {
     if (currentStep < countSteps - 1) {
-      setLifeLeft(MAX_LIFE);
       setSelectedCharacter([]);
       setCurrentStep((prev) => prev + 1);
       onCorrect?.();
@@ -111,7 +113,6 @@ const GameHangman = ({ data, onComplete, onStepChange, onCorrect, onIncorrect })
   };
 
   const handleIncorrect = () => {
-    setLifeLeft(MAX_LIFE);
     setSelectedCharacter([]);
     onIncorrect?.();
   };
@@ -123,16 +124,10 @@ const GameHangman = ({ data, onComplete, onStepChange, onCorrect, onIncorrect })
   const handleSelect = (character) => {
     if (!selectedCharacters.includes(character)) {
       setSelectedCharacter(prev => [...prev, character])
-
-      if (!checkAnswerHasChar(character)) {
-        if (lifeLeft <= 0) {
-          handleIncorrect();
-        } else {
-          setLifeLeft(prev => prev - 1);
-        }
-      }
     }
   };
+
+
 
   // position: position in user's answer
   // const handleDeselect = (position) => { };
@@ -199,9 +194,9 @@ const GameHangman = ({ data, onComplete, onStepChange, onCorrect, onIncorrect })
           )}
         />
       </View>
-      <View style={styles.getStartedbtnItemWrapper}>
+      {/* <View style={styles.getStartedbtnItemWrapper}>
         <PrimaryButton label={"SUBMIT"} onPress={handleSubmitButtonPress} />
-      </View>
+      </View> */}
     </View>
   );
 };
