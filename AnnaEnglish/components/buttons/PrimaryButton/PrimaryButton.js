@@ -28,5 +28,6 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "400",
     padding: 20,
+    fontFamily: "Cucho",
   },
 });

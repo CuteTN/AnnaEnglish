@@ -33,7 +33,7 @@ const EditProfileScreen = () => {
   const { user, updateUser } = useSignedIn();
 
   const [image, setImage] = useState(
-    "https://scontent-hkg4-2.xx.fbcdn.net/v/t1.6435-1/p240x240/179048033_1139396113169332_2102843025754757575_n.jpg?_nc_cat=110&ccb=1-3&_nc_sid=7206a8&_nc_ohc=Mv9EpCXnTbMAX9FBuWV&_nc_ht=scontent-hkg4-2.xx&tp=6&oh=87ca291070c01550c51670d376e2d191&oe=60D44AB9"
+    "https://salena.com.vn/upload/image/lavender.jpg"
   );
   const [selectedValue, setSelectedValue] = useState("Nữ");
 
@@ -127,19 +127,19 @@ const EditProfileScreen = () => {
       </View>
       <TouchableOpacity
         style={styles.panelButton}
-      // onPress={takePhotoFromCamera}
+        // onPress={takePhotoFromCamera}
       >
         <Text style={styles.panelButtonTitle}>Take Photo</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.panelButton}
-      // onPress={choosePhotoFromLibrary}
+        // onPress={choosePhotoFromLibrary}
       >
         <Text style={styles.panelButtonTitle}>Choose From Library</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.panelButton}
-      // onPress={() => this.bs.current.snapTo(1)}
+        // onPress={() => this.bs.current.snapTo(1)}
       >
         <Text style={styles.panelButtonTitle}>Cancel</Text>
       </TouchableOpacity>
@@ -226,16 +226,6 @@ const EditProfileScreen = () => {
                 </ImageBackground>
               </View>
             </TouchableOpacity>
-            <Text
-              style={{
-                marginTop: 10,
-                marginBottom: 20,
-                fontSize: 18,
-                fontWeight: "bold",
-              }}
-            >
-              Thy cute đáng iu
-            </Text>
           </View>
           <Text
             style={[

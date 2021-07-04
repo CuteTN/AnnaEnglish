@@ -11,18 +11,24 @@ export const colors = {
   heading: "#3366CC",
   facebookBg: "#7583CA",
   black: "#000000",
+  icon: "#FF4000",
+  text: "#201E1F",
+  card: "#FEEFDD",
+  border: "#FAAA8D",
+  statiticcard: "#E4FDE1",
+  cardborder: "#8ACB88",
 };
 
 export const colorAnswer = [
- "#52C2F2",
- "#00aefd",
- "#FFA400",
- "#07a787",
- "#ff7870",
- "pink",
- "yellow",
- "#e74c3c",
- "#2979ff",
+  "#52C2F2",
+  "#00aefd",
+  "#FFA400",
+  "#07a787",
+  "#ff7870",
+  "pink",
+  "yellow",
+  "#e74c3c",
+  "#2979ff",
 ];
 
 export const randomColor = () => {
