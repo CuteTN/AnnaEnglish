@@ -12,9 +12,13 @@ import { styles } from "./styles";
 import { SCREENS } from "..";
 import { useNavigation } from "@react-navigation/core";
 import { isBrightColor } from "../../Utils/color";
+import { colors } from "../../config/colors";
 
 function PlayScreen() {
-  const listTopics = Object.entries(useFiredux("topic") ?? {}).map(entry => ({ _id: entry[0], ...entry[1] }));
+  const listTopics = Object.entries(useFiredux("topic") ?? {}).map((entry) => ({
+    _id: entry[0],
+    ...entry[1],
+  }));
   const navigation = useNavigation();
 
   const Card = ({ topic }) => {
@@ -39,7 +43,7 @@ function PlayScreen() {
             style={styles.topicImage}
             source={require("../../assets/topics/Animal.png")}
           />
-          <Text style={[styles.label, { color: topic.labelColor }]}>
+          <Text style={[styles.label, { color: colors.black }]}>
             {topic.name}
           </Text>
         </View>
