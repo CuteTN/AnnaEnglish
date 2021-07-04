@@ -43,6 +43,7 @@ export const styles = StyleSheet.create({
   },
   topicImage: {
     alignSelf: "center",
+    height: 120,
   },
   card: {
     padding: 10,
@@ -51,4 +52,13 @@ export const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-between",
   },
+  questionImage: {
+    alignSelf: "center",
+    position: "absolute",
+    zIndex: 2,
+    tintColor: "#797c8a",
+    marginTop: 45,
+    height: 50,
+    resizeMode: "contain"
+  }
 });

@@ -78,7 +78,7 @@ export default TopicScreen = ({ route }) => {
           }}
           data={games}
           renderItem={({ item }) => {
-            return <Card game={item} />;
+            return Card({ game: item });
           }}
         />
       </ScrollView>

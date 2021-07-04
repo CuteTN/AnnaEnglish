@@ -13,6 +13,7 @@ import { SCREENS } from "..";
 import { useNavigation } from "@react-navigation/core";
 import { isBrightColor } from "../../Utils/color";
 import { colors } from "../../config/colors";
+import { useSignedIn } from "../../hooks/useSignedIn";
 
 function PlayScreen() {
   const listTopics = Object.entries(useFiredux("topic") ?? {}).map((entry) => ({
@@ -20,32 +21,61 @@ function PlayScreen() {
     ...entry[1],
   }));
   const navigation = useNavigation();
+  const { user } = useSignedIn();
+
+  const handleSelectTopic = (topic) => {
+    navigation.navigate(SCREENS.topic.name, { topicId: topic._id });
+  }
 
   const Card = ({ topic }) => {
+    const unlocked = Object.keys(user?.topics ?? {}).includes(topic._id);
+
     return (
       <TouchableOpacity
-        style={{ flex: 1 }}
+        style={[
+          { flex: 1 },
+        ]}
         onPress={() => {
-          navigation.navigate(SCREENS.topic.name, { topicId: topic._id });
+          handleSelectTopic(topic);
         }}
       >
         <View
           style={[
             styles.card,
             {
-              backgroundColor: topic.backgroundColor,
+              backgroundColor: unlocked ? topic.backgroundColor : "#d3d3d3",
               marginBottom: 5,
               margin: 5,
+              padding: 0,
             },
           ]}
         >
-          <Image
-            style={styles.topicImage}
-            source={require("../../assets/topics/Animal.png")}
-          />
-          <Text style={[styles.label, { color: colors.black }]}>
-            {topic.name}
-          </Text>
+          <View
+            style={[
+              styles.card,
+              { maxHeight: 190, }
+            ]}
+          >
+            <Image
+              key={unlocked}
+              style={[
+                styles.topicImage,
+                unlocked ? {} : { tintColor: colors.gray }
+              ]}
+              source={require("../../assets/topics/Animal.png")}
+            />
+            {(!unlocked) &&
+              <Image
+                source={require("../../assets/images/question-mark.png")}
+                style={[
+                  styles.questionImage,
+                ]}
+              />
+            }
+            <Text style={[styles.label, { color: colors.black }]}>
+              {topic.name}
+            </Text>
+          </View>
         </View>
       </TouchableOpacity>
     );
@@ -73,7 +103,7 @@ function PlayScreen() {
           numColumns={2}
           data={listTopics}
           renderItem={({ item }) => {
-            return <Card topic={item} />;
+            return Card({ topic: item });
           }}
         />
       </ScrollView>
