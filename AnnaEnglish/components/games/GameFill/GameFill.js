@@ -9,10 +9,7 @@ import { TextInput } from "react-native-paper";
 
 const Card = ({ label, onPress, isSelected }) => {
   return (
-    <TouchableOpacity
-      style={{ flex: 1, borderRadius: 15 }}
-      onPress={onPress}
-    >
+    <TouchableOpacity style={{ flex: 1, borderRadius: 15 }} onPress={onPress}>
       <View
         style={[
           styles.card,
@@ -31,8 +28,17 @@ const Card = ({ label, onPress, isSelected }) => {
   );
 };
 
-export default GameFill = ({ data, allowMultiSelect, onStepChange, onComplete, onCorrect, onIncorrect }) => {
-  const countSteps = React.useRef(Object.values(data?.questions ?? {}).length).current;
+export default GameFill = ({
+  data,
+  allowMultiSelect,
+  onStepChange,
+  onComplete,
+  onCorrect,
+  onIncorrect,
+}) => {
+  const countSteps = React.useRef(
+    Object.values(data?.questions ?? {}).length
+  ).current;
   const questions = React.useRef(Object.values(data?.questions ?? {})).current;
 
   // counting start from 0 here
@@ -42,13 +48,14 @@ export default GameFill = ({ data, allowMultiSelect, onStepChange, onComplete, o
 
   React.useEffect(() => {
     onStepChange?.(currentStep, countSteps);
-  }, [currentStep, countSteps])
-
+  }, [currentStep, countSteps]);
 
   const checkAnswer = () => {
     /** @type {[string]} */
     const answers = Object.values(questions[currentStep].answer ?? {});
-    const result = answers.some(a => a?.trim().toLowerCase() === userAnswer?.trim().toLowerCase());
+    const result = answers.some(
+      (a) => a?.trim().toLowerCase() === userAnswer?.trim().toLowerCase()
+    );
 
     return result;
   };
@@ -56,8 +63,7 @@ export default GameFill = ({ data, allowMultiSelect, onStepChange, onComplete, o
   const handleSubmitButtonPress = () => {
     if (checkAnswer()) {
       handleCorrect();
-    }
-    else {
+    } else {
       handleIncorrect();
     }
   };
@@ -65,21 +71,20 @@ export default GameFill = ({ data, allowMultiSelect, onStepChange, onComplete, o
   const handleCorrect = () => {
     if (currentStep < countSteps - 1) {
       setUserAnswer("");
-      setCurrentStep(prev => prev + 1);
+      setCurrentStep((prev) => prev + 1);
       onCorrect?.();
-    }
-    else {
+    } else {
       handleComplete();
     }
-  }
+  };
 
   const handleIncorrect = () => {
     onIncorrect?.();
-  }
+  };
 
   const handleComplete = () => {
     onComplete?.();
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -109,10 +114,8 @@ export default GameFill = ({ data, allowMultiSelect, onStepChange, onComplete, o
         />
       </View>
       <View style={styles.getStartedbtnItemWrapper}>
-        <PrimaryButton label={"SUBMIT"} onPress={handleSubmitButtonPress} />
+        <PrimaryButton label={"KIỂM TRA"} onPress={handleSubmitButtonPress} />
       </View>
     </View>
   );
 };
-
-

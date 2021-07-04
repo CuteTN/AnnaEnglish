@@ -116,7 +116,9 @@ const GameSelectBase = ({
   return (
     <View style={styles.container}>
       <View style={styles.container}>
-        <Text style={{ textAlign: "center", fontSize: 40 }}>
+        <Text
+          style={{ textAlign: "center", fontSize: 30, fontFamily: "Cucho" }}
+        >
           {questions[currentStep].question}
         </Text>
       </View>
@@ -139,7 +141,7 @@ const GameSelectBase = ({
         />
       </View>
       <View style={styles.getStartedbtnItemWrapper}>
-        <PrimaryButton label={"SUBMIT"} onPress={handleSubmitButtonPress} />
+        <PrimaryButton label={"KIỂM TRA"} onPress={handleSubmitButtonPress} />
       </View>
     </View>
   );

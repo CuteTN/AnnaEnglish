@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { colors } from "../../config/colors";
+import { colorAnswer, colors } from "../../config/colors";
 export const styles = StyleSheet.create({
   container: {
     display: "flex",
@@ -24,6 +24,7 @@ export const styles = StyleSheet.create({
     fontWeight: "300",
     marginTop: 10,
     color: colors.gray,
+    marginBottom: 40,
   },
   bgImage: {
     position: "absolute",
@@ -31,15 +32,15 @@ export const styles = StyleSheet.create({
   },
   scrollViewWrapper: {
     justifyContent: "space-between",
-    marginTop: 40,
   },
   itemContainer: {},
   label: {
     fontSize: 18,
-    fontWeight: "bold",
+
     alignItems: "flex-end",
     marginTop: 10,
     marginBottom: 10,
+    fontFamily: "Cucho",
   },
   topicImage: {
     alignSelf: "center",
@@ -50,5 +51,6 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     flexDirection: "column",
     justifyContent: "space-between",
+    borderColor: colors.black,
   },
 });

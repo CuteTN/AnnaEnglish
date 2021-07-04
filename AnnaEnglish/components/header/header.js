@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   headerText: {
-    fontWeight: "bold",
+    fontFamily: "Pony",
     fontSize: 20,
     color: "#333",
     letterSpacing: 1,

@@ -57,7 +57,7 @@ function ProfileScreen() {
       <View style={styles.menuWrapper}>
         <TouchableRipple onPress={handle}>
           <View style={styles.menuItem}>
-            <Icon name="lock" color={colors.primary} size={30} />
+            <Icon name="lock" color="#6369D1" size={30} />
             <Text style={styles.menuItemText}>Đổi mật khẩu</Text>
           </View>
         </TouchableRipple>
@@ -67,7 +67,7 @@ function ProfileScreen() {
           }}
         >
           <View style={styles.menuItem}>
-            <Icon name="account-edit" color="#0C2C71" size={30} />
+            <Icon name="account-edit" color="#6369D1" size={30} />
             <Text style={styles.menuItemText}>Đổi thông tin cá nhân</Text>
           </View>
         </TouchableRipple>
@@ -77,13 +77,13 @@ function ProfileScreen() {
           }}
         >
           <View style={styles.menuItem}>
-            <Icon name="note-outline" color="#0C2C71" size={30} />
+            <Icon name="note-outline" color="#6369D1" size={30} />
             <Text style={styles.menuItemText}>Ghi chú</Text>
           </View>
         </TouchableRipple>
         <TouchableRipple onPress={handleSignOutPress}>
           <View style={styles.menuItem}>
-            <Icon name="logout" color="#0C2C71" size={30} />
+            <Icon name="logout" color="#6369D1" size={30} />
             <Text style={styles.menuItemText}>Đăng xuất</Text>
           </View>
         </TouchableRipple>

@@ -10,10 +10,10 @@ export const styles = StyleSheet.create({
 
   label: {
     fontSize: 18,
-    fontWeight: "bold",
     alignItems: "flex-end",
     marginTop: 10,
     marginBottom: 10,
+    fontFamily: "Cucho",
   },
 
   card: {

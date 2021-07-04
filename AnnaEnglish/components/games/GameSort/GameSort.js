@@ -35,7 +35,13 @@ const ResultWordButton = ({ word, backgroundColor, onPress, numflex }) => {
   );
 };
 
-const GameSort = ({ data, onComplete, onStepChange, onCorrect, onIncorrect }) => {
+const GameSort = ({
+  data,
+  onComplete,
+  onStepChange,
+  onCorrect,
+  onIncorrect,
+}) => {
   const countSteps = React.useRef(
     Object.values(data?.questions ?? {}).length
   ).current;
@@ -202,7 +208,7 @@ const GameSort = ({ data, onComplete, onStepChange, onCorrect, onIncorrect }) =>
         />
       </View>
       <View style={styles.getStartedbtnItemWrapper}>
-        <PrimaryButton label={"SUBMIT"} onPress={handleSubmitButtonPress} />
+        <PrimaryButton label={"KIỂM TRA"} onPress={handleSubmitButtonPress} />
       </View>
     </View>
   );

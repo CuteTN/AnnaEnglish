@@ -37,12 +37,11 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   title: {
-    fontSize: 24,
+    fontSize: 23,
     fontFamily: "Pony",
   },
   caption: {
     fontSize: 14,
-
     fontFamily: "Cucho",
   },
 });

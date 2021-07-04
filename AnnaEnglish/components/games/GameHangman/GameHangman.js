@@ -182,7 +182,7 @@ const GameHangman = ({ data, onComplete, onStepChange }) => {
         />
       </View>
       <View style={styles.getStartedbtnItemWrapper}>
-        <PrimaryButton label={"SUBMIT"} onPress={handleSubmitButtonPress} />
+        <PrimaryButton label={"KIỂM TRA"} onPress={handleSubmitButtonPress} />
       </View>
     </View>
   );

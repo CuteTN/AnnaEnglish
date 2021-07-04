@@ -16,6 +16,7 @@ import { styles } from "./styles";
 import Fire from "../../firebase/Fire";
 import { useNavigation } from "@react-navigation/native";
 import { SCREENS } from "..";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 
 export default TopicScreen = ({ route }) => {
   const [topic] = useRealtimeFire("topic", route?.params?.topicId);
@@ -56,9 +57,7 @@ export default TopicScreen = ({ route }) => {
             },
           ]}
         >
-          <Text style={[styles.label, { color: topic.labelColor }]}>
-            {game?.name}
-          </Text>
+          <Text style={[styles.label, { color: "black" }]}>{game?.name}</Text>
         </View>
       </TouchableOpacity>
     );

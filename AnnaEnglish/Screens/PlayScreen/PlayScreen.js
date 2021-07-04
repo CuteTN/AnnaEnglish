@@ -36,6 +36,7 @@ function PlayScreen() {
               backgroundColor: topic.backgroundColor,
               marginBottom: 5,
               margin: 5,
+              borderWidth: 1,
             },
           ]}
         >

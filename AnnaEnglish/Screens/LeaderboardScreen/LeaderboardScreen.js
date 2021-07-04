@@ -6,30 +6,31 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 import { colors } from "../../config/colors";
-import { ButtonGroup } from "react-native-elements";
 
 function LeaderboardScreen() {
-  const list = ["TOPIC", "GAME", "EXP", "GIDO"];
+  const list = ["CHỦ ĐỀ", "GAME", "KINH NGHIỆM", "TIỀN"];
   const [objectIndex, setObjectIndex] = React.useState(0);
-
-  const handleChooseObject = (index) => {
-    setObjectIndex(index);
-  };
-
-  const CategoryList = () => {
+  const games = [
+    "Hoang bao ngoc",
+    "Hoang bao ngoc",
+    "Hoang bao ngoc",
+    "Hoang bao ngoc",
+  ];
+  const List = () => {
     return (
-      <View style={styles.categoryContainer}>
+      <View style={styles.listContainer}>
         {list.map((item, index) => (
           <TouchableOpacity
             key={index}
             activeOpacity={0.8}
-            onPress={() => handleChooseObject(index)}
+            onPress={() => setObjectIndex(index)}
           >
             <Text
               style={[
-                styles.categoryText,
-                objectIndex === index && styles.categoryTextSelected,
+                styles.text,
+                objectIndex === index && styles.textSelected,
               ]}
             >
               {item}
@@ -40,9 +41,38 @@ function LeaderboardScreen() {
     );
   };
 
+  const Card = ({ game }) => {
+    return (
+      <View
+        style={[
+          styles.card,
+          {
+            backgroundColor: "#D4C5E2",
+            marginBottom: 5,
+            margin: 5,
+          },
+        ]}
+      >
+        <Text style={[styles.label, { color: "black" }]}>{game}</Text>
+      </View>
+    );
+  };
   return (
     <SafeAreaView style={styles.container}>
-      <CategoryList />
+      <View style={styles.headingWrapper}>
+        <Text style={styles.heading}>BẢNG XẾP HẠNG</Text>
+      </View>
+      <List />
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingBottom: 40,
+        }}
+        data={games}
+        renderItem={({ item }) => {
+          return <Card game={item} />;
+        }}
+      />
     </SafeAreaView>
   );
 }
@@ -55,17 +85,39 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     paddingHorizontal: 20,
   },
-  categoryContainer: {
+  listContainer: {
     flexDirection: "row",
-    marginTop: 30,
-    marginBottom: 20,
+    marginTop: 0,
     justifyContent: "space-between",
   },
-  categoryText: { fontSize: 16, color: "grey", fontWeight: "bold" },
-  categoryTextSelected: {
+  text: { fontSize: 16, color: "grey" },
+  textSelected: {
     color: colors.primary,
     paddingBottom: 5,
     borderBottomWidth: 2,
     borderColor: colors.primary,
+  },
+  headingWrapper: {
+    marginTop: 45,
+    alignItems: "center",
+  },
+  heading: {
+    fontSize: 28,
+    color: colors.heading,
+    fontFamily: "Pony",
+  },
+  card: {
+    padding: 20,
+    flex: 1,
+    borderRadius: 10,
+    flexDirection: "column",
+    justifyContent: "space-between",
+    borderWidth: 1,
+    borderColor: "#4C6663",
+  },
+  label: {
+    fontSize: 18,
+    fontWeight: "bold",
+    alignItems: "flex-end",
   },
 });
