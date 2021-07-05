@@ -24,18 +24,43 @@ function PlayScreen() {
   const navigation = useNavigation();
   const { user, username } = useSignedIn();
 
+  /**
+   * @returns {boolean} unlockable
+   */
   const unlockTopic = (topic) => {
-    if (topic?._id)
+    if (!topic?._id)
+      return false;
+
+    const userCoins = user?.stats?.coins ?? 0;
+    const userExp = user?.stats?.exp ?? 0;
+
+    const requiredCoins = topic?.require?.coins ?? 0;
+    const requiredExp = topic?.require?.exp ?? 0;
+
+    if (userCoins >= requiredCoins && userExp >= requiredExp) {
       Fire.update(`user/${username}/progress/topics/${topic._id}`, { unlocked: true });
+      Fire.transaction(`user/${username}/stats/coins`, prev => prev - requiredCoins);
+
+      return true;
+    } else {
+      console.log("not enough coins or exp to unlock topic :(");
+
+      return false;
+    }
   }
 
   const handleSelectTopic = (topic) => {
     const unlocked = Object.keys(user?.progress?.topics ?? {}).includes(topic._id);
 
+    const navigateToTopicScreen = () =>
+      navigation.navigate(SCREENS.topic.name, { topicId: topic._id });
+
     if (!unlocked) {
-      unlockTopic(topic);
+      if (unlockTopic(topic))
+        navigateToTopicScreen();
+    } else {
+      navigateToTopicScreen();
     }
-    navigation.navigate(SCREENS.topic.name, { topicId: topic._id });
   }
 
   const Card = ({ topic }) => {
