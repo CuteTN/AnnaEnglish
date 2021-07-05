@@ -174,6 +174,15 @@ class Fire {
     return link
   }
 
+  static transaction = async (refPath, transactionUpdate) => {
+    let ref = firebase.database().ref().child(refPath)
+    let link = ref.transaction(transactionUpdate).then(
+      (value) => log.logSuccess(`Item was update successfully at ${refPath}`),
+      (error) => log.logError(`Could not update item from ${refPath}:\n${value}\nError: ${error}`)
+    )
+    return link
+  }
+
 }
 
 export default Fire

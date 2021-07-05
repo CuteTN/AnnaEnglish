@@ -14,6 +14,7 @@ import { useNavigation } from "@react-navigation/core";
 import { isBrightColor } from "../../Utils/color";
 import { colors } from "../../config/colors";
 import { useSignedIn } from "../../hooks/useSignedIn";
+import Fire from "../../firebase/Fire";
 
 function PlayScreen() {
   const listTopics = Object.entries(useFiredux("topic") ?? {}).map((entry) => ({
@@ -21,14 +22,24 @@ function PlayScreen() {
     ...entry[1],
   }));
   const navigation = useNavigation();
-  const { user } = useSignedIn();
+  const { user, username } = useSignedIn();
+
+  const unlockTopic = (topic) => {
+    if (topic?._id)
+      Fire.update(`user/${username}/progress/topics/${topic._id}`, { unlocked: true });
+  }
 
   const handleSelectTopic = (topic) => {
+    const unlocked = Object.keys(user?.progress?.topics ?? {}).includes(topic._id);
+
+    if (!unlocked) {
+      unlockTopic(topic);
+    }
     navigation.navigate(SCREENS.topic.name, { topicId: topic._id });
   }
 
   const Card = ({ topic }) => {
-    const unlocked = Object.keys(user?.topics ?? {}).includes(topic._id);
+    const unlocked = Object.keys(user?.progress?.topics ?? {}).includes(topic._id);
 
     return (
       <TouchableOpacity

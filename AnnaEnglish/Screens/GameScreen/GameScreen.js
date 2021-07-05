@@ -10,13 +10,27 @@ import GameProgress from "../../components/progressSteps/GameProgress/GameProgre
 import CompleteModal from "../../components/games/CompleteModal/CompleteModal";
 import { useCompleteModal } from "../../components/games/CompleteModal/CompleteModalProvider";
 import { useCheckModal } from "../../components/games/CheckModal/CheckModalProvider"
+import { useSignedIn } from "../../hooks/useSignedIn";
+import Fire from "../../firebase/Fire";
+import { useRealtimeFire } from "../../hooks/useRealtimeFire";
 
 export default GameScreen = ({ route }) => {
   const { game } = route?.params ?? {};
   const [progress, setProgress] = useState({ currentStep: 0, countSteps: 0 });
   const navigation = useNavigation();
   const { showCompleteModal } = useCompleteModal();
-  const { showCheckModal } = useCheckModal()
+  const { showCheckModal } = useCheckModal();
+
+  const { user, username } = useSignedIn();
+
+  const topicId = React.useMemo(() => route?.params?.topicId, [route?.params?.topicId]);
+  const [topic] = useRealtimeFire("topic", route?.params?.topicId);
+
+  const onGameComplete = React.useMemo(() => route?.params?.onGameComplete, [route?.params?.onGameCompleted]);
+
+  const userProgressOnGame = React.useMemo(() => {
+    return user?.progress?.topics?.[topicId]?.completedGames?.[game?._id];
+  }, [topicId, game?._id, user?.progress])
 
   useEffect(() => {
     if (!game) {
@@ -32,10 +46,49 @@ export default GameScreen = ({ route }) => {
     setProgress({ currentStep, countSteps });
   };
 
+
+  const rewardUserCompleteProgress = () => {
+    const now = Date.now();
+    const data = { lastCompleteAt: now, }
+
+    // if the user haven't beat this game before
+    if (!userProgressOnGame)
+      data.firstCompleteAt = now;
+
+    Fire.update(`user/${username}/progress/topics/${topicId}/completedGames/${game._id}`, data);
+  }
+
+  const rewardUserCompleteStats = () => {
+    if (!topic)
+      return;
+
+    let rewardedCoins = 0;
+
+    // if the user haven't beat this game before
+    if (!userProgressOnGame) {
+      rewardedCoins += 10; // yeah this is magic, I promise it'll be cleaner if I have time
+    }
+
+    // Fire.update(`user/${username}/stats`, { coins: userStats.coins, exp: userStats.exp });
+    Fire.transaction(`user/${username}/stats/`,
+      prev => {
+        const result = { ...prev };
+        result.coins = (prev?.coins ?? 0) + rewardedCoins;
+
+        return result;
+      }
+    )
+  }
+
   const handleCompleteGame = () => {
-    // setVisible.current(true);
+    rewardUserCompleteProgress();
+    rewardUserCompleteStats();
+
     showCompleteModal({
-      onClose: () => navigation.goBack(),
+      onClose: () => {
+        onGameComplete?.(game?._id);
+        navigation.goBack();
+      },
     })
   };
 

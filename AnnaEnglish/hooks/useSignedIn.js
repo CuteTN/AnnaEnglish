@@ -12,7 +12,7 @@ import { useRealtimeFire } from './useRealtimeFire';
 
 /**
  * Get/Set current user info
- * @returns {{user: any, updateUser: (newValue: any) => void, status: StatusType}}
+ * @returns {{user: any, updateUser: (newValue: any) => void, status: StatusType, username: string}}
  */
 export const useSignedIn = () => {
   const [username, setUsername] = useState(null);
@@ -66,5 +66,5 @@ export const useSignedIn = () => {
       Fire.update(`user/${username}`, newValue);
   }
 
-  return { user, updateUser, status }
+  return { user, updateUser, username, status }
 }
