@@ -49,8 +49,16 @@ function PlayScreen() {
     }
   }
 
+  const checkIsUnlockedTopic = (topic) => {
+    const isDefaultTopic = !(topic?.require?.coins || topic?.require?.exp);
+    if (isDefaultTopic)
+      unlockTopic(topic);
+
+    return Object.keys(user?.progress?.topics ?? {}).includes(topic._id) || isDefaultTopic;
+  }
+
   const handleSelectTopic = (topic) => {
-    const unlocked = Object.keys(user?.progress?.topics ?? {}).includes(topic._id);
+    const unlocked = checkIsUnlockedTopic(topic);
 
     const navigateToTopicScreen = () =>
       navigation.navigate(SCREENS.topic.name, { topicId: topic._id });
@@ -64,7 +72,7 @@ function PlayScreen() {
   }
 
   const Card = ({ topic }) => {
-    const unlocked = Object.keys(user?.progress?.topics ?? {}).includes(topic._id);
+    const unlocked = checkIsUnlockedTopic(topic);
 
     return (
       <TouchableOpacity
