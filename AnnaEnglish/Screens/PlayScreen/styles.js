@@ -43,7 +43,8 @@ export const styles = StyleSheet.create({
     fontFamily: "Cucho",
   },
   topicImage: {
-    alignSelf: "center",
+    height: 140,
+    resizeMode: "center",
   },
   card: {
     padding: 10,
@@ -52,5 +53,14 @@ export const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-between",
     borderColor: colors.black,
+  },
+  questionImage: {
+    alignSelf: "center",
+    position: "absolute",
+    zIndex: 2,
+    tintColor: "#797c8a",
+    marginTop: 45,
+    height: 50,
+    resizeMode: "contain",
   },
 });

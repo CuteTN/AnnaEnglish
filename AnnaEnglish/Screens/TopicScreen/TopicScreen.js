@@ -17,28 +17,138 @@ import Fire from "../../firebase/Fire";
 import { useNavigation } from "@react-navigation/native";
 import { SCREENS } from "..";
 import { Colors } from "react-native/Libraries/NewAppScreen";
+import { useSignedIn } from "../../hooks/useSignedIn";
+import { isToday } from "../../Utils/datetime";
 
 export default TopicScreen = ({ route }) => {
+  const topicId = React.useMemo(
+    () => route?.params?.topicId,
+    [route?.params?.topicId]
+  );
   const [topic] = useRealtimeFire("topic", route?.params?.topicId);
   const [games, setGames] = useState([]);
-  const tempGames = useRef([]);
 
   const navigation = useNavigation();
 
+  const { user, username } = useSignedIn();
+
   useEffect(() => {
     if (topic?.games) {
+      const tempGames = [];
+
       Object.values(topic?.games)?.forEach((gameId) => {
         Fire.get(`game/${gameId}`).then((game) => {
-          tempGames.current.push({ ...game, _id: gameId });
-          if (tempGames.current.length === Object.values(topic?.games)?.length)
-            setGames(tempGames.current);
+          tempGames.push({ ...game, _id: gameId });
+          if (tempGames.length === Object.values(topic?.games)?.length)
+            setGames(tempGames);
         });
       });
     }
   }, [topic]);
 
+  /** @type {React.MutableRefObject<[string]>} */
+  const completedGamesInTopic = useRef(null);
+  /** @type {React.MutableRefObject<[string]>} */
+  const completedGamesInTopicToday = useRef(null);
+
+  useEffect(() => {
+    // the data is loaded already
+    if (completedGamesInTopic.current || completedGamesInTopicToday.current)
+      return;
+
+    const userProgressOnTopic = user?.progress?.topics?.[topicId];
+
+    // user progress is not yet loaded
+    if (!userProgressOnTopic) return;
+
+    const completedGames = Object.entries(
+      userProgressOnTopic.completedGames ?? {}
+    );
+    completedGamesInTopic.current = completedGames.map((g) => g[0]);
+    completedGamesInTopicToday.current = completedGames
+      .filter((g) => isToday(new Date(g[1]?.lastCompleteAt)))
+      .map((g) => g[0]);
+  }, [user?.progress?.topics?.[topicId]]);
+
+  const checkCompletedGame = (topicId, gameId) => {
+    return user?.progress?.topics?.[topicId]?.completedGames?.[gameId];
+  };
+
+  /** @param {"first"|"today"} rewardType*/
+  const rewardUserCompleteProgress = (rewardType) => {
+    const now = Date.now();
+    const data = { lastCompleteAt: now };
+
+    // if the user haven't beat this game before
+    if (rewardType === "first") data.firstCompleteAt = now;
+
+    Fire.update(`user/${username}/progress/topics/${topicId}/`, data);
+  };
+
+  /** @param {"first"|"today"} rewardType*/
+  const rewardUserCompleteStats = (rewardType) => {
+    if (!topic) return;
+
+    let rewardedCoins = 0;
+    let rewardedExp = 0;
+
+    // if the user haven't beat this game before
+    if (rewardType === "first") {
+      rewardedCoins += topic?.reward?.coins ?? 0;
+      rewardedExp += topic?.reward?.exp ?? 0;
+    } else if (rewardType === "today") {
+      rewardedCoins += 50;
+      rewardedExp += 10;
+    }
+
+    // Fire.update(`user/${username}/stats`, { coins: userStats.coins, exp: userStats.exp });
+    Fire.transaction(`user/${username}/stats/`, (prev) => {
+      const result = { ...prev };
+      result.coins = (prev?.coins ?? 0) + rewardedCoins;
+      result.exp = (prev?.exp ?? 0) + rewardedExp;
+
+      return result;
+    });
+  };
+
+  /** @param {"first"|"today"} rewardType*/
+  const handleTopicComplete = (rewardType) => {
+    rewardUserCompleteProgress(rewardType);
+    rewardUserCompleteStats(rewardType);
+  };
+
+  const handleGameComplete = (gameId) => {
+    let flagFirstCompleted = false;
+
+    if (!completedGamesInTopic.current.includes(gameId)) {
+      completedGamesInTopic.current.push(gameId);
+
+      // just completed
+      if (games.length === completedGamesInTopic.current.length) {
+        handleTopicComplete("first");
+        flagFirstCompleted = true;
+      }
+    }
+
+    if (!completedGamesInTopicToday.current.includes(gameId)) {
+      completedGamesInTopicToday.current.push(gameId);
+
+      // just completed today, and not the first time ever
+      if (
+        games.length === completedGamesInTopicToday.current.length &&
+        !flagFirstCompleted
+      ) {
+        handleTopicComplete("today");
+      }
+    }
+  };
+
   const handleEnterGame = (game) => {
-    navigation.navigate(SCREENS.game.name, { game });
+    navigation.navigate(SCREENS.game.name, {
+      game,
+      topicId,
+      onGameComplete: handleGameComplete,
+    });
   };
 
   const Card = ({ game }) => {
@@ -51,7 +161,9 @@ export default TopicScreen = ({ route }) => {
           style={[
             styles.card,
             {
-              backgroundColor: colors.gray,
+              backgroundColor: checkCompletedGame(topicId, game._id)
+                ? colors.pastelGreen
+                : colors.gray,
               marginBottom: 5,
               margin: 5,
             },
@@ -77,7 +189,7 @@ export default TopicScreen = ({ route }) => {
           }}
           data={games}
           renderItem={({ item }) => {
-            return <Card game={item} />;
+            return Card({ game: item });
           }}
         />
       </ScrollView>

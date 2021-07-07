@@ -65,7 +65,7 @@ const AnswerText = ({ label, backgroundColor, onPress, isSelected }) => {
   );
 };
 
-const GameHangman = ({ data, onComplete, onStepChange }) => {
+const GameMatch = ({ data, onComplete, onStepChange }) => {
   const tmp = ["Goodbye", " ", " ", " "];
   const imageUrl = {
     uri: "https://tiengtrunganhduong.com/Images/images/635766289191430000.jpg",
@@ -88,13 +88,13 @@ const GameHangman = ({ data, onComplete, onStepChange }) => {
 
   const backgroundColor = React.useRef(randomColor()).current;
   const backgroundColorWords = React.useRef(randomColor()).current;
-  const checkAnswer = () => {};
+  const checkAnswer = () => { };
 
-  const handleSubmitButtonPress = () => {};
+  const handleSubmitButtonPress = () => { };
 
-  const handleCorrect = () => {};
+  const handleCorrect = () => { };
 
-  const handleWrong = () => {};
+  const handleWrong = () => { };
 
   const handleComplete = () => {
     onComplete?.();
@@ -114,7 +114,7 @@ const GameHangman = ({ data, onComplete, onStepChange }) => {
             <AnswerText
               label={item}
               backgroundColor={backgroundColor}
-              onPress={() => {}}
+              onPress={() => { }}
             />
           )}
         />
@@ -128,7 +128,7 @@ const GameHangman = ({ data, onComplete, onStepChange }) => {
           renderItem={({ item }) => (
             <AnswerImage
               backgroundColor={backgroundColorWords}
-              onPress={() => {}}
+              onPress={() => { }}
               imageUrl={imageUrl}
             />
           )}
@@ -141,4 +141,4 @@ const GameHangman = ({ data, onComplete, onStepChange }) => {
   );
 };
 
-export default GameHangman;
+export default GameMatch;

@@ -1,23 +1,73 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
+  BackHandler,
 } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { colors } from "../../config/colors";
+import { useFiredux } from "../../hooks/useFiredux";
 
 function LeaderboardScreen() {
+  const listUsers = Object.entries(useFiredux("user") ?? {}).map((entry) => ({
+    _id: entry[0],
+    ...entry[1],
+  }));
+
   const list = ["CHỦ ĐỀ", "GAME", "KINH NGHIỆM", "TIỀN"];
   const [objectIndex, setObjectIndex] = React.useState(0);
-  const games = [
-    "Hoang bao ngoc",
-    "Hoang bao ngoc",
-    "Hoang bao ngoc",
-    "Hoang bao ngoc",
-  ];
+  const [listSortByCoins, setListSortByCoins] = React.useState(listUsers);
+  const [listSortByExp, setListSortByExp] = React.useState(listUsers);
+  const [listSortByTopic, setListSortByTopic] = React.useState(listUsers);
+
+  function sortsByCoins(data) {
+    const sortedData = data?.sort(function (a, b) {
+      var _a = a.stats?.coins;
+      var _b = b.stats?.coins;
+      if (_a > _b) return -1;
+      if (_a < _b) return 1;
+      return 0;
+    });
+    return sortedData;
+  }
+
+  function sortsByTopic(data) {
+    const sortedData = data?.sort(function (a, b) {
+      var _a = a.stats?.topic?.length;
+      var _b = b.stats?.topic?.length;
+      if (_a > _b) return -1;
+      if (_a < _b) return 1;
+      return 0;
+    });
+    return sortedData;
+  }
+
+  function sortsByExp(data) {
+    const sortedData = data?.sort(function (a, b) {
+      var _a = a.stats?.exp;
+      var _b = b.stats?.exp;
+      if (_a > _b) return -1;
+      if (_a < _b) return 1;
+      return 0;
+    });
+    return sortedData;
+  }
+
+  React.useEffect(() => {
+    if (objectIndex === 0) sortsByTopic(listUsers);
+    if (objectIndex === 3) sortsByCoins(listSortByCoins);
+    if (objectIndex === 2) sortsByExp(listSortByExp);
+    console.log(listSortByCoins);
+  }, []);
+
+  const handle = (index) => {
+    setObjectIndex(index);
+    console.log(objectIndex);
+  };
+
   const List = () => {
     return (
       <View style={styles.listContainer}>
@@ -25,7 +75,7 @@ function LeaderboardScreen() {
           <TouchableOpacity
             key={index}
             activeOpacity={0.8}
-            onPress={() => setObjectIndex(index)}
+            onPress={() => handle(index)}
           >
             <Text
               style={[
@@ -41,7 +91,7 @@ function LeaderboardScreen() {
     );
   };
 
-  const Card = ({ game }) => {
+  const Card = ({ user }) => {
     return (
       <View
         style={[
@@ -53,7 +103,10 @@ function LeaderboardScreen() {
           },
         ]}
       >
-        <Text style={[styles.label, { color: "black" }]}>{game}</Text>
+        <Text style={[styles.label, { color: "black" }]}>{user?.name}</Text>
+        <Text style={[styles.label, { color: "black" }]}>
+          {user?.stats.coins}
+        </Text>
       </View>
     );
   };
@@ -68,9 +121,15 @@ function LeaderboardScreen() {
         contentContainerStyle={{
           paddingBottom: 40,
         }}
-        data={games}
+        data={
+          objectIndex === 2
+            ? objectIndex === 3
+              ? listSortByCoins
+              : listSortByExp
+            : listSortByCoins
+        }
         renderItem={({ item }) => {
-          return <Card game={item} />;
+          return <Card user={item} />;
         }}
       />
     </SafeAreaView>
@@ -110,7 +169,7 @@ const styles = StyleSheet.create({
     padding: 20,
     flex: 1,
     borderRadius: 10,
-    flexDirection: "column",
+    flexDirection: "row",
     justifyContent: "space-between",
     borderWidth: 1,
     borderColor: "#4C6663",
@@ -118,6 +177,5 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 18,
     fontWeight: "bold",
-    alignItems: "flex-end",
   },
 });

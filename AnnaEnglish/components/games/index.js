@@ -11,6 +11,7 @@ const games = {
   multiple: GameMultiple,
   fill: GameFill,
   sort: GameSort,
+  hangman: GameHangman,
 };
 
 /**

@@ -48,7 +48,7 @@ function StatisticsScreen() {
           <StatiticCard
             imageUrl={imageCoinUrl}
             title={"Tổng số tiền"}
-            number={user?.stats.coin}
+            number={user?.stats.coins}
           ></StatiticCard>
         </View>
       </ScrollView>

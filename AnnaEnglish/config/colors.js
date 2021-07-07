@@ -17,6 +17,7 @@ export const colors = {
   border: "#FAAA8D",
   statiticcard: "#E4FDE1",
   cardborder: "#8ACB88",
+  pastelGreen: "#a5fbae",
 };
 
 export const colorAnswer = [
