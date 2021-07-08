@@ -55,7 +55,11 @@ function ProfileScreen() {
       </View>
 
       <View style={styles.menuWrapper}>
-        <TouchableRipple onPress={handle}>
+        <TouchableRipple
+          onPress={() => {
+            navigation.navigate(SCREENS.editPass.name);
+          }}
+        >
           <View style={styles.menuItem}>
             <Icon name="lock" color="#6369D1" size={30} />
             <Text style={styles.menuItemText}>Đổi mật khẩu</Text>

@@ -13,6 +13,7 @@ import Tabbar from "./TabNavigation/Tabbar";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import NoteScreen from "./NoteScreen/NoteScreen";
 import WordScreen from "./WordScreen/WordScreen";
+import EditPasswordScreen from "./EditPasswordScreen/EditPasswordScreen";
 
 export const TAB_SCREENS = {
   statistic: {
@@ -95,6 +96,10 @@ export const SCREENS = {
   word: {
     name: "word",
     screen: WordScreen,
+  },
+  editPass: {
+    name: "editPass",
+    screen: EditPasswordScreen,
   },
 
   ...TAB_SCREENS,

@@ -16,11 +16,11 @@ export const EditInputName = ({
         placeholder={placeHolder}
         onChangeText={onChangeText}
       />
-      <View style={styles.validityShowWrapper}>
+      {/* <View style={styles.validityShowWrapper}>
         {isValid ? (
           <Image source={require("../../../assets/images/checked.png")} />
         ) : null}
-      </View>
+      </View> */}
     </View>
   );
 };
@@ -37,6 +37,7 @@ export const styles = StyleSheet.create({
   input: {
     padding: 12,
     fontSize: 16,
+    fontFamily: "Cucho",
   },
   validityShowWrapper: {
     marginRight: 15,
