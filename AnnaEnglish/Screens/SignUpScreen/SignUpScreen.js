@@ -17,6 +17,7 @@ import { PrimaryButton } from "../../components/buttons/PrimaryButton/PrimaryBut
 import { PrimaryInput } from "../../components/forms/PrimaryInput/PrimaryInput";
 import { SecondaryInput } from "../../components/forms/SecondaryInput/SecondaryInput";
 import { colors } from "../../config/colors";
+import { PassWordInput } from "../../components/forms/PassWordInput/PassWordInput";
 
 function SignUpScreen({}) {
   const [username, setUsername] = useState("");
@@ -86,7 +87,7 @@ function SignUpScreen({}) {
             />
           </View>
           <View style={styles.inputItem}>
-            <SecondaryInput
+            <PassWordInput
               placeHolder={"Nhập mật khẩu!"}
               onChangeText={setPassword}
             />

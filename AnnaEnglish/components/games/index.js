@@ -12,6 +12,7 @@ const games = {
   fill: GameFill,
   sort: GameSort,
   hangman: GameHangman,
+  match: GameMatch,
 };
 
 /**

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Text,
   View,
@@ -17,10 +17,13 @@ import { useSignedIn } from "../../hooks/useSignedIn";
 import Fire from "../../firebase/Fire";
 
 function PlayScreen() {
-  const listTopics = Object.entries(useFiredux("topic") ?? {}).map((entry) => ({
-    _id: entry[0],
-    ...entry[1],
-  }));
+  const rawTopics = useFiredux("topic") ?? {};
+  const listTopics = React.useMemo(() =>
+    Object.entries(rawTopics).map((entry) => ({
+      _id: entry[0],
+      ...entry[1],
+    }))
+  );
   const navigation = useNavigation();
   const { user, username } = useSignedIn();
 
@@ -28,7 +31,11 @@ function PlayScreen() {
    * @returns {boolean} unlockable
    */
   const unlockTopic = (topic) => {
+    if (!username) return false;
+
     if (!topic?._id) return false;
+
+    if (checkIsUnlockedTopic(topic)) return false;
 
     const userCoins = user?.stats?.coins ?? 0;
     const userExp = user?.stats?.exp ?? 0;
@@ -39,6 +46,13 @@ function PlayScreen() {
     if (userCoins >= requiredCoins && userExp >= requiredExp) {
       Fire.update(`user/${username}/progress/topics/${topic._id}`, {
         unlocked: true,
+      });
+      Fire.transaction(`user/${username}/progress/vocabulary/`, (prev) => {
+        const topicVoc = Object.values(topic.vocabulary ?? {});
+        const prevVoc = Object.values(prev ?? {});
+        const newVoc = [...new Set([...topicVoc, ...prevVoc])];
+
+        return newVoc;
       });
       Fire.transaction(
         `user/${username}/stats/coins`,
@@ -53,10 +67,25 @@ function PlayScreen() {
     }
   };
 
+  const checkIsDefaultTopic = (topic) => {
+    return !(topic?.require?.coins || topic?.require?.exp);
+  };
+
+  const checkIsUnlockedTopic = (topic) => {
+    return Object.keys(user?.progress?.topics ?? {}).includes(topic._id);
+  };
+
+  // auto unlock default topics
+  React.useEffect(() => {
+    for (let topic of listTopics) {
+      if (!checkIsUnlockedTopic(topic) && checkIsDefaultTopic(topic)) {
+        unlockTopic(topic);
+      }
+    }
+  }, [user?.progress?.topics, listTopics]);
+
   const handleSelectTopic = (topic) => {
-    const unlocked = Object.keys(user?.progress?.topics ?? {}).includes(
-      topic._id
-    );
+    const unlocked = checkIsUnlockedTopic(topic);
 
     const navigateToTopicScreen = () =>
       navigation.navigate(SCREENS.topic.name, { topicId: topic._id });
@@ -69,9 +98,7 @@ function PlayScreen() {
   };
 
   const Card = ({ topic }) => {
-    const unlocked = Object.keys(user?.progress?.topics ?? {}).includes(
-      topic._id
-    );
+    const unlocked = checkIsUnlockedTopic(topic);
 
     return (
       <TouchableOpacity
@@ -133,7 +160,6 @@ function PlayScreen() {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             marginTop: 10,
-            paddingBottom: 40,
           }}
           numColumns={2}
           data={listTopics}

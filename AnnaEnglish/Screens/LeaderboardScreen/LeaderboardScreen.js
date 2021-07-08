@@ -19,9 +19,6 @@ function LeaderboardScreen() {
 
   const list = ["CHỦ ĐỀ", "GAME", "KINH NGHIỆM", "TIỀN"];
   const [objectIndex, setObjectIndex] = React.useState(0);
-  const [listSortByCoins, setListSortByCoins] = React.useState(listUsers);
-  const [listSortByExp, setListSortByExp] = React.useState(listUsers);
-  const [listSortByTopic, setListSortByTopic] = React.useState(listUsers);
 
   function sortsByCoins(data) {
     const sortedData = data?.sort(function (a, b) {
@@ -56,17 +53,7 @@ function LeaderboardScreen() {
     return sortedData;
   }
 
-  React.useEffect(() => {
-    if (objectIndex === 0) sortsByTopic(listUsers);
-    if (objectIndex === 3) sortsByCoins(listSortByCoins);
-    if (objectIndex === 2) sortsByExp(listSortByExp);
-    console.log(listSortByCoins);
-  }, []);
-
-  const handle = (index) => {
-    setObjectIndex(index);
-    console.log(objectIndex);
-  };
+  // Thyyy::: sort listuser theo ....
 
   const List = () => {
     return (
@@ -75,7 +62,7 @@ function LeaderboardScreen() {
           <TouchableOpacity
             key={index}
             activeOpacity={0.8}
-            onPress={() => handle(index)}
+            onPress={() => setObjectIndex(index)}
           >
             <Text
               style={[
@@ -120,14 +107,9 @@ function LeaderboardScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           paddingBottom: 40,
+          marginTop: 10,
         }}
-        data={
-          objectIndex === 2
-            ? objectIndex === 3
-              ? listSortByCoins
-              : listSortByExp
-            : listSortByCoins
-        }
+        data={listUsers}
         renderItem={({ item }) => {
           return <Card user={item} />;
         }}
@@ -149,7 +131,7 @@ const styles = StyleSheet.create({
     marginTop: 0,
     justifyContent: "space-between",
   },
-  text: { fontSize: 16, color: "grey" },
+  text: { fontSize: 16, color: "grey", fontWeight: "bold" },
   textSelected: {
     color: colors.primary,
     paddingBottom: 5,
@@ -176,6 +158,6 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "Cucho",
   },
 });

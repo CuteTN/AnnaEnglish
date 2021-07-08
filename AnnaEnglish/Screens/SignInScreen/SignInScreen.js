@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import { PrimaryButton } from "../../components/buttons/PrimaryButton/PrimaryButton";
 import { PrimaryInput } from "../../components/forms/PrimaryInput/PrimaryInput";
+import { PassWordInput } from "../../components/forms/PassWordInput/PassWordInput";
 import { colors } from "../../config/colors";
 import { useSignedIn } from "../../hooks/useSignedIn";
 import { useRoute } from "@react-navigation/native";
@@ -82,7 +83,7 @@ export default SignInScreen = ({}) => {
             />
           </View>
           <View style={styles.inputItem}>
-            <PrimaryInput
+            <PassWordInput
               placeHolder={"Nhập mật khẩu!"}
               onChangeText={setPassword}
             />

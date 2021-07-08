@@ -36,7 +36,6 @@ export const styles = StyleSheet.create({
   itemContainer: {},
   label: {
     fontSize: 18,
-
     alignItems: "flex-end",
     marginTop: 10,
     marginBottom: 10,
