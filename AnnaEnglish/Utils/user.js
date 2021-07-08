@@ -27,3 +27,27 @@ export const checkEnoughUserInfo = (user) => {
     isValid: true,
   };
 }
+
+
+/**
+ * @param {"topics"|"games"|"exp"|"coins"} category 
+ * @param {*} user 
+ * @returns 
+ */
+export const getUserStats = (category, user) => {
+  switch (category) {
+    case "coins": return user?.stats?.coins ?? 0;
+    case "exp": return user?.stats?.exp ?? 0;
+
+    case "topics": return Object.values(user?.progress?.topics ?? {})
+      .filter?.(topic => topic?.firstCompleteAt)?.length ?? 0;
+
+    case "games": return Object.values(user?.progress?.topics ?? {})
+      .map((topic) => Object.values(topic?.completedGames ?? {}).length)
+      .reduce((cntGame1, cntGame2) => {
+        return cntGame1 + cntGame2;
+      }, 0);
+
+    default: return null;
+  }
+}

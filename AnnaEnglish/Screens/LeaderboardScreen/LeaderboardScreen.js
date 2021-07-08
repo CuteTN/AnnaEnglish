@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Text,
   View,
@@ -10,64 +10,50 @@ import {
 import { FlatList } from "react-native-gesture-handler";
 import { colors } from "../../config/colors";
 import { useFiredux } from "../../hooks/useFiredux";
+import { getUserStats } from "../../Utils/user";
 
 function LeaderboardScreen() {
-  const listUsers = Object.entries(useFiredux("user") ?? {}).map((entry) => ({
+  const rawUsers = useFiredux("user");
+  const listUsers = useMemo(() => Object.entries(rawUsers ?? {}).map((entry) => ({
     _id: entry[0],
     ...entry[1],
-  }));
+  })), [rawUsers]);
 
-  const list = ["CHỦ ĐỀ", "GAME", "KINH NGHIỆM", "TIỀN"];
-  const [objectIndex, setObjectIndex] = React.useState(0);
+  const [sortedUsers, setSortedUsers] = React.useState([]);
 
-  function sortsByCoins(data) {
-    const sortedData = data?.sort(function (a, b) {
-      var _a = a.stats?.coins;
-      var _b = b.stats?.coins;
-      if (_a > _b) return -1;
-      if (_a < _b) return 1;
-      return 0;
-    });
-    return sortedData;
-  }
+  const listCategories = ["CHỦ ĐỀ", "TRÒ CHƠI", "KINH NGHIỆM", "TIỀN"];
+  const [categoryIndex, setCategoryIndex] = React.useState(0);
 
-  function sortsByTopic(data) {
-    const sortedData = data?.sort(function (a, b) {
-      var _a = a.stats?.topic?.length;
-      var _b = b.stats?.topic?.length;
-      if (_a > _b) return -1;
-      if (_a < _b) return 1;
-      return 0;
-    });
-    return sortedData;
-  }
+  const currentCategory = React.useMemo(() => {
+    const categories = ["topics", "games", "exp", "coins"];
+    return categories[categoryIndex]
+  }, [categoryIndex])
 
-  function sortsByExp(data) {
-    const sortedData = data?.sort(function (a, b) {
-      var _a = a.stats?.exp;
-      var _b = b.stats?.exp;
-      if (_a > _b) return -1;
-      if (_a < _b) return 1;
-      return 0;
-    });
-    return sortedData;
-  }
+  useEffect(() => {
+    if (!listUsers)
+      return;
+
+    const newSortedUser = [...listUsers];
+    newSortedUser.sort((u1, u2) => getUserStats(currentCategory, u2) - getUserStats(currentCategory, u1));
+
+    setSortedUsers(newSortedUser);
+  }, [listUsers, currentCategory])
 
   // Thyyy::: sort listuser theo ....
 
   const List = () => {
     return (
       <View style={styles.listContainer}>
-        {list.map((item, index) => (
+        {listCategories.map((item, index) => (
           <TouchableOpacity
             key={index}
             activeOpacity={0.8}
-            onPress={() => setObjectIndex(index)}
+            onPress={() => setCategoryIndex(index)}
           >
             <Text
               style={[
                 styles.text,
-                objectIndex === index && styles.textSelected,
+                categoryIndex === index && styles.textSelected,
               ]}
             >
               {item}
@@ -78,7 +64,7 @@ function LeaderboardScreen() {
     );
   };
 
-  const Card = ({ user }) => {
+  const Card = ({ user, currentCategory }) => {
     return (
       <View
         style={[
@@ -92,7 +78,7 @@ function LeaderboardScreen() {
       >
         <Text style={[styles.label, { color: "black" }]}>{user?.name}</Text>
         <Text style={[styles.label, { color: "black" }]}>
-          {user?.stats.coins}
+          {getUserStats(currentCategory, user)}
         </Text>
       </View>
     );
@@ -102,16 +88,17 @@ function LeaderboardScreen() {
       <View style={styles.headingWrapper}>
         <Text style={styles.heading}>BẢNG XẾP HẠNG</Text>
       </View>
-      <List />
+      {/* <List /> */}
+      {List()}
       <FlatList
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           paddingBottom: 40,
           marginTop: 10,
         }}
-        data={listUsers}
+        data={sortedUsers}
         renderItem={({ item }) => {
-          return <Card user={item} />;
+          return Card({ user: item, currentCategory });
         }}
       />
     </SafeAreaView>
