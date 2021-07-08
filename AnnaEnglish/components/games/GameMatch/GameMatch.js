@@ -28,11 +28,12 @@ const AnswerImage = ({ backgroundColor, onPress, imageUrl, isSelected }) => {
             backgroundColor: backgroundColor,
             justifyContent: "center",
             borderColor: "black",
+            opacity: isSelected ? 1 : .5,
           },
         ]}
       >
         <Image
-          source={imageUrl}
+          source={{ uri: imageUrl }}
           style={{
             height: 76,
             resizeMode: "center",
@@ -56,6 +57,7 @@ const AnswerText = ({ label, backgroundColor, onPress, isSelected }) => {
           {
             backgroundColor: backgroundColor,
             borderColor: "black",
+            opacity: isSelected ? 1 : .5,
           },
         ]}
       >
@@ -65,36 +67,65 @@ const AnswerText = ({ label, backgroundColor, onPress, isSelected }) => {
   );
 };
 
-const GameMatch = ({ data, onComplete, onStepChange }) => {
-  const tmp = ["Goodbye", " ", " ", " "];
-  const imageUrl = {
-    uri: "https://tiengtrunganhduong.com/Images/images/635766289191430000.jpg",
-  };
+const GameMatch = ({ data, onComplete, onStepChange, onCorrect, onIncorrect, }) => {
+  const pairs = React.useRef(Object.values(data?.pairs ?? {})).current;
+  const textOptions = React.useRef(shuffle(pairs.map(p => p["0"])));
+  const imageOptions = React.useRef(shuffle(pairs.map(p => p["1"])));
 
-  const questions = React.useRef(Object.values(data?.questions ?? {})).current;
-  const countSteps = React.useRef(
-    Object.values(data?.questions ?? {}).length
-  ).current;
+  const countSteps = React.useRef(pairs.length).current;
   const [currentStep, setCurrentStep] = React.useState(0);
 
-  const [options, setOptions] = React.useState([]);
   React.useEffect(() => {
-    if (currentStep < countSteps) {
-      setOptions(shuffle(Object.values(questions[currentStep].options ?? {})));
-    }
-
     onStepChange?.(currentStep, countSteps);
   }, [currentStep, countSteps]);
 
   const backgroundColor = React.useRef(randomColor()).current;
   const backgroundColorWords = React.useRef(randomColor()).current;
-  const checkAnswer = () => { };
 
-  const handleSubmitButtonPress = () => { };
+  const [selection, setSelection] = React.useState({ text: null, image: null });
+  const checkAnswer = () => {
+    return pairs.some(p => p["0"] === selection.text && p["1"] === selection.image);
+  };
 
-  const handleCorrect = () => { };
+  /**
+   * @param {"text"|"image"} type 
+   */
+  const handleToggleSelect = (type, value) => {
+    if (value)
+      setSelection(prev => {
+        return {
+          ...prev,
+          [type]: prev[type] === value ? null : value
+        };
+      })
+  }
 
-  const handleWrong = () => { };
+  React.useEffect(() => {
+    if (selection.text && selection.image)
+      if (checkAnswer()) {
+        handleCorrect();
+      } else {
+        handleIncorrect();
+      }
+  }, [selection]);
+
+  const handleCorrect = () => {
+    if (currentStep < countSteps - 1) {
+      textOptions.current = textOptions.current.map(text => text === selection.text ? "" : text);
+      imageOptions.current = imageOptions.current.map(image => image === selection.image ? "" : image);
+
+      setSelection({ text: null, image: null });
+      setCurrentStep((prev) => prev + 1);
+      onCorrect?.();
+    } else {
+      handleComplete();
+    }
+  };
+
+  const handleIncorrect = () => {
+    setSelection({ text: null, image: null });
+    onIncorrect?.();
+  };
 
   const handleComplete = () => {
     onComplete?.();
@@ -109,12 +140,13 @@ const GameMatch = ({ data, onComplete, onStepChange }) => {
             marginBottom: 10,
             paddingRight: 20,
           }}
-          data={options}
+          data={textOptions.current}
           renderItem={({ item }) => (
             <AnswerText
               label={item}
               backgroundColor={backgroundColor}
-              onPress={() => { }}
+              onPress={() => handleToggleSelect("text", item)}
+              isSelected={item === selection.text}
             />
           )}
         />
@@ -124,18 +156,16 @@ const GameMatch = ({ data, onComplete, onStepChange }) => {
           contentContainerStyle={{
             marginBottom: 10,
           }}
-          data={tmp}
+          data={imageOptions.current}
           renderItem={({ item }) => (
             <AnswerImage
               backgroundColor={backgroundColorWords}
-              onPress={() => { }}
-              imageUrl={imageUrl}
+              imageUrl={item}
+              onPress={() => handleToggleSelect("image", item)}
+              isSelected={item === selection.image}
             />
           )}
         />
-      </View>
-      <View style={styles.getStartedbtnItemWrapper}>
-        <PrimaryButton label={"SUBMIT"} onPress={handleSubmitButtonPress} />
       </View>
     </View>
   );

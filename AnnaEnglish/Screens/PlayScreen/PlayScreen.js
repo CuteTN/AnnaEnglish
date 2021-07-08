@@ -31,6 +31,9 @@ function PlayScreen() {
    * @returns {boolean} unlockable
    */
   const unlockTopic = (topic) => {
+    if (!username)
+      return false;
+
     if (!topic?._id)
       return false;
 
