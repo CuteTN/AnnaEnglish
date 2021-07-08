@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import Octicons from "react-native-vector-icons/Octicons";
 import { useNavigation } from "@react-navigation/core";
 import { colors } from "../../config/colors";
 
@@ -13,8 +13,8 @@ export default function Header({ title }) {
 
   return (
     <View style={styles.header}>
-      <Ionicons
-        name="arrow-back-circle"
+      <Octicons
+        name="chevron-left"
         size={28}
         onPress={openMenu}
         style={styles.icon}
