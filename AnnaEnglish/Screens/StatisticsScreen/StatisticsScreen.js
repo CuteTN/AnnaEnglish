@@ -5,6 +5,7 @@ import { View, SafeAreaView, StyleSheet, Text, ScrollView } from "react-native";
 import AvatarCard from "../../components/card/AvatarCard/AvatarCard";
 import StatiticCard from "../../components/card/StatiticCard/StatiticCard";
 import { colors } from "../../config/colors";
+import { getUserStats } from "../../Utils/user";
 
 function StatisticsScreen() {
   const navigation = useNavigation();
@@ -14,8 +15,6 @@ function StatisticsScreen() {
   const imageExpUrl = { uri: "https://imgur.com/mKlEyuC.png" };
   const imageGameUrl = { uri: "https://imgur.com/D0kVXnR.png" };
   const imageCoinUrl = { uri: "https://imgur.com/ye4ucg0.png" };
-  const titleTopic = "Chủ đề đã học";
-  const numbertopic = "40";
 
   return (
     <SafeAreaView style={styles.container}>
@@ -26,29 +25,29 @@ function StatisticsScreen() {
         <View style={styles.card}>
           <StatiticCard
             imageUrl={imageTopicUrl}
-            title={titleTopic}
-            number={numbertopic}
+            title={"Chủ đề đã học"}
+            number={getUserStats("topics", user)}
           ></StatiticCard>
         </View>
         <View style={styles.card}>
           <StatiticCard
             imageUrl={imageGameUrl}
-            title={"Game đã chơi"}
-            number={numbertopic}
+            title={"trò đã chơi"}
+            number={getUserStats("games", user)}
           ></StatiticCard>
         </View>
         <View style={styles.card}>
           <StatiticCard
             imageUrl={imageExpUrl}
-            title={"Tổng kinh nghiệm"}
-            number={user?.stats.exp}
+            title={"Điểm kinh nghiệm"}
+            number={getUserStats("exp", user)}
           ></StatiticCard>
         </View>
         <View style={styles.card}>
           <StatiticCard
             imageUrl={imageCoinUrl}
-            title={"Tổng số tiền"}
-            number={user?.stats.coins}
+            title={"Tiền tiết kiệm"}
+            number={getUserStats("coins", user)}
           ></StatiticCard>
         </View>
       </ScrollView>
