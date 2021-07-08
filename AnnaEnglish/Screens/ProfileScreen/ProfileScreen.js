@@ -15,7 +15,7 @@ import { colors } from "../../config/colors";
 
 function ProfileScreen() {
   const navigation = useNavigation();
-  const { user } = useSignedIn();
+  const { user, username } = useSignedIn();
 
   const handleSignOutPress = () => {
     Fire.signOut().then((isSuccessful) => {
@@ -23,7 +23,7 @@ function ProfileScreen() {
     });
   };
 
-  const handleEditProfilePress = () => {};
+  const handleEditProfilePress = () => { };
 
   // const handlTestHookPress = () => {
   //   if (!user?.ok)
@@ -32,12 +32,12 @@ function ProfileScreen() {
   //     updateUser({ ok: "" })
   // }
 
-  const handle = () => {};
+  const handle = () => { };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.card}>
-        <AvatarCard user={user}></AvatarCard>
+        <AvatarCard user={user} username={username}></AvatarCard>
         <View style={styles.row}>
           <Icon name="map-marker-radius" color={colors.icon} size={28} />
           <Text style={styles.textItem}>{user?.country}</Text>
