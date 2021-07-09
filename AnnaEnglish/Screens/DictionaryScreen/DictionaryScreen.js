@@ -64,7 +64,7 @@ function DictionaryScreen() {
     <View style={styles.styleCenter}>
       <View style={styles.header}>
         <View style={styles.headerBody}>
-          <Text style={styles.headerText}>Dictionary</Text>
+          <Text style={styles.headerText}>Từ vựng</Text>
         </View>
         <View style={styles.groupInputs}>
           <View style={styles.wrapperInput}>

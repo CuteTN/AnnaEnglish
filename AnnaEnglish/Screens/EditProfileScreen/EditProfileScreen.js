@@ -164,7 +164,7 @@ const EditProfileScreen = () => {
       keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
     >
       <View style={{ marginTop: 30 }}>
-        <Header title="EDIT PROFILE" />
+        <Header title="ĐỔI THÔNG TIN CÁ NHÂN" />
       </View>
       <ScrollView style={styles.container}>
         <BottomSheet
@@ -296,7 +296,7 @@ const EditProfileScreen = () => {
           </View>
           <View style={styles.getStartedbtnItemWrapper}>
             <PrimaryButton
-              label={"SAVE CHANGES "}
+              label={"LƯU THAY ĐỔI"}
               onPress={handleSaveButtonPress}
             />
           </View>

@@ -25,7 +25,7 @@ const EditPasswordScreen = () => {
       keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
     >
       <View style={{ marginTop: 30 }}>
-        <Header title="EDIT PASSWORD" />
+        <Header title="CHỈNH SỬA MẬT KHẨU" />
       </View>
       <ScrollView style={styles.container}>
         <Animated.View
@@ -66,7 +66,7 @@ const EditPasswordScreen = () => {
 
           <View style={styles.getStartedbtnItemWrapper}>
             <PrimaryButton
-              label={"SAVE CHANGES "}
+              label={"LƯU THAY ĐỔI"}
               onPress={handleSaveButtonPress}
             />
           </View>
