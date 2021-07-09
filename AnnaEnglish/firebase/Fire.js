@@ -96,6 +96,30 @@ class Fire {
     return { successful, error };
   }
 
+  static checkPassword = async (password) => {
+    let isSuccessful = true;
+
+    let user = firebase.auth().currentUser;
+    let cred = firebase.auth.EmailAuthProvider.credential(
+      user.email,
+      password,
+    );
+    try {
+      await user.reauthenticateWithCredential(cred).then(
+        () => { isSuccessful = true }
+      ).catch(
+        (reason) => { isSuccessful = false; }
+      );
+    } catch (error) {
+      // console.error(error);
+    }
+
+    return isSuccessful;
+  };
+
+  static updatePassword = async (newPassword) => {
+    await this.getCurrentUser().updatePassword(newPassword);
+  }
 
 
   static getRootRef = () => firebase.database().ref()

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useMemo } from "react";
+import React from "react";
 import { View, SafeAreaView, StyleSheet, Text } from "react-native";
 import { colors } from "../../config/colors";
 import Octicons from "react-native-vector-icons/Octicons";
@@ -6,6 +6,19 @@ import { useNavigation } from "@react-navigation/core";
 import { useRealtimeFire } from "../../hooks/useRealtimeFire";
 
 export default WordScreen = ({ route }) => {
+  const [rawWord] = useRealtimeFire(`vocabulary`, route?.params.word);
+  const word = React.useMemo(() => {
+    return {
+      eng: route?.params.word,
+      meaning: Object.values(rawWord?.meaning ?? {}),
+    }
+  }, [rawWord])
+
+  // Thyy
+  React.useEffect(() => {
+    console.log("word", word);
+  }, [word])
+
   const navigation = useNavigation();
   const onPress = () => {
     navigation.goBack();
@@ -22,7 +35,7 @@ export default WordScreen = ({ route }) => {
             style={styles.icon}
           />
           <View>
-            <Text style={styles.headerText}>{route?.params.word}</Text>
+            <Text style={styles.headerText}>{word.eng}</Text>
           </View>
         </View>
       </View>

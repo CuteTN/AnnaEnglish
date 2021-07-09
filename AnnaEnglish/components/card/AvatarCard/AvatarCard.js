@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Avatar, Title, Caption } from "react-native-paper";
 
-export default function AvatarCard({ user }) {
+export default function AvatarCard({ user, username }) {
   return (
     <View style={styles.userInfoSection}>
       <View style={{ flexDirection: "row" }}>
@@ -24,7 +24,7 @@ export default function AvatarCard({ user }) {
           >
             {user?.name}
           </Title>
-          <Caption style={styles.caption}>{"@" + user?.displayName}</Caption>
+          <Caption style={styles.caption}>{"@" + username}</Caption>
         </View>
       </View>
     </View>
