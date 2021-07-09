@@ -33,16 +33,6 @@ export const styles = StyleSheet.create({
   headingWrapper: {
     marginTop: 35,
   },
-  heading: {
-    fontWeight: "bold",
-    fontSize: 28,
-    color: colors.heading,
-  },
-  subHeading: {
-    color: colors.heading,
-    fontSize: 28,
-    marginTop: 10,
-  },
   title: {
     fontSize: 20,
     fontWeight: "300",
@@ -56,14 +46,6 @@ export const styles = StyleSheet.create({
   scrollViewWrapper: {
     justifyContent: "space-between",
     marginTop: 40,
-  },
-  itemContainer: {},
-  label: {
-    fontSize: 18,
-    fontWeight: "bold",
-    alignItems: "flex-end",
-    marginTop: 10,
-    marginBottom: 10,
   },
   topicImage: {
     alignSelf: "center",

@@ -16,10 +16,10 @@ export const styles = StyleSheet.create({
 
   label: {
     fontSize: 18,
-    fontWeight: "bold",
     marginTop: 25,
     color: colors.black,
     textAlign: "center",
+    fontFamily: "Cucho",
   },
 
   card: {

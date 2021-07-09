@@ -23,7 +23,7 @@ function ProfileScreen() {
     });
   };
 
-  const handleEditProfilePress = () => { };
+  const handleEditProfilePress = () => {};
 
   // const handlTestHookPress = () => {
   //   if (!user?.ok)
@@ -32,7 +32,7 @@ function ProfileScreen() {
   //     updateUser({ ok: "" })
   // }
 
-  const handle = () => { };
+  const handle = () => {};
 
   return (
     <SafeAreaView style={styles.container}>
@@ -156,5 +156,6 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     fontSize: 18,
     fontFamily: "Cucho",
+    marginTop: 2,
   },
 });

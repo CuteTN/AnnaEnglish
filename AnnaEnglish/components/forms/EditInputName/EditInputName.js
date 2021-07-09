@@ -16,11 +16,6 @@ export const EditInputName = ({
         placeholder={placeHolder}
         onChangeText={onChangeText}
       />
-      {/* <View style={styles.validityShowWrapper}>
-        {isValid ? (
-          <Image source={require("../../../assets/images/checked.png")} />
-        ) : null}
-      </View> */}
     </View>
   );
 };

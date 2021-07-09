@@ -134,9 +134,39 @@ function PlayScreen() {
                 style={[styles.questionImage]}
               />
             )}
-            <Text style={[styles.label, { color: colors.black }]}>
-              {topic.name}
-            </Text>
+            <View style={styles.row}>
+              <Text style={[styles.label, { color: colors.black }]}>
+                {topic.name}
+              </Text>
+              <View
+                style={{
+                  alignContent: "flex-end",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 22,
+                    justifyContent: "flex-end",
+                    marginBottom: 0,
+                    marginRight: 1,
+                    fontFamily: "Cucho",
+                    color: colors.black,
+                  }}
+                >
+                  100
+                </Text>
+                <Image
+                  source={{ uri: "https://imgur.com/B2sbpi2.png" }}
+                  style={{
+                    width: 24,
+                    resizeMode: "center",
+                    marginBottom: 0,
+                  }}
+                />
+              </View>
+            </View>
           </View>
         </View>
       </TouchableOpacity>
@@ -158,9 +188,7 @@ function PlayScreen() {
         <FlatList
           columnWrapperStyle={{ justifyContent: "space-between" }}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            marginTop: 10,
-          }}
+          contentContainerStyle={{}}
           numColumns={2}
           data={listTopics}
           renderItem={({ item }) => {

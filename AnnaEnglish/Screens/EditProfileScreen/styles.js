@@ -19,6 +19,7 @@ export const styles = StyleSheet.create({
   text_footer: {
     color: "#05375a",
     fontSize: 14,
+    fontFamily: "Cucho",
   },
   panel: {
     padding: 20,

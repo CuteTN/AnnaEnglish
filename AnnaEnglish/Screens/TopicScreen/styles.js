@@ -30,15 +30,15 @@ export const styles = StyleSheet.create({
   },
   scrollViewWrapper: {
     justifyContent: "space-between",
-    marginTop: 40,
+    marginTop: 20,
   },
   itemContainer: {},
   label: {
     fontSize: 18,
-    fontWeight: "bold",
     alignItems: "flex-end",
     marginTop: 10,
     marginBottom: 10,
+    fontFamily: "Cucho",
   },
   topicImage: {
     alignSelf: "center",

@@ -144,7 +144,9 @@ const GameHangman = ({
   return (
     <View style={styles.container}>
       <View style={styles.container}>
-        <Text style={{ textAlign: "center", fontSize: 28 }}>
+        <Text
+          style={{ textAlign: "center", fontSize: 18, fontFamily: "Cucho" }}
+        >
           {questions[currentStep].question}
         </Text>
         {imageUrl ? (

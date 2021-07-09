@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
     fontWeight: "300",
     marginTop: 10,
     color: colors.gray,
-    marginBottom: 40,
+    marginBottom: 30,
   },
   bgImage: {
     position: "absolute",
@@ -35,10 +35,8 @@ export const styles = StyleSheet.create({
   },
   itemContainer: {},
   label: {
-    fontSize: 18,
-    alignItems: "flex-end",
-    marginTop: 10,
-    marginBottom: 10,
+    fontSize: 22,
+    marginBottom: 0,
     fontFamily: "Cucho",
   },
   topicImage: {
@@ -46,7 +44,7 @@ export const styles = StyleSheet.create({
     resizeMode: "center",
   },
   card: {
-    padding: 10,
+    padding: 7,
     flex: 1,
     borderRadius: 10,
     flexDirection: "column",
@@ -61,5 +59,9 @@ export const styles = StyleSheet.create({
     marginTop: 45,
     height: 50,
     resizeMode: "contain",
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });

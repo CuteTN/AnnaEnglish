@@ -7,27 +7,6 @@ import { PrimaryButton } from "../../buttons/PrimaryButton/PrimaryButton";
 import { shuffle } from "../../../Utils/shuffle";
 import { TextInput } from "react-native-paper";
 
-const Card = ({ label, onPress, isSelected }) => {
-  return (
-    <TouchableOpacity style={{ flex: 1, borderRadius: 15 }} onPress={onPress}>
-      <View
-        style={[
-          styles.card,
-          {
-            backgroundColor: isSelected ? "#C9D8E5" : "#E0F0FF",
-            marginBottom: 10,
-            margin: 5,
-            borderRadius: 10,
-            marginTop: 10,
-          },
-        ]}
-      >
-        <Text style={[styles.label, { color: colors.black }]}>{label}</Text>
-      </View>
-    </TouchableOpacity>
-  );
-};
-
 export default GameFill = ({
   data,
   allowMultiSelect,
@@ -89,7 +68,14 @@ export default GameFill = ({
   return (
     <View style={styles.container}>
       <View style={styles.container}>
-        <Text style={{ textAlign: "center", fontSize: 40, marginTop: 30 }}>
+        <Text
+          style={{
+            textAlign: "center",
+            fontSize: 24,
+            marginTop: 30,
+            fontFamily: "Cucho",
+          }}
+        >
           {questions[currentStep].question}
         </Text>
       </View>
@@ -103,7 +89,8 @@ export default GameFill = ({
               borderRadius: 10,
               marginTop: 10,
               height: 80,
-              fontSize: 30,
+              fontSize: 20,
+              fontFamily: "Cucho",
               flexDirection: "row",
               justifyContent: "center",
             },

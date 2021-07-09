@@ -11,9 +11,6 @@ export const SecondaryInput = ({ placeHolder, value, onChangeText }) => {
         placeholder={placeHolder}
         onChangeText={onChangeText}
       />
-      <View style={styles.eyeWrapper}>
-        <Image source={require("../../../assets/images/eye.png")} />
-      </View>
     </View>
   );
 };
