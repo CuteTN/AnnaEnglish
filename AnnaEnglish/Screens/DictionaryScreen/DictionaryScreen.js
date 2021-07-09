@@ -34,32 +34,6 @@ function DictionaryScreen() {
     word?._id.toLowerCase().includes(txtSearch.toLowerCase())
   );
 
-  const Card = ({}) => {
-    console.log(vocabulary);
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          handleSelectWord(vocabulary);
-        }}
-      >
-        <View
-          style={[
-            styles.card,
-            {
-              backgroundColor: "#AFEEEE",
-              marginBottom: 5,
-              margin: 10,
-            },
-          ]}
-        >
-          <Text style={[styles.label, { color: "black" }]}>
-            {vocabulary?._id}
-          </Text>
-        </View>
-      </TouchableOpacity>
-    );
-  };
-
   return (
     <View style={styles.styleCenter}>
       <View style={styles.header}>

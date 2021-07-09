@@ -18,12 +18,6 @@ export default WordScreen = ({ route }) => {
 
   // const [meaning, setMeaning] = React.useState(word?.meaning);
   const meaning = word?.meaning.slice();
-  // Thyy
-  React.useEffect(() => {
-    console.log("word", word);
-    console.log("meaning", meaning);
-    console.log("meaning", meaning[0]?.type);
-  }, [word]);
 
   const navigation = useNavigation();
   const onPress = () => {
