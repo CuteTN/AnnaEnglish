@@ -2,7 +2,14 @@ import { useNavigation } from "@react-navigation/core";
 import React, { useState } from "react";
 import Fire from "../../firebase/Fire";
 import { useSignedIn } from "../../hooks/useSignedIn";
-import { View, SafeAreaView, Alert, Modal, Pressable } from "react-native";
+import {
+  View,
+  SafeAreaView,
+  Alert,
+  Modal,
+  Pressable,
+  Image,
+} from "react-native";
 import { Text, TouchableRipple } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { styles } from "./styles";
@@ -34,11 +41,9 @@ function ProfileScreen() {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <View>
-              <Text style={styles.modalText}>
-                Bạn có chắc muốn đăng xuất không?
-              </Text>
-            </View>
+            <Text style={styles.modalText}>
+              Bạn có chắc muốn đăng xuất không?
+            </Text>
             <View
               style={{
                 flexDirection: "row",

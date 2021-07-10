@@ -2,17 +2,7 @@ import React, { useEffect } from "react";
 // import Modal from 'react-native-modal';
 import { colors } from "../../../config/colors";
 import { PrimaryButton } from "../../buttons/PrimaryButton/PrimaryButton";
-import {
-  View,
-  StyleSheet,
-  Button,
-  Modal,
-  Image,
-  Text,
-  TouchableOpacity,
-  Animated,
-  BackHandler,
-} from "react-native";
+import { View, StyleSheet, Modal, Animated, Image } from "react-native";
 import { useSignedIn } from "../../../hooks/useSignedIn";
 
 export default function CheckModal({ visible, isCorrect, onButtonPress }) {
@@ -39,12 +29,12 @@ export default function CheckModal({ visible, isCorrect, onButtonPress }) {
         ? imageCorrect_Male_Url
         : imageWrong_Male_Url
       : isCorrect
-        ? imageCorrect_Female_Url
-        : imageWrong_Female_Url;
+      ? imageCorrect_Female_Url
+      : imageWrong_Female_Url;
 
   const handleButtonPress = () => {
     onButtonPress?.();
-  }
+  };
 
   return (
     <Modal transparent visible={visible}>

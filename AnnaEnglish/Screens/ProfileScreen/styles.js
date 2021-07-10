@@ -86,8 +86,8 @@ export const styles = StyleSheet.create({
     padding: 10,
     elevation: 2,
     width: 100,
-    marginLeft: 5,
-    marginRight: 5,
+    marginLeft: 10,
+    marginRight: 10,
   },
   buttonOpen: {
     backgroundColor: colors.primary,
