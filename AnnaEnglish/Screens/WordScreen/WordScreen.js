@@ -6,6 +6,8 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/core";
 import { useRealtimeFire } from "../../hooks/useRealtimeFire";
 import { styles } from "./styles";
+import { toVietnameseWordTypes } from "../../Utils/vocabulary";
+import { speakWithRandomVoice } from "../../Utils/speech";
 
 export default WordScreen = ({ route }) => {
   const [rawWord] = useRealtimeFire(`vocabulary`, route?.params.word);
@@ -15,6 +17,25 @@ export default WordScreen = ({ route }) => {
       meaning: Object.values(rawWord?.meaning ?? {}),
     };
   }, [rawWord]);
+
+  const isSpeaking = React.useRef(false);
+
+  /**
+   * @param {"vi"|"en"} lang 
+   * @returns 
+   */
+  const handleSpeak = (lang, text) => {
+    // prevent buffer call
+    if (isSpeaking.current)
+      return;
+
+    isSpeaking.current = true;
+
+    speakWithRandomVoice(lang, text, {
+      onDone: () => isSpeaking.current = false,
+      onError: () => isSpeaking.current = false,
+    });
+  }
 
   // const [meaning, setMeaning] = React.useState(word?.meaning);
   const meaning = word?.meaning.slice();
@@ -28,16 +49,28 @@ export default WordScreen = ({ route }) => {
     return (
       <View>
         <View style={styles.row}>
-          <Text style={[styles.label, { color: "blue", marginLeft: 20 }]}>
+          <Text
+            style={[styles.label, { color: "blue", marginLeft: 20 }]}
+          >
             Example:{" "}
           </Text>
-          <Text style={[styles.label, { color: "black" }]}>{item[0]["0"]}</Text>
+          <Text
+            style={[styles.label, { color: "black" }]}
+            onPress={() => handleSpeak("en", item[0]["0"])}
+          >
+            {item[0]["0"]}
+          </Text>
         </View>
         <View style={styles.row}>
           <Text style={[styles.label, { color: "blue", marginLeft: 20 }]}>
             Ví dụ:{" "}
           </Text>
-          <Text style={[styles.label, { color: "black" }]}>{item[0]["1"]}</Text>
+          <Text
+            style={[styles.label, { color: "black" }]}
+            onPress={() => handleSpeak("vi", item[0]["1"])}
+          >
+            {item[0]["1"]}
+          </Text>
         </View>
       </View>
     );
@@ -54,9 +87,12 @@ export default WordScreen = ({ route }) => {
             size={20}
           />
           <Text style={[styles.label, { color: "red", marginLeft: 5 }]}>
-            {item.type}
+            {toVietnameseWordTypes(item.type)}
           </Text>
-          <Text style={[styles.label, { color: "black" }]}>
+          <Text
+            style={[styles.label, { color: "black" }]}
+            onPress={() => handleSpeak("vi", item.vie)}
+          >
             :{" " + item.vie}
           </Text>
         </View>
@@ -78,6 +114,15 @@ export default WordScreen = ({ route }) => {
           <View>
             <Text style={styles.headerText}>{word.eng}</Text>
           </View>
+        </View>
+        <View>
+          <Ionicons
+            name="volume-high-outline"
+            style={{ marginTop: 3, alignSelf: "center" }}
+            color={colors.primary}
+            size={50}
+            onPress={() => handleSpeak("en", route?.params?.word)}
+          />
         </View>
         <View>
           {meaning.map((item) => (

@@ -3859,6 +3859,11 @@
   "resolved" "https://registry.npmjs.org/expo-secure-store/-/expo-secure-store-9.3.0.tgz"
   "version" "9.3.0"
 
+"expo-speech@^9.2.0":
+  "integrity" "sha512-Nwu1v/Lpw46AgibqTzv6fiADmxKO2+HL7WkrmwqUQprQbiGh/T5E6Gh56Mn7DjHh0LrTZdg2f+oB0d2BgE/zFA=="
+  "resolved" "https://registry.npmjs.org/expo-speech/-/expo-speech-9.2.0.tgz"
+  "version" "9.2.0"
+
 "expo-splash-screen@~0.11.2":
   "integrity" "sha512-4jTAs2IDS4rH9A3NK0WhFDIOyLgDExRe0zCf179vRNPZ6HlXCFEQS7Y9RaUF5EFqyYvsPiwaJQyRes3sO4mA+g=="
   "resolved" "https://registry.npmjs.org/expo-splash-screen/-/expo-splash-screen-0.11.2.tgz"
