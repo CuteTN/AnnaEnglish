@@ -1,5 +1,5 @@
 import React from "react";
-import { View, FlatList, Text, TouchableOpacity } from "react-native";
+import { View, FlatList, Text, TouchableOpacity, Image } from "react-native";
 import { colors } from "../../../config/colors";
 // import { styles } from "../../../shared/styles";
 import { styles } from "./styles";
@@ -50,6 +50,10 @@ const GameSelectBase = ({
 
   const [options, setOptions] = React.useState([]);
   const [selections, setSelections] = React.useState([]);
+
+  const image = {
+    uri: "https://tiengtrunganhduong.com/Images/images/635766289191430000.jpg",
+  };
 
   React.useEffect(() => {
     if (currentStep < countSteps) {
@@ -117,17 +121,25 @@ const GameSelectBase = ({
     <View style={styles.container}>
       <View style={styles.container}>
         <Text
-          style={{ textAlign: "center", fontSize: 30, fontFamily: "Cucho" }}
+          style={{ textAlign: "center", fontSize: 26, fontFamily: "Cucho" }}
         >
           {questions[currentStep].question}
         </Text>
+        {image ? (
+          <Image
+            source={image}
+            style={{ height: 120, resizeMode: "center", margin: 5 }}
+          ></Image>
+        ) : (
+          <></>
+        )}
       </View>
       <View>
         <FlatList
           columnWrapperStyle={{ justifyContent: "space-between" }}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
-            marginBottom: 50,
+            marginBottom: 10,
           }}
           numColumns={2}
           data={options}

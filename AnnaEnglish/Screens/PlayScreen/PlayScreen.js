@@ -15,6 +15,7 @@ import { isBrightColor } from "../../Utils/color";
 import { colors } from "../../config/colors";
 import { useSignedIn } from "../../hooks/useSignedIn";
 import Fire from "../../firebase/Fire";
+import { useYesNoModal } from "../../components/Modal/YesNoModalProvider";
 
 function PlayScreen() {
   const rawTopics = useFiredux("topic") ?? {};
@@ -26,6 +27,8 @@ function PlayScreen() {
   );
   const navigation = useNavigation();
   const { user, username } = useSignedIn();
+
+  const { showYesNoModal } = useYesNoModal();
 
   /**
    * @returns {boolean} unlockable
@@ -91,7 +94,17 @@ function PlayScreen() {
       navigation.navigate(SCREENS.topic.name, { topicId: topic._id });
 
     if (!unlocked) {
-      if (unlockTopic(topic)) navigateToTopicScreen();
+      showYesNoModal({
+        label: "Mở chủ đề",
+        onClose: (decision) => {
+          if (decision === "no")
+            return;
+          else {
+            const justUnlocked = unlockTopic(topic)
+            if (justUnlocked) navigateToTopicScreen();
+          }
+        }
+      })
     } else {
       navigateToTopicScreen();
     }
@@ -145,26 +158,30 @@ function PlayScreen() {
                   justifyContent: "space-between",
                 }}
               >
-                <Text
-                  style={{
-                    fontSize: 22,
-                    justifyContent: "flex-end",
-                    marginBottom: 0,
-                    marginRight: 1,
-                    fontFamily: "Cucho",
-                    color: colors.black,
-                  }}
-                >
-                  100
-                </Text>
-                <Image
-                  source={{ uri: "https://imgur.com/B2sbpi2.png" }}
-                  style={{
-                    width: 24,
-                    resizeMode: "center",
-                    marginBottom: 0,
-                  }}
-                />
+                {(!checkIsUnlockedTopic(topic)) && (
+                  <Text
+                    style={{
+                      fontSize: 22,
+                      justifyContent: "flex-end",
+                      marginBottom: 0,
+                      marginRight: 1,
+                      fontFamily: "Cucho",
+                      color: colors.black,
+                    }}
+                  >
+                    {topic?.require?.coins}
+                  </Text>
+                )}
+                {(!checkIsUnlockedTopic(topic)) && (
+                  <Image
+                    source={{ uri: "https://imgur.com/B2sbpi2.png" }}
+                    style={{
+                      width: 24,
+                      resizeMode: "center",
+                      marginBottom: 0,
+                    }}
+                  />
+                )}
               </View>
             </View>
           </View>

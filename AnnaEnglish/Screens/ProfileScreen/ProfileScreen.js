@@ -2,20 +2,25 @@ import { useNavigation } from "@react-navigation/core";
 import React, { useState } from "react";
 import Fire from "../../firebase/Fire";
 import { useSignedIn } from "../../hooks/useSignedIn";
-import stylesTabbar from "../TabNavigation/styles";
-import { View, SafeAreaView, StyleSheet } from "react-native";
+import {
+  View,
+  SafeAreaView,
+  Alert,
+  Modal,
+  Pressable,
+  Image,
+} from "react-native";
 import { Text, TouchableRipple } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import EditProfileScreen from "../EditProfileScreen/EditProfileScreen";
-import style from "./styles";
+import { styles } from "./styles";
 import { SCREENS } from "..";
-import CompleteModal from "../../components/games/CompleteModal/CompleteModal";
 import AvatarCard from "../../components/card/AvatarCard/AvatarCard";
 import { colors } from "../../config/colors";
 
 function ProfileScreen() {
   const navigation = useNavigation();
   const { user, username } = useSignedIn();
+  const [modalVisible, setModalVisible] = useState(false);
 
   const handleSignOutPress = () => {
     Fire.signOut().then((isSuccessful) => {
@@ -23,19 +28,43 @@ function ProfileScreen() {
     });
   };
 
-  const handleEditProfilePress = () => {};
-
-  // const handlTestHookPress = () => {
-  //   if (!user?.ok)
-  //     updateUser({ ok: "okok" })
-  //   else
-  //     updateUser({ ok: "" })
-  // }
-
-  const handle = () => {};
-
   return (
     <SafeAreaView style={styles.container}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>
+              Bạn có chắc muốn đăng xuất không?
+            </Text>
+            <View
+              style={{
+                flexDirection: "row",
+              }}
+            >
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textStyle}>Không</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={handleSignOutPress}
+              >
+                <Text style={styles.textStyle}>Có</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
       <View style={styles.card}>
         <AvatarCard user={user} username={username}></AvatarCard>
         <View style={styles.row}>
@@ -53,7 +82,6 @@ function ProfileScreen() {
           <Text style={styles.textItem}>{user?.birthday}</Text>
         </View>
       </View>
-
       <View style={styles.menuWrapper}>
         <TouchableRipple
           onPress={() => {
@@ -85,7 +113,7 @@ function ProfileScreen() {
             <Text style={styles.menuItemText}>Ghi chú</Text>
           </View>
         </TouchableRipple>
-        <TouchableRipple onPress={handleSignOutPress}>
+        <TouchableRipple onPress={() => setModalVisible(true)}>
           <View style={styles.menuItem}>
             <Icon name="logout" color="#6369D1" size={30} />
             <Text style={styles.menuItemText}>Đăng xuất</Text>
@@ -97,65 +125,3 @@ function ProfileScreen() {
 }
 
 export default ProfileScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.white,
-  },
-  card: {
-    margin: 30,
-    marginTop: 50,
-    backgroundColor: colors.card,
-    borderRadius: 15,
-    borderWidth: 2,
-    borderColor: colors.border,
-    elevation: 5,
-    position: "relative",
-  },
-  userInfoSection: {
-    paddingHorizontal: 30,
-    marginBottom: 10,
-    marginTop: 20,
-  },
-  row: {
-    flexDirection: "row",
-    marginBottom: 10,
-    marginLeft: 40,
-  },
-  infoBoxWrapper: {
-    borderBottomColor: "#dddddd",
-    borderBottomWidth: 1,
-    borderTopColor: "#dddddd",
-    borderTopWidth: 1,
-    flexDirection: "row",
-    height: 1,
-  },
-  infoBox: {
-    width: "50%",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  menuWrapper: {
-    marginTop: 10,
-  },
-  menuItem: {
-    flexDirection: "row",
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-  },
-  menuItemText: {
-    color: "#777777",
-    marginLeft: 20,
-    fontWeight: "600",
-    fontSize: 18,
-    lineHeight: 26,
-  },
-  textItem: {
-    color: colors.text,
-    marginLeft: 20,
-    fontSize: 18,
-    fontFamily: "Cucho",
-    marginTop: 2,
-  },
-});

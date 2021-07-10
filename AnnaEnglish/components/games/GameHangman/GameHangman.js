@@ -80,7 +80,7 @@ const GameHangman = ({
   const NUMBER_OF_WORDS = 12;
 
   //data.image
-  const imageUrl = {
+  const image = {
     uri: "https://tiengtrunganhduong.com/Images/images/635766289191430000.jpg",
   };
 
@@ -149,9 +149,9 @@ const GameHangman = ({
         >
           {questions[currentStep].question}
         </Text>
-        {imageUrl ? (
+        {image ? (
           <Image
-            source={imageUrl}
+            source={image}
             style={{ height: 120, resizeMode: "center", margin: 5 }}
           ></Image>
         ) : (
