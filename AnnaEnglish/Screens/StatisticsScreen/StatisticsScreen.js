@@ -6,7 +6,7 @@ import AvatarCard from "../../components/card/AvatarCard/AvatarCard";
 import StatiticCard from "../../components/card/StatiticCard/StatiticCard";
 import { colors } from "../../config/colors";
 import { getUserStats } from "../../Utils/user";
-
+import { styles } from "./styles";
 function StatisticsScreen() {
   const navigation = useNavigation();
   const { user } = useSignedIn();
@@ -56,29 +56,3 @@ function StatisticsScreen() {
 }
 
 export default StatisticsScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.white,
-  },
-  card: {
-    margin: 20,
-    marginBottom: 10,
-    backgroundColor: colors.statiticcard,
-    borderRadius: 15,
-    borderWidth: 2,
-    borderColor: colors.cardborder,
-    elevation: 5,
-    position: "relative",
-  },
-  headingWrapper: {
-    marginTop: 45,
-    alignItems: "center",
-  },
-  heading: {
-    fontSize: 28,
-    color: colors.heading,
-    fontFamily: "Pony",
-  },
-});

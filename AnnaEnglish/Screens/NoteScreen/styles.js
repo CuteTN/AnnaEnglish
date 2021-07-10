@@ -19,5 +19,9 @@ export const styles = StyleSheet.create({
     padding: 10,
     fontSize: 20,
     backgroundColor: "#FFFAF0",
+    fontFamily: "Cucho",
+  },
+  getStartedbtnItemWrapper: {
+    margin: 20,
   },
 });

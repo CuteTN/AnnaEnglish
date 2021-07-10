@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { colorAnswer, colors } from "../../config/colors";
+import { colors } from "../../config/colors";
 export const styles = StyleSheet.create({
   container: {
     display: "flex",
