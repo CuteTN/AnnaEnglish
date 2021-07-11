@@ -14,6 +14,8 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import NoteScreen from "./NoteScreen/NoteScreen";
 import WordScreen from "./WordScreen/WordScreen";
 import EditPasswordScreen from "./EditPasswordScreen/EditPasswordScreen";
+import TopicGameScreen from "./TopicGameScreen/TopicGameScreen";
+import TopicWordScreen from "./TopicWordScreen/TopicWordScreen";
 
 export const TAB_SCREENS = {
   statistic: {
@@ -100,6 +102,16 @@ export const SCREENS = {
   editPass: {
     name: "editPass",
     screen: EditPasswordScreen,
+  },
+
+  topicGame: {
+    name: "topicGame",
+    screen: TopicGameScreen,
+  },
+
+  topicWord: {
+    name: "topicWord",
+    screen: TopicWordScreen,
   },
 
   ...TAB_SCREENS,

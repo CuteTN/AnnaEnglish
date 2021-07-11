@@ -91,20 +91,19 @@ function PlayScreen() {
     const unlocked = checkIsUnlockedTopic(topic);
 
     const navigateToTopicScreen = () =>
-      navigation.navigate(SCREENS.topic.name, { topicId: topic._id });
+      navigation.navigate(SCREENS.topicGame.name, { topicId: topic._id });
 
     if (!unlocked) {
       showYesNoModal({
         label: "Mở chủ đề",
         onClose: (decision) => {
-          if (decision === "no")
-            return;
+          if (decision === "no") return;
           else {
-            const justUnlocked = unlockTopic(topic)
+            const justUnlocked = unlockTopic(topic);
             if (justUnlocked) navigateToTopicScreen();
           }
-        }
-      })
+        },
+      });
     } else {
       navigateToTopicScreen();
     }
@@ -158,7 +157,7 @@ function PlayScreen() {
                   justifyContent: "space-between",
                 }}
               >
-                {(!checkIsUnlockedTopic(topic)) && (
+                {!checkIsUnlockedTopic(topic) && (
                   <Text
                     style={{
                       fontSize: 22,
@@ -172,7 +171,7 @@ function PlayScreen() {
                     {topic?.require?.coins}
                   </Text>
                 )}
-                {(!checkIsUnlockedTopic(topic)) && (
+                {!checkIsUnlockedTopic(topic) && (
                   <Image
                     source={{ uri: "https://imgur.com/B2sbpi2.png" }}
                     style={{

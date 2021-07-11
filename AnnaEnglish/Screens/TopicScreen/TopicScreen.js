@@ -163,13 +163,19 @@ export default TopicScreen = ({ route }) => {
             {
               backgroundColor: checkCompletedGame(topicId, game._id)
                 ? colors.pastelGreen
-                : colors.gray,
+                : colors.game,
               marginBottom: 5,
               margin: 5,
             },
           ]}
         >
-          <Text style={[styles.label, { color: "black" }]}>{game?.name}</Text>
+          <View style={{ flexDirection: "row" }}>
+            <Image
+              source={{ uri: "https://imgur.com/AmvJzIu.png" }}
+              style={{ width: 70, height: 60 }}
+            ></Image>
+            <Text style={[styles.label, { color: "black" }]}>{game?.name}</Text>
+          </View>
         </View>
       </TouchableOpacity>
     );
