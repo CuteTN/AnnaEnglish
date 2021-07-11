@@ -3,9 +3,11 @@ import { View, FlatList, Text, TouchableOpacity, Image } from "react-native";
 import { colors, randomColor } from "../../../config/colors";
 // import { styles } from "../../../shared/styles";
 import { styles } from "./styles";
-import { PrimaryButton } from "../../buttons/PrimaryButton/PrimaryButton";
-import { shuffle } from "../../../Utils/shuffle";
-import { randomInt } from "../../../Utils/math";
+import { useFiredux } from "../../../hooks/useFiredux";
+import { extractImageUri } from "../../../Utils/image";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { speakWithRandomVoice } from "../../../Utils/speech";
+import { replaceBlank, toSpelling } from "../../../Utils/string";
 
 const WordButton = ({ word, backgroundColor, onPress }) => {
   const handlePress = () => {
@@ -79,10 +81,18 @@ const GameHangman = ({
 
   const NUMBER_OF_WORDS = 12;
 
-  //data.image
-  const image = {
-    uri: "https://tiengtrunganhduong.com/Images/images/635766289191430000.jpg",
-  };
+  const vocabulary = useFiredux("vocabulary") ?? {};
+
+  const image = React.useMemo(() => {
+    /** @type {string} */
+    let uri = extractImageUri(questions[currentStep]?.image, vocabulary);
+    return uri ? { uri } : null;
+  }, [currentStep, vocabulary])
+
+  /** @type {GameHangmanSubtype} */
+  const currentSubtype = React.useMemo(() => {
+    return questions[currentStep]?.subtype;
+  }, [currentStep])
 
   const checkAnswerHasChar = (c) => {
     return questions[currentStep]?.answer
@@ -145,7 +155,11 @@ const GameHangman = ({
     <View style={styles.container}>
       <View style={styles.container}>
         <Text
-          style={{ textAlign: "center", fontSize: 18, fontFamily: "Cucho" }}
+          style={{ textAlign: "center", fontSize: 26, fontFamily: "Cucho" }}
+          onPress={() => speakWithRandomVoice(
+            questions[currentStep]?.questionLang,
+            replaceBlank(questions[currentStep].question, currentSubtype === "listen" ? questions[currentStep].answer : "blank"))
+          }
         >
           {questions[currentStep].question}
         </Text>
@@ -157,6 +171,35 @@ const GameHangman = ({
         ) : (
           <></>
         )}
+        {(currentSubtype === "listen" || currentSubtype === "spell") &&
+          (
+            <Ionicons
+              name="volume-high-outline"
+              style={{ marginTop: 3, alignSelf: "center" }}
+              color={colors.primary}
+              size={50}
+              onPress={() => {
+                let textToSpeak = "";
+                let langToSpeak = "";
+
+                switch (currentSubtype) {
+                  case "listen": {
+                    textToSpeak = replaceBlank(questions[currentStep].question, questions[currentStep].answer);
+                    langToSpeak = questions[currentStep].questionLang;
+                    break;
+                  }
+                  case "spell": {
+                    textToSpeak = toSpelling(questions[currentStep].answer);
+                    langToSpeak = questions[currentStep].answerLang;
+                    break;
+                  }
+                }
+                speakWithRandomVoice(langToSpeak, textToSpeak)
+              }}
+            />
+          )
+        }
+
         <FlatList
           columnWrapperStyle={{
             justifyContent: "center",
@@ -203,3 +246,7 @@ const GameHangman = ({
 };
 
 export default GameHangman;
+
+/**
+ * @typedef {"read"|"listen"|"spell"} GameHangmanSubtype
+ */

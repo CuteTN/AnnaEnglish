@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, FlatList, Text, TouchableOpacity, Image } from "react-native";
 import { colors } from "../../../config/colors";
 // import { styles } from "../../../shared/styles";
 import { styles } from "./styles";
 import { PrimaryButton } from "../../buttons/PrimaryButton/PrimaryButton";
 import { shuffle } from "../../../Utils/shuffle";
-import CheckModal from "../CheckModal/CheckModal";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { speakWithRandomVoice } from "../../../Utils/speech";
+import { useFiredux } from "../../../hooks/useFiredux";
+import { replaceBlank } from "../../../Utils/string";
+import { extractImageUri } from "../../../Utils/image";
 
 const Card = ({ label, onPress, isSelected }) => {
   return (
@@ -51,9 +55,18 @@ const GameSelectBase = ({
   const [options, setOptions] = React.useState([]);
   const [selections, setSelections] = React.useState([]);
 
-  const image = {
-    uri: "https://tiengtrunganhduong.com/Images/images/635766289191430000.jpg",
-  };
+  const vocabulary = useFiredux("vocabulary") ?? {};
+
+  const image = React.useMemo(() => {
+    /** @type {string} */
+    let uri = extractImageUri(questions[currentStep]?.image, vocabulary);
+    return uri ? { uri } : null;
+  }, [currentStep, vocabulary])
+
+  /** @type {GameSelectSubtype} */
+  const currentSubtype = useMemo(() => {
+    return questions[currentStep]?.subtype;
+  }, [currentStep])
 
   React.useEffect(() => {
     if (currentStep < countSteps) {
@@ -64,6 +77,8 @@ const GameSelectBase = ({
   }, [currentStep, countSteps]);
 
   const handleToggleSelectAnswer = (answer) => {
+    speakWithRandomVoice(questions[currentStep].optionsLang, answer)
+
     if (allowMultiSelect) {
       setSelections((prev) => {
         if (prev.includes(answer)) return prev.filter((a) => a !== answer);
@@ -122,9 +137,14 @@ const GameSelectBase = ({
       <View style={styles.container}>
         <Text
           style={{ textAlign: "center", fontSize: 26, fontFamily: "Cucho" }}
+          onPress={() => speakWithRandomVoice(
+            questions[currentStep]?.questionLang,
+            replaceBlank(questions[currentStep].question, currentSubtype === "listen" ? questions[currentStep].answer : "blank"))
+          }
         >
           {questions[currentStep].question}
         </Text>
+
         {image ? (
           <Image
             source={image}
@@ -133,6 +153,18 @@ const GameSelectBase = ({
         ) : (
           <></>
         )}
+
+        {currentSubtype === "listen" &&
+          (
+            <Ionicons
+              name="volume-high-outline"
+              style={{ marginTop: 3, alignSelf: "center" }}
+              color={colors.primary}
+              size={50}
+              onPress={() => speakWithRandomVoice(questions[currentStep]?.questionLang, replaceBlank(questions[currentStep].question, questions[currentStep].answer))}
+            />
+          )
+        }
       </View>
       <View>
         <FlatList
@@ -143,9 +175,9 @@ const GameSelectBase = ({
           }}
           numColumns={2}
           data={options}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <Card
-              label={item}
+              label={questions[currentStep]?.hiddenOptions ? String.fromCharCode(index + 65) : item}
               onPress={() => handleToggleSelectAnswer(item)}
               isSelected={selections.includes(item)}
             />
@@ -155,8 +187,12 @@ const GameSelectBase = ({
       <View style={styles.getStartedbtnItemWrapper}>
         <PrimaryButton label={"KIỂM TRA"} onPress={handleSubmitButtonPress} />
       </View>
-    </View>
+    </View >
   );
 };
 
 export default GameSelectBase;
+
+/**
+ * @typedef {"read"|"listen"} GameSelectSubtype
+ */

@@ -25,6 +25,7 @@ function PlayScreen() {
       ...entry[1],
     }))
   );
+
   const navigation = useNavigation();
   const { user, username } = useSignedIn();
 

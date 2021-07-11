@@ -3,6 +3,9 @@ import { randomInt } from "./math";
 
 const savedVoices = {};
 
+// prevent buffer calls
+let isSpeaking = false;
+
 /**
  * @param {"vi"|"en"} lang
  * @returns {Promise<[Voice]>}
@@ -38,6 +41,10 @@ const pickRandomVoice = async (lang) => {
  * @param {SpeechOptions} options 
  */
 export const speakWithRandomVoice = async (lang, text, options) => {
+  if (isSpeaking)
+    return;
+
+  isSpeaking = true;
   const voice = await pickRandomVoice(lang);
 
   try {
@@ -45,6 +52,8 @@ export const speakWithRandomVoice = async (lang, text, options) => {
       ...options,
       language: lang,
       voice: voice?.identifier,
+      onDone: () => { isSpeaking = false; options?.onDone?.(); },
+      onError: () => { isSpeaking = false; options?.onError?.(); }
     })
   } catch (error) {
     console.error(error);
