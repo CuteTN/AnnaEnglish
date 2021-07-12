@@ -36,10 +36,10 @@ function DictionaryScreen() {
 
   return (
     <View style={styles.container}>
+      <View style={styles.headerBody}>
+        <Text style={styles.headerText}>Từ vựng</Text>
+      </View>
       <View style={styles.header}>
-        <View style={styles.headerBody}>
-          <Text style={styles.headerText}>Từ vựng</Text>
-        </View>
         <View style={styles.groupInputs}>
           <View style={styles.wrapperInput}>
             <AntDesign name="search1" size={18} color="gray" />
