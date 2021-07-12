@@ -26,13 +26,20 @@ function TopicWordScreen({ route }) {
   const navigation = useNavigation();
   const [txtSearch, setTxtSearch] = useState("");
 
-  const listVocabulary = React.useMemo(() =>
-    Object.entries(vocabulary).map((entry) => ({
-      _id: entry[0],
-      ...entry[1],
-    }))
-  );
+  const listVocabulary = React.useMemo(() => {
+    const topicVocabulary = Object.values(topic?.vocabulary ?? {});
 
+    return Object.entries(vocabulary)
+      .filter(entry => topicVocabulary.includes(entry[0]))
+      .map((entry) => ({
+        _id: entry[0],
+        ...entry[1],
+      }))
+  }, [vocabulary, topic?.vocabulary]);
+
+  /**
+   * @param {string} word 
+   */
   const handleSelectWord = (word) => {
     navigation.navigate(SCREENS.word.name, { word });
   };
