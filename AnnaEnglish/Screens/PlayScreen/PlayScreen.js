@@ -92,7 +92,7 @@ function PlayScreen() {
     const unlocked = checkIsUnlockedTopic(topic);
 
     const navigateToTopicScreen = () =>
-      navigation.navigate(SCREENS.topicGame.name, { topicId: topic._id });
+      navigation.navigate(SCREENS.topic.name, { topicId: topic._id });
 
     if (!unlocked) {
       showYesNoModal({

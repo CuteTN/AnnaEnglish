@@ -32,21 +32,23 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginTop: 20,
   },
+  itemContainer: {},
   label: {
-    fontSize: 24,
+    fontSize: 18,
+    alignItems: "flex-end",
+    margin: 15,
     fontFamily: "Cucho",
-    margin: 40,
+    justifyContent: "center",
   },
   topicImage: {
     alignSelf: "center",
   },
   card: {
+    padding: 20,
+    flex: 1,
     borderRadius: 10,
-    height: 110,
-    flexDirection: "row",
+    flexDirection: "column",
+    justifyContent: "space-between",
     borderWidth: 1,
-    backgroundColor: "#C9F4F6",
-
-    margin: 20,
   },
 });
