@@ -3,18 +3,10 @@ import React from "react";
 import { colors } from "../../config/colors";
 import { View, StyleSheet, Modal, Pressable, Text } from "react-native";
 
-export default function YesNoModal({ visible, onYesPress, onNoPress, label, imageUrl, text }) {
-  const handleYesPress = () => {
-    onYesPress?.();
-  };
-
-  const handleNoPress = () => {
-    onNoPress?.();
-  }
-
+export default function ButtonsModal({ visible, label, imageUrl, text, buttons }) {
   return (
     <Modal
-      animationType="slide"
+      animationType="fade"
       transparent
       visible={visible}
       onRequestClose={() => {
@@ -32,18 +24,15 @@ export default function YesNoModal({ visible, onYesPress, onNoPress, label, imag
               flexDirection: "row",
             }}
           >
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={handleNoPress}
-            >
-              <Text style={styles.textStyle}>Không</Text>
-            </Pressable>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={handleYesPress}
-            >
-              <Text style={styles.textStyle}>Có</Text>
-            </Pressable>
+            {buttons?.map((button, index) => (
+              <Pressable
+                key={index}
+                style={[styles.button, styles.buttonClose]}
+                onPress={button?.onPress}
+              >
+                <Text style={styles.textStyle}>{button?.label}</Text>
+              </Pressable>
+            ))}
           </View>
         </View>
       </View>

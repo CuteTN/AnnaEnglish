@@ -15,7 +15,7 @@ import { isBrightColor } from "../../Utils/color";
 import { colors } from "../../config/colors";
 import { useSignedIn } from "../../hooks/useSignedIn";
 import Fire from "../../firebase/Fire";
-import { useYesNoModal } from "../../components/Modal/YesNoModalProvider";
+import { useButtonsModal } from "../../components/Modal/ButtonsModalProvider";
 
 function PlayScreen() {
   const rawTopics = useFiredux("topic") ?? {};
@@ -29,7 +29,7 @@ function PlayScreen() {
   const navigation = useNavigation();
   const { user, username } = useSignedIn();
 
-  const { showYesNoModal } = useYesNoModal();
+  const { showYesNoModal, showOkModal } = useButtonsModal();
 
   /**
    * @returns {boolean} unlockable
@@ -97,18 +97,19 @@ function PlayScreen() {
     if (!unlocked) {
       showYesNoModal({
         label: "Mở chủ đề",
-        onClose: (decision) => {
-          if (decision === "no") return;
-          else {
-            const justUnlocked = unlockTopic(topic);
-            if (justUnlocked) navigateToTopicScreen();
-          }
-        },
-      });
+        onYes: () => {
+          const justUnlocked = unlockTopic(topic);
+          if (justUnlocked) navigateToTopicScreen();
+        }
+      })
     } else {
-      navigateToTopicScreen();
-    }
-  };
+      showOkModal({
+        label: "Thy Ok", onOk: () => {
+          navigateToTopicScreen();
+        },
+      })
+    };
+  }
 
   const Card = ({ topic }) => {
     const unlocked = checkIsUnlockedTopic(topic);

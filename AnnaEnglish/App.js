@@ -18,7 +18,7 @@ import { CompleteModalProvider } from "./components/games/CompleteModal/Complete
 import { CheckModalProvider } from "./components/games/CheckModal/CheckModalProvider";
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
-import { YesNoModalProvider } from "./components/Modal/YesNoModalProvider";
+import { ButtonsModalProvider } from "./components/Modal/ButtonsModalProvider";
 
 LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
 LogBox.ignoreAllLogs(); //Ignore all log notifications
@@ -56,7 +56,7 @@ export default function App() {
       <View style={styles.container}>
         <CompleteModalProvider>
           <CheckModalProvider>
-            <YesNoModalProvider>
+            <ButtonsModalProvider>
               <NavigationContainer>
                 <Stack.Navigator
                   initialRouteName={SCREENS.startUp}
@@ -67,7 +67,7 @@ export default function App() {
                   ))}
                 </Stack.Navigator>
               </NavigationContainer>
-            </YesNoModalProvider>
+            </ButtonsModalProvider>
           </CheckModalProvider>
         </CompleteModalProvider>
       </View>
