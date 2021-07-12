@@ -5,7 +5,6 @@ import Fire from "../../firebase/Fire";
 import {
   View,
   Text,
-  StyleSheet,
   Image,
   TouchableOpacity,
   ScrollView,
@@ -14,9 +13,9 @@ import {
 import { PrimaryButton } from "../../components/buttons/PrimaryButton/PrimaryButton";
 import { PrimaryInput } from "../../components/forms/PrimaryInput/PrimaryInput";
 import { PassWordInput } from "../../components/forms/PassWordInput/PassWordInput";
-import { colors } from "../../config/colors";
 import { useSignedIn } from "../../hooks/useSignedIn";
 import { useRoute } from "@react-navigation/native";
+import { useButtonsModal } from "../../components/Modal/ButtonsModalProvider";
 import { styles } from "./styles";
 
 export default SignInScreen = ({}) => {
@@ -25,6 +24,7 @@ export default SignInScreen = ({}) => {
   const navigation = useNavigation();
 
   const { user, status } = useSignedIn();
+  const { showOkModal } = useButtonsModal();
 
   const navAuth = () => {
     let newRoute = null;
@@ -43,6 +43,12 @@ export default SignInScreen = ({}) => {
     Fire.signInWithUsername(username, password).then(
       ({ error, successful }) => {
         if (successful) {
+        }
+        if (error) {
+          showOkModal({
+            label: "Tài khoản hoặc mật khẩu không đúng",
+            onOk: () => {},
+          });
         }
       }
     );

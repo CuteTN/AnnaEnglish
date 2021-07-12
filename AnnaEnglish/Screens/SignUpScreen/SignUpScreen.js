@@ -1,10 +1,8 @@
 import { useNavigation } from "@react-navigation/core";
 import React, { useState } from "react";
 import {
-  Button,
   View,
   Text,
-  StyleSheet,
   Image,
   TouchableOpacity,
   ScrollView,
@@ -15,9 +13,8 @@ import { SCREENS } from "..";
 import Fire from "../../firebase/Fire";
 import { PrimaryButton } from "../../components/buttons/PrimaryButton/PrimaryButton";
 import { PrimaryInput } from "../../components/forms/PrimaryInput/PrimaryInput";
-import { SecondaryInput } from "../../components/forms/SecondaryInput/SecondaryInput";
-import { colors } from "../../config/colors";
 import { PassWordInput } from "../../components/forms/PassWordInput/PassWordInput";
+import { useButtonsModal } from "../../components/Modal/ButtonsModalProvider";
 import { styles } from "./styles";
 
 function SignUpScreen({}) {
@@ -25,12 +22,19 @@ function SignUpScreen({}) {
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const { showOkModal } = useButtonsModal();
 
   const handleButtonSignUpPress = () => {
     Fire.signUpWithUsername(username, password).then(
       ({ error, successful }) => {
         if (successful) {
           navigation.replace(SCREENS.editProfile.name);
+        }
+        if (error) {
+          showOkModal({
+            label: "Tài khoản đã tồn tại",
+            onOk: () => {},
+          });
         }
       }
     );

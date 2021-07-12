@@ -1,5 +1,5 @@
 import React from "react";
-import { View, SafeAreaView, StyleSheet, Text } from "react-native";
+import { View, SafeAreaView, Image, Text } from "react-native";
 import { colors } from "../../config/colors";
 import Octicons from "react-native-vector-icons/Octicons";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -8,6 +8,7 @@ import { useRealtimeFire } from "../../hooks/useRealtimeFire";
 import { styles } from "./styles";
 import { toVietnameseWordTypes } from "../../Utils/vocabulary";
 import { speakWithRandomVoice } from "../../Utils/speech";
+import { extractImageUri } from "../../Utils/image";
 
 export default WordScreen = ({ route }) => {
   const [rawWord] = useRealtimeFire(`vocabulary`, route?.params.word);
@@ -15,29 +16,28 @@ export default WordScreen = ({ route }) => {
     return {
       eng: route?.params.word,
       meaning: Object.values(rawWord?.meaning ?? {}),
+      image: extractImageUri(rawWord?.image),
     };
   }, [rawWord]);
 
   const isSpeaking = React.useRef(false);
 
   /**
-   * @param {"vi"|"en"} lang 
-   * @returns 
+   * @param {"vi"|"en"} lang
+   * @returns
    */
   const handleSpeak = (lang, text) => {
     // prevent buffer call
-    if (isSpeaking.current)
-      return;
+    if (isSpeaking.current) return;
 
     isSpeaking.current = true;
 
     speakWithRandomVoice(lang, text, {
-      onDone: () => isSpeaking.current = false,
-      onError: () => isSpeaking.current = false,
+      onDone: () => (isSpeaking.current = false),
+      onError: () => (isSpeaking.current = false),
     });
-  }
+  };
 
-  // const [meaning, setMeaning] = React.useState(word?.meaning);
   const meaning = word?.meaning.slice();
 
   const navigation = useNavigation();
@@ -49,9 +49,7 @@ export default WordScreen = ({ route }) => {
     return (
       <View>
         <View style={styles.row}>
-          <Text
-            style={[styles.label, { color: "blue", marginLeft: 20 }]}
-          >
+          <Text style={[styles.label, { color: "blue", marginLeft: 20 }]}>
             Example:{" "}
           </Text>
           <Text
@@ -124,6 +122,10 @@ export default WordScreen = ({ route }) => {
             onPress={() => handleSpeak("en", route?.params?.word)}
           />
         </View>
+        <Image
+          source={{ uri: word?.image }}
+          style={{ height: 120, resizeMode: "center" }}
+        ></Image>
         <View>
           {meaning.map((item) => (
             <Card item={item}></Card>

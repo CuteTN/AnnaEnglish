@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { View, FlatList, Text, TouchableOpacity, Image } from "react-native";
 import { colors, randomColor } from "../../../config/colors";
 // import { styles } from "../../../shared/styles";
@@ -87,12 +87,12 @@ const GameHangman = ({
     /** @type {string} */
     let uri = extractImageUri(questions[currentStep]?.image, vocabulary);
     return uri ? { uri } : null;
-  }, [currentStep, vocabulary])
+  }, [currentStep, vocabulary]);
 
   /** @type {GameHangmanSubtype} */
   const currentSubtype = React.useMemo(() => {
     return questions[currentStep]?.subtype;
-  }, [currentStep])
+  }, [currentStep]);
 
   const checkAnswerHasChar = (c) => {
     return questions[currentStep]?.answer
@@ -156,9 +156,16 @@ const GameHangman = ({
       <View style={styles.container}>
         <Text
           style={{ textAlign: "center", fontSize: 26, fontFamily: "Cucho" }}
-          onPress={() => speakWithRandomVoice(
-            questions[currentStep]?.questionLang,
-            replaceBlank(questions[currentStep].question, currentSubtype === "listen" ? questions[currentStep].answer : "blank"))
+          onPress={() =>
+            speakWithRandomVoice(
+              questions[currentStep]?.questionLang,
+              replaceBlank(
+                questions[currentStep].question,
+                currentSubtype === "listen"
+                  ? questions[currentStep].answer
+                  : "blank"
+              )
+            )
           }
         >
           {questions[currentStep].question}
@@ -171,34 +178,35 @@ const GameHangman = ({
         ) : (
           <></>
         )}
-        {(currentSubtype === "listen" || currentSubtype === "spell") &&
-          (
-            <Ionicons
-              name="volume-high-outline"
-              style={{ marginTop: 3, alignSelf: "center" }}
-              color={colors.primary}
-              size={50}
-              onPress={() => {
-                let textToSpeak = "";
-                let langToSpeak = "";
+        {(currentSubtype === "listen" || currentSubtype === "spell") && (
+          <Ionicons
+            name="volume-high-outline"
+            style={{ marginTop: 3, alignSelf: "center" }}
+            color={colors.primary}
+            size={50}
+            onPress={() => {
+              let textToSpeak = "";
+              let langToSpeak = "";
 
-                switch (currentSubtype) {
-                  case "listen": {
-                    textToSpeak = replaceBlank(questions[currentStep].question, questions[currentStep].answer);
-                    langToSpeak = questions[currentStep].questionLang;
-                    break;
-                  }
-                  case "spell": {
-                    textToSpeak = toSpelling(questions[currentStep].answer);
-                    langToSpeak = questions[currentStep].answerLang;
-                    break;
-                  }
+              switch (currentSubtype) {
+                case "listen": {
+                  textToSpeak = replaceBlank(
+                    questions[currentStep].question,
+                    questions[currentStep].answer
+                  );
+                  langToSpeak = questions[currentStep].questionLang;
+                  break;
                 }
-                speakWithRandomVoice(langToSpeak, textToSpeak)
-              }}
-            />
-          )
-        }
+                case "spell": {
+                  textToSpeak = toSpelling(questions[currentStep].answer);
+                  langToSpeak = questions[currentStep].answerLang;
+                  break;
+                }
+              }
+              speakWithRandomVoice(langToSpeak, textToSpeak);
+            }}
+          />
+        )}
 
         <FlatList
           columnWrapperStyle={{

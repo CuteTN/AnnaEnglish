@@ -1,15 +1,12 @@
-import React, { useEffect, useState, useRef } from "react";
-import { SafeAreaView, View, Text, Alert } from "react-native";
+import React, { useEffect, useState } from "react";
+import { SafeAreaView, View } from "react-native";
 import { styles } from "./styles";
-import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
-import { SCREENS } from "..";
 import Game from "../../components/games/";
 import Header from "../../components/Header/Header";
 import GameProgress from "../../components/progressSteps/GameProgress/GameProgress";
-import CompleteModal from "../../components/games/CompleteModal/CompleteModal";
 import { useCompleteModal } from "../../components/games/CompleteModal/CompleteModalProvider";
-import { useCheckModal } from "../../components/games/CheckModal/CheckModalProvider"
+import { useCheckModal } from "../../components/games/CheckModal/CheckModalProvider";
 import { useSignedIn } from "../../hooks/useSignedIn";
 import Fire from "../../firebase/Fire";
 import { useRealtimeFire } from "../../hooks/useRealtimeFire";
@@ -23,21 +20,27 @@ export default GameScreen = ({ route }) => {
 
   const { user, username } = useSignedIn();
 
-  const topicId = React.useMemo(() => route?.params?.topicId, [route?.params?.topicId]);
+  const topicId = React.useMemo(
+    () => route?.params?.topicId,
+    [route?.params?.topicId]
+  );
   const [topic] = useRealtimeFire("topic", route?.params?.topicId);
 
-  const onGameComplete = React.useMemo(() => route?.params?.onGameComplete, [route?.params?.onGameCompleted]);
+  const onGameComplete = React.useMemo(
+    () => route?.params?.onGameComplete,
+    [route?.params?.onGameCompleted]
+  );
 
   const userProgressOnGame = React.useMemo(() => {
     return user?.progress?.topics?.[topicId]?.completedGames?.[game?._id];
-  }, [topicId, game?._id, user?.progress])
+  }, [topicId, game?._id, user?.progress]);
 
   const userProgressOnReview = React.useMemo(() => {
-    return user?.progress?.topics?.[topicId]?.review
-  }, [topicId, user?.progress])
+    return user?.progress?.topics?.[topicId]?.review;
+  }, [topicId, user?.progress]);
 
   useEffect(() => {
-    if ((!game) && (!isReviewMode)) {
+    if (!game && !isReviewMode) {
       navigation.goBack();
     }
   }, []);
@@ -50,45 +53,42 @@ export default GameScreen = ({ route }) => {
     setProgress({ currentStep, countSteps });
   };
 
-
   const rewardUserCompleteProgress = () => {
-    if (!topic)
-      return;
+    if (!topic) return;
 
     const now = Date.now();
-    const data = { lastCompleteAt: now, }
+    const data = { lastCompleteAt: now };
 
     if (isReviewMode) {
       Fire.transaction(
         `user/${username}/progress/topics/${topicId}/review`,
-        prev => {
+        (prev) => {
           const result = { ...prev, ...data };
           result.firstCompleteAt = result.firstCompleteAt ?? now;
           result.completedTimes = (prev?.completedTimes ?? 0) + 1;
 
           return result;
         }
-      )
+      );
     } else {
       // if the user haven't beat this game before
-      if (!userProgressOnGame)
-        data.firstCompleteAt = now;
+      if (!userProgressOnGame) data.firstCompleteAt = now;
 
-      Fire.update(`user/${username}/progress/topics/${topicId}/completedGames/${game._id}`, data);
+      Fire.update(
+        `user/${username}/progress/topics/${topicId}/completedGames/${game._id}`,
+        data
+      );
     }
-  }
+  };
 
   const rewardUserCompleteStats = () => {
-    if (!topic)
-      return;
+    if (!topic) return;
 
     let rewardedCoins = 0;
 
     if (isReviewMode) {
       const completedTimes = (userProgressOnReview.completedTimes ?? 0) + 1;
-      if (completedTimes <= 10)
-        rewardedCoins = completedTimes * 5
-
+      if (completedTimes <= 10) rewardedCoins = completedTimes * 5;
     } else {
       // if the user haven't beat this game before
       if (!userProgressOnGame) {
@@ -97,15 +97,13 @@ export default GameScreen = ({ route }) => {
     }
 
     // Fire.update(`user/${username}/stats`, { coins: userStats.coins, exp: userStats.exp });
-    Fire.transaction(`user/${username}/stats/`,
-      prev => {
-        const result = { ...prev };
-        result.coins = (prev?.coins ?? 0) + rewardedCoins;
+    Fire.transaction(`user/${username}/stats/`, (prev) => {
+      const result = { ...prev };
+      result.coins = (prev?.coins ?? 0) + rewardedCoins;
 
-        return result;
-      }
-    )
-  }
+      return result;
+    });
+  };
 
   const handleCompleteGame = () => {
     rewardUserCompleteProgress();
@@ -116,20 +114,20 @@ export default GameScreen = ({ route }) => {
         onGameComplete?.(game?._id);
         navigation.goBack();
       },
-    })
+    });
   };
 
   const handleCorrectAnswer = () => {
     showCheckModal({
       isCorrect: true,
-    })
-  }
+    });
+  };
 
   const handleIncorrectAnswer = () => {
     showCheckModal({
       isCorrect: false,
-    })
-  }
+    });
+  };
 
   return (
     <SafeAreaView

@@ -15,10 +15,12 @@ import { PassWordInput } from "../../components/forms/PassWordInput/PassWordInpu
 import { PrimaryButton } from "../../components/buttons/PrimaryButton/PrimaryButton";
 import Header from "../../components/Header/Header";
 import Fire from "../../firebase/Fire";
+import { useButtonsModal } from "../../components/Modal/ButtonsModalProvider";
 
 const EditPasswordScreen = () => {
   // const { user, updateUser } = useSignedIn();
   const navigation = useNavigation();
+  const { showOkModal } = useButtonsModal();
 
   const handleChangePassword = (oldPassword, newPassword) => {
     Fire.checkPassword(oldPassword).then((isSuccessful) => {
@@ -27,7 +29,10 @@ const EditPasswordScreen = () => {
         console.info("Password changed!");
         navigation.navigate(SCREENS.mainApp.name);
       } else {
-        console.info("Password is incorrect!");
+        showOkModal({
+          label: "Mật khẩu không chính xác",
+          onOk: () => {},
+        });
       }
     });
   };
@@ -36,10 +41,9 @@ const EditPasswordScreen = () => {
     if (newPassword.current === newPasswordConfirm.current)
       handleChangePassword(oldPassword.current, newPassword.current);
     else {
-      console.info("New password confirmation doesn't match");
-      NotiAlert({
-        Text: "Mật khẩu nhập lại không khớp",
-        TextAction: "Thử lại",
+      showOkModal({
+        label: "Mật khẩu xác nhận không trùng khớp",
+        onOk: () => {},
       });
     }
   };

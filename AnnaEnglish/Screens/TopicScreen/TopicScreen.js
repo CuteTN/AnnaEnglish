@@ -1,24 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import {
   View,
   SafeAreaView,
-  StyleSheet,
   TouchableOpacity,
   Image,
-  ScrollView,
-  FlatList,
   Text,
 } from "react-native";
-import { colors } from "../../config/colors";
 import { useRealtimeFire } from "../../hooks/useRealtimeFire";
 import Header from "../../components/Header/Header";
-import { styles } from "./styles"
-import Fire from "../../firebase/Fire";
+import { styles } from "./styles";
 import { useNavigation } from "@react-navigation/native";
 import { SCREENS } from "..";
-import { Colors } from "react-native/Libraries/NewAppScreen";
-import { useSignedIn } from "../../hooks/useSignedIn";
-import { isToday } from "../../Utils/datetime";
 
 export default TopicScreen = ({ route }) => {
   const topicId = React.useMemo(
@@ -36,8 +28,12 @@ export default TopicScreen = ({ route }) => {
 
   const navigateToReviewGameScreen = () => {
     // have to duplicate topicId here for reasons.
-    navigation.navigate(SCREENS.game.name, { topicId, isReviewMode: true, game: { type: "match", topicId } })
-  }
+    navigation.navigate(SCREENS.game.name, {
+      topicId,
+      isReviewMode: true,
+      game: { type: "match", topicId },
+    });
+  };
 
   return (
     <SafeAreaView style={styles.container}>

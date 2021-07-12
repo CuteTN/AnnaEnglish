@@ -1,5 +1,5 @@
-import React from 'react'
-import ButtonsModal from './ButtonsModal';
+import React from "react";
+import ButtonsModal from "./ButtonsModal";
 
 const ButtonsModalContext = React.createContext();
 
@@ -7,9 +7,8 @@ const ButtonsModalContext = React.createContext();
  * @returns {useYesNoModalType}
  */
 export const useButtonsModal = () => {
-  return React.useContext(ButtonsModalContext)
-}
-
+  return React.useContext(ButtonsModalContext);
+};
 
 export const ButtonsModalProvider = ({ children }) => {
   const [visible, setVisible] = React.useState(false);
@@ -18,56 +17,58 @@ export const ButtonsModalProvider = ({ children }) => {
   const closeModalAndHandleFunc = (func) => () => {
     setVisible(false);
     func?.();
-  }
-
+  };
 
   /** @type {showYesNoModalType} */
   const showYesNoModal = ({ label, text, imageUrl, onNo, onYes }) => {
     modalProps.current = {
-      label, text, imageUrl
+      label,
+      text,
+      imageUrl,
     };
 
     modalProps.current.buttons = [
-      { label: "Có", onPress: closeModalAndHandleFunc(onYes) },
       { label: "Không", onPress: closeModalAndHandleFunc(onNo) },
-    ]
+      { label: "Có", onPress: closeModalAndHandleFunc(onYes) },
+    ];
 
     setVisible(true);
-  }
+  };
 
   /** @type {showYesNoModalType} */
   const showOkModal = ({ label, text, imageUrl, onOk }) => {
     modalProps.current = {
-      label, text, imageUrl
+      label,
+      text,
+      imageUrl,
     };
 
     modalProps.current.buttons = [
       { label: "OK", onPress: closeModalAndHandleFunc(onOk) },
-    ]
+    ];
 
     setVisible(true);
-  }
+  };
 
   return (
-    <ButtonsModalContext.Provider value={{
-      showYesNoModal,
-      showOkModal,
-      yesNoModalVisible: visible
-    }}>
+    <ButtonsModalContext.Provider
+      value={{
+        showYesNoModal,
+        showOkModal,
+        yesNoModalVisible: visible,
+      }}
+    >
       <ButtonsModal
         visible={visible}
-
         label={modalProps.current?.label}
         text={modalProps.current?.text}
         imageUrl={modalProps.current?.imageUrl}
-
         buttons={modalProps.current?.buttons}
       />
       {children}
     </ButtonsModalContext.Provider>
-  )
-}
-
+  );
+};
 
 /**
  * @typedef {object} useYesNoModalType
@@ -83,13 +84,13 @@ export const ButtonsModalProvider = ({ children }) => {
  * @property {string} imageUrl
  * @property {() => void} onYes
  * @property {() => void} onNo
-*/
+ */
 
 /**
  * @callback showYesNoModalType
  * @param {YesNoModalPropType} options
  * @returns {void}
-*/
+ */
 
 /**
  * @typedef {Object} OkModalPropType
@@ -97,10 +98,10 @@ export const ButtonsModalProvider = ({ children }) => {
  * @property {string} text
  * @property {string} imageUrl
  * @property {() => void} onOk
-*/
+ */
 
 /**
  * @callback showOkModalType
  * @param {OkModalPropType} options
  * @returns {void}
-*/
+ */

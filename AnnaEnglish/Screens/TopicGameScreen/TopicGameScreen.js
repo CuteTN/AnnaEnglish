@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   SafeAreaView,
-  StyleSheet,
   TouchableOpacity,
   Image,
   ScrollView,
@@ -16,7 +15,6 @@ import { styles } from "./styles";
 import Fire from "../../firebase/Fire";
 import { useNavigation } from "@react-navigation/native";
 import { SCREENS } from "..";
-import { Colors } from "react-native/Libraries/NewAppScreen";
 import { useSignedIn } from "../../hooks/useSignedIn";
 import { isToday } from "../../Utils/datetime";
 

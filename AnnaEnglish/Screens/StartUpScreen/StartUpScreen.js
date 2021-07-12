@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, Text, SafeAreaView } from "react-native";
+import { Text, SafeAreaView } from "react-native";
 import Fire from "../../firebase/Fire";
 import { styles } from "../../shared/styles.js";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -13,18 +13,15 @@ export default function StartUpScreen() {
   const navAuth = () => {
     let newRoute = null;
 
-    if (status === "SignedIn")
-      newRoute = SCREENS.mainApp.name;
-    if (status === "NotSignedIn")
-      newRoute = SCREENS.signIn.name;
+    if (status === "SignedIn") newRoute = SCREENS.mainApp.name;
+    if (status === "NotSignedIn") newRoute = SCREENS.signIn.name;
     if (status === "NoInfo") {
       Fire.signOut();
       // newRoute = SCREENS.editProfile.name;
     }
 
-    if (newRoute && useRoute.name !== newRoute)
-      navigation.replace(newRoute);
-  }
+    if (newRoute && useRoute.name !== newRoute) navigation.replace(newRoute);
+  };
 
   useEffect(() => {
     navAuth();

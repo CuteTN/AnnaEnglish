@@ -4,20 +4,14 @@ import {
   Text,
   TouchableOpacity,
   ImageBackground,
-  TextInput,
-  StyleSheet,
-  Button,
   Platform,
   ScrollView,
   KeyboardAvoidingView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import Feather from "react-native-vector-icons/Feather";
 import BottomSheet from "reanimated-bottom-sheet";
 import Animated from "react-native-reanimated";
-import ImagePicker from "react-native-image-crop-picker";
 import DatePicker from "react-native-datepicker";
 import { useSignedIn } from "../../hooks/useSignedIn";
 import { SCREENS } from "..";

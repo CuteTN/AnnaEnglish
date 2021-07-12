@@ -11,7 +11,6 @@ import { useFiredux } from "../../hooks/useFiredux";
 import { styles } from "./styles";
 import { SCREENS } from "..";
 import { useNavigation } from "@react-navigation/core";
-import { isBrightColor } from "../../Utils/color";
 import { colors } from "../../config/colors";
 import { useSignedIn } from "../../hooks/useSignedIn";
 import Fire from "../../firebase/Fire";
@@ -100,16 +99,10 @@ function PlayScreen() {
         onYes: () => {
           const justUnlocked = unlockTopic(topic);
           if (justUnlocked) navigateToTopicScreen();
-        }
-      })
-    } else {
-      showOkModal({
-        label: "Thy Ok", onOk: () => {
-          navigateToTopicScreen();
         },
-      })
-    };
-  }
+      });
+    }
+  };
 
   const Card = ({ topic }) => {
     const unlocked = checkIsUnlockedTopic(topic);

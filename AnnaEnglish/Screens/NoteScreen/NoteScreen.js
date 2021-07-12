@@ -1,18 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  SafeAreaView,
-  TouchableOpacity,
-  Text,
-  TextInput,
-} from "react-native";
-import { colors } from "../../config/colors";
-import { useRealtimeFire } from "../../hooks/useRealtimeFire";
+import { View, SafeAreaView, TextInput } from "react-native";
 import Header from "../../components/Header/Header";
 import { styles } from "./styles";
-import Fire from "../../firebase/Fire";
-import { useNavigation } from "@react-navigation/native";
-import { SCREENS } from "..";
 import { useSignedIn } from "../../hooks/useSignedIn";
 import { PrimaryButton } from "../../components/buttons/PrimaryButton/PrimaryButton";
 
@@ -21,13 +10,12 @@ export default NoteScreen = ({ route }) => {
   const [tempNote, setTempNote] = useState("");
 
   useEffect(() => {
-    if (user?.note)
-      setTempNote(user.note);
-  }, [user?.note])
+    if (user?.note) setTempNote(user.note);
+  }, [user?.note]);
 
   const handleSaveButtonPress = () => {
     updateUser({ note: tempNote });
-  }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -50,7 +38,10 @@ export default NoteScreen = ({ route }) => {
           keyboardType="default"
         />
         <View style={styles.getStartedbtnItemWrapper}>
-          <PrimaryButton label={"Lưu ghi chú"} onPress={handleSaveButtonPress} />
+          <PrimaryButton
+            label={"Lưu ghi chú"}
+            onPress={handleSaveButtonPress}
+          />
         </View>
       </View>
     </SafeAreaView>
