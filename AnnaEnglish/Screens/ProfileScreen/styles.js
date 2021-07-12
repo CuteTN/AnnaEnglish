@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
   },
   card: {
     margin: 30,
-    marginTop: 50,
+    marginTop: 60,
     backgroundColor: colors.card,
     borderRadius: 15,
     borderWidth: 2,
@@ -39,7 +39,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
   menuWrapper: {
-    marginTop: 10,
+    alignItems: "center",
   },
   menuItem: {
     flexDirection: "row",
@@ -85,9 +85,8 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     elevation: 2,
-    width: 100,
-    marginLeft: 10,
-    marginRight: 10,
+    width: 330,
+    margin: 10,
   },
   buttonOpen: {
     backgroundColor: colors.primary,

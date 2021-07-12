@@ -1,14 +1,10 @@
-import { useNavigation } from "@react-navigation/core";
-import React, { useState } from "react";
+import React from "react";
 import { useSignedIn } from "../../hooks/useSignedIn";
-import { View, SafeAreaView, StyleSheet, Text, ScrollView } from "react-native";
-import AvatarCard from "../../components/card/AvatarCard/AvatarCard";
+import { View, SafeAreaView, Text, ScrollView } from "react-native";
 import StatiticCard from "../../components/card/StatiticCard/StatiticCard";
-import { colors } from "../../config/colors";
 import { getUserStats } from "../../Utils/user";
 import { styles } from "./styles";
 function StatisticsScreen() {
-  const navigation = useNavigation();
   const { user } = useSignedIn();
 
   const imageTopicUrl = { uri: "https://imgur.com/2zS3bVD.png" };
@@ -32,7 +28,7 @@ function StatisticsScreen() {
         <View style={styles.card}>
           <StatiticCard
             imageUrl={imageGameUrl}
-            title={"trò đã chơi"}
+            title={"Trò đã chơi"}
             number={getUserStats("games", user)}
           ></StatiticCard>
         </View>

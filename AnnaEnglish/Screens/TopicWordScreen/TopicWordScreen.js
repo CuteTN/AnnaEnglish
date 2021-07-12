@@ -8,12 +8,20 @@ import {
   TouchableOpacity,
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import { useRealtimeFire } from "../../hooks/useRealtimeFire";
 import { useFiredux } from "../../hooks/useFiredux";
 import { colors } from "../../config/colors";
 import { useNavigation } from "@react-navigation/core";
+import Header from "../../components/Header/Header";
 import { SCREENS } from "..";
 
-function DictionaryScreen() {
+function TopicWordScreen({ route }) {
+  const topicId = React.useMemo(
+    () => route?.params?.topicId,
+    [route?.params?.topicId]
+  );
+  const [topic] = useRealtimeFire("topic", route?.params?.topicId);
+
   const vocabulary = useFiredux("vocabulary") ?? {};
   const navigation = useNavigation();
   const [txtSearch, setTxtSearch] = useState("");
@@ -35,10 +43,10 @@ function DictionaryScreen() {
 
   return (
     <View style={styles.styleCenter}>
+      <View style={{ marginTop: 30 }}>
+        <Header title={topic?.name} />
+      </View>
       <View style={styles.header}>
-        <View style={styles.headerBody}>
-          <Text style={styles.headerText}>Từ vựng</Text>
-        </View>
         <View style={styles.groupInputs}>
           <View style={styles.wrapperInput}>
             <AntDesign name="search1" size={18} color="gray" />
@@ -71,7 +79,7 @@ function DictionaryScreen() {
   );
 }
 
-export default DictionaryScreen;
+export default TopicWordScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -80,7 +88,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   header: {
-    marginTop: 20,
     padding: 15,
   },
   headerText: {

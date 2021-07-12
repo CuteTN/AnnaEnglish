@@ -16,6 +16,7 @@ import { styles } from "./styles";
 import { SCREENS } from "..";
 import AvatarCard from "../../components/card/AvatarCard/AvatarCard";
 import { colors } from "../../config/colors";
+import { PrimaryButton } from "../../components/buttons/PrimaryButton/PrimaryButton";
 
 function ProfileScreen() {
   const navigation = useNavigation();
@@ -82,43 +83,39 @@ function ProfileScreen() {
           <Text style={styles.textItem}>{user?.birthday}</Text>
         </View>
       </View>
+
       <View style={styles.menuWrapper}>
-        <TouchableRipple
-          onPress={() => {
-            navigation.navigate(SCREENS.editPass.name);
-          }}
-        >
-          <View style={styles.menuItem}>
-            <Icon name="lock" color="#6369D1" size={30} />
-            <Text style={styles.menuItemText}>Đổi mật khẩu</Text>
-          </View>
-        </TouchableRipple>
-        <TouchableRipple
-          onPress={() => {
-            navigation.navigate(SCREENS.editProfile.name);
-          }}
-        >
-          <View style={styles.menuItem}>
-            <Icon name="account-edit" color="#6369D1" size={30} />
-            <Text style={styles.menuItemText}>Đổi thông tin cá nhân</Text>
-          </View>
-        </TouchableRipple>
-        <TouchableRipple
+        <Pressable
+          style={[styles.button, styles.buttonClose]}
           onPress={() => {
             navigation.navigate(SCREENS.note.name);
           }}
         >
-          <View style={styles.menuItem}>
-            <Icon name="note-outline" color="#6369D1" size={30} />
-            <Text style={styles.menuItemText}>Ghi chú</Text>
-          </View>
-        </TouchableRipple>
-        <TouchableRipple onPress={() => setModalVisible(true)}>
-          <View style={styles.menuItem}>
-            <Icon name="logout" color="#6369D1" size={30} />
-            <Text style={styles.menuItemText}>Đăng xuất</Text>
-          </View>
-        </TouchableRipple>
+          <Text style={styles.textStyle}>GHI CHÚ</Text>
+        </Pressable>
+
+        <Pressable
+          style={[styles.button, styles.buttonClose]}
+          onPress={() => {
+            navigation.navigate(SCREENS.editProfile.name);
+          }}
+        >
+          <Text style={styles.textStyle}>ĐỔI THÔNG TIN CÁ NHÂN</Text>
+        </Pressable>
+        <Pressable
+          style={[styles.button, styles.buttonClose]}
+          onPress={() => {
+            navigation.navigate(SCREENS.editPass.name);
+          }}
+        >
+          <Text style={styles.textStyle}>ĐỔI MẬT KHẨU</Text>
+        </Pressable>
+        <Pressable
+          style={[styles.button, styles.buttonClose]}
+          onPress={() => setModalVisible(true)}
+        >
+          <Text style={styles.textStyle}>ĐĂNG XUẤT</Text>
+        </Pressable>
       </View>
     </SafeAreaView>
   );

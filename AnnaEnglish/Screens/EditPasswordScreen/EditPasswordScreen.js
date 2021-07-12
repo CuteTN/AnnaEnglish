@@ -5,6 +5,7 @@ import {
   Platform,
   ScrollView,
   KeyboardAvoidingView,
+  Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import Animated from "react-native-reanimated";
@@ -20,29 +21,41 @@ const EditPasswordScreen = () => {
   const navigation = useNavigation();
 
   const handleChangePassword = (oldPassword, newPassword) => {
-    Fire.checkPassword(oldPassword).then(isSuccessful => {
+    Fire.checkPassword(oldPassword).then((isSuccessful) => {
       if (isSuccessful) {
         Fire.updatePassword(newPassword);
         console.info("Password changed!");
         navigation.navigate(SCREENS.mainApp.name);
-      }
-      else {
+      } else {
         console.info("Password is incorrect!");
       }
-    })
-  }
+    });
+  };
 
   const handleSaveButtonPress = () => {
     if (newPassword.current === newPasswordConfirm.current)
       handleChangePassword(oldPassword.current, newPassword.current);
     else {
       console.info("New password confirmation doesn't match");
+      NotiAlert({
+        Text: "Mật khẩu nhập lại không khớp",
+        TextAction: "Thử lại",
+      });
     }
   };
 
   const oldPassword = React.useRef("");
   const newPassword = React.useRef("");
   const newPasswordConfirm = React.useRef("");
+
+  const NotiAlert = (props) => {
+    Alert.alert("Thông báo", props.Text, [
+      {
+        text: props.TextAction,
+        onPress: () => props.onPress,
+      },
+    ]);
+  };
 
   return (
     <KeyboardAvoidingView
@@ -72,21 +85,21 @@ const EditPasswordScreen = () => {
           <View style={styles.inputItem}>
             <PassWordInput
               placeHolder={"Nhập mật khẩu hiện tại"}
-              onChangeText={text => oldPassword.current = text}
+              onChangeText={(text) => (oldPassword.current = text)}
             />
           </View>
           <Text style={[styles.text_footer]}>Mật khẩu mới</Text>
           <View style={styles.inputItem}>
             <PassWordInput
               placeHolder={"Nhập mật khẩu mới"}
-              onChangeText={text => newPassword.current = text}
+              onChangeText={(text) => (newPassword.current = text)}
             />
           </View>
           <Text style={[styles.text_footer]}>Xác nhận mật khẩu mới</Text>
           <View style={styles.inputItem}>
             <PassWordInput
               placeHolder={"Nhập lại mật khẩu mới"}
-              onChangeText={text => newPasswordConfirm.current = text}
+              onChangeText={(text) => (newPasswordConfirm.current = text)}
             />
           </View>
 
