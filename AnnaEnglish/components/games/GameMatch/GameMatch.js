@@ -128,9 +128,6 @@ const GameMatch = ({ data, onComplete, onStepChange, onCorrect, onIncorrect, }) 
     const options = type === "imageInd" ? imageOptions : textOptions;
 
     if (options[ind]) {
-      if (type === "text")
-        speakWithRandomVoice("en", ind);
-
       setSelection(prev => {
         return {
           ...(prev ?? {}),
@@ -190,7 +187,10 @@ const GameMatch = ({ data, onComplete, onStepChange, onCorrect, onIncorrect, }) 
             <AnswerText
               label={item}
               backgroundColor={backgroundColor}
-              onPress={() => handleToggleSelect("textInd", index)}
+              onPress={() => {
+                handleToggleSelect("textInd", index)
+                speakWithRandomVoice("en", item);
+              }}
               isSelected={index === selection.textInd}
             />
           )}
