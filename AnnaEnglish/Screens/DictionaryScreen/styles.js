@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
     padding: 15,
   },
   headerText: {
+    alignSelf: "center",
     fontSize: 32,
     fontFamily: "Pony",
     color: colors.heading,

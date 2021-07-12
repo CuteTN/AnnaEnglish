@@ -97,7 +97,10 @@ const GameSelectBase = ({
       const answer = Object.values(questions[currentStep].answer ?? {}).sort();
       const sortedSelection = [...selections].sort();
 
-      answer.forEach((a, i) => (result &= a === sortedSelection[i]));
+      if (answer.length !== sortedSelection.length)
+        result = false;
+      else
+        answer.forEach((a, i) => (result &= a === sortedSelection[i]));
     } else {
       result &=
         selections.length !== 0 &&

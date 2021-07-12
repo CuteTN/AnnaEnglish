@@ -38,7 +38,7 @@ export default TopicScreen = ({ route }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ marginTop: 30 }}>
-        <Header title={topic?.name} />
+        <Header title={topic?.name} showCoin />
       </View>
       <TouchableOpacity onPress={navigateToTopicWordScreen}>
         <View style={[styles.card, { marginTop: 30 }]}>

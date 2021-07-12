@@ -17,7 +17,10 @@ export default function ButtonsModal({ visible, label, imageUrl, text, buttons }
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <View>
-            <Text style={styles.modalText}>{label}</Text>
+            <Text style={styles.modalLabel}>{label}</Text>
+          </View>
+          <View>
+            <Text style={styles.modalText}>{text}</Text>
           </View>
           <View
             style={{
@@ -81,10 +84,18 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: "center",
   },
+  modalLabel: {
+    marginBottom: 15,
+    fontWeight: "700",
+    textAlign: "center",
+    fontFamily: "Cucho",
+    fontSize: 24,
+  },
   modalText: {
     marginBottom: 15,
     textAlign: "center",
     fontFamily: "Cucho",
     fontSize: 18,
+    lineHeight: 30,
   },
 });
