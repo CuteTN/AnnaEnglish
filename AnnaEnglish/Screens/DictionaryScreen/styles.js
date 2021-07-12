@@ -6,7 +6,6 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    marginTop: 20,
     padding: 15,
   },
   headerText: {
@@ -17,9 +16,9 @@ export const styles = StyleSheet.create({
   },
 
   headerBody: {
-    flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    marginTop: 30,
   },
 
   wrapperInput: {
@@ -28,7 +27,6 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 10,
     borderRadius: 8,
-    marginTop: 10,
   },
   inputText: {
     padding: 10,
@@ -37,6 +35,7 @@ export const styles = StyleSheet.create({
   scrollViewWrapper: {
     justifyContent: "space-between",
     padding: 15,
+    paddingTop: 5,
   },
   card: {
     padding: 10,
