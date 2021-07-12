@@ -11,6 +11,9 @@ let isSpeaking = false;
  * @returns {Promise<[Voice]>}
  */
 const getVoices = async (lang) => {
+  if (!lang)
+    return [];
+
   if (savedVoices[lang]?.length)
     return savedVoices[lang];
 
@@ -18,7 +21,7 @@ const getVoices = async (lang) => {
 
   const result = allVoices
     ?.filter(voice => {
-      return voice?.language.startsWith(lang.toLowerCase())
+      return voice?.language.startsWith(lang?.toLowerCase())
     });
 
   savedVoices[lang] = result;

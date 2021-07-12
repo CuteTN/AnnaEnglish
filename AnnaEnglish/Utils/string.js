@@ -19,6 +19,36 @@ export const replaceBlank = (src, replaceValue) => {
 }
 
 /**
+ * @param {string} src 
+ * @param {[string]} replaceValues
+ * @returns {string}
+ */
+export const replaceBlanks = (src, replaceValues) => {
+  if (!src)
+    src = "";
+  if (!replaceValues)
+    replaceValues = [];
+
+  const MAGIC_GUARD = "$$";
+  src = MAGIC_GUARD + src + MAGIC_GUARD;
+
+  const splSrc = src.split("_").filter(s => s);
+
+  if (splSrc?.length === 0)
+    return "";
+
+  let result = splSrc[0];
+  for (let i = 1; i < Math.min(splSrc?.length, replaceValues?.length + 1); i++) {
+    result += replaceValues[i - 1] + splSrc[i];
+    console.log(result);
+  }
+
+  result = result.substr(MAGIC_GUARD.length, result.length - 2 * MAGIC_GUARD.length);
+  console.log(result);
+  return result;
+}
+
+/**
  * @param {string} word 
  * @returns {string}
  */

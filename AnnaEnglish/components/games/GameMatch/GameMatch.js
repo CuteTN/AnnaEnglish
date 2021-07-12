@@ -13,6 +13,9 @@ import { styles } from "./styles";
 import { PrimaryButton } from "../../buttons/PrimaryButton/PrimaryButton";
 import { shuffle } from "../../../Utils/shuffle";
 import { randomInt } from "../../../Utils/math";
+import { extractImageUri } from "../../../Utils/image";
+import { useFiredux } from "../../../hooks/useFiredux";
+import { speakWithRandomVoice } from "../../../Utils/speech";
 
 const AnswerImage = ({ backgroundColor, onPress, imageUrl, isSelected }) => {
   const handlePress = () => {
@@ -75,6 +78,8 @@ const GameMatch = ({ data, onComplete, onStepChange, onCorrect, onIncorrect, }) 
   const countSteps = React.useRef(pairs.length).current;
   const [currentStep, setCurrentStep] = React.useState(0);
 
+  const vocabulary = useFiredux("vocabulary") ?? {};
+
   React.useEffect(() => {
     onStepChange?.(currentStep, countSteps);
   }, [currentStep, countSteps]);
@@ -91,13 +96,17 @@ const GameMatch = ({ data, onComplete, onStepChange, onCorrect, onIncorrect, }) 
    * @param {"text"|"image"} type 
    */
   const handleToggleSelect = (type, value) => {
-    if (value)
+    if (value) {
+      if (type === "text")
+        speakWithRandomVoice("en", value);
+
       setSelection(prev => {
         return {
           ...prev,
           [type]: prev[type] === value ? null : value
         };
       })
+    }
   }
 
   React.useEffect(() => {
@@ -160,7 +169,7 @@ const GameMatch = ({ data, onComplete, onStepChange, onCorrect, onIncorrect, }) 
           renderItem={({ item }) => (
             <AnswerImage
               backgroundColor={backgroundColorWords}
-              imageUrl={item}
+              imageUrl={extractImageUri(item, vocabulary)}
               onPress={() => handleToggleSelect("image", item)}
               isSelected={item === selection.image}
             />

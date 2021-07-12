@@ -6,6 +6,11 @@ import { styles } from "./styles";
 import { PrimaryButton } from "../../buttons/PrimaryButton/PrimaryButton";
 import { shuffle } from "../../../Utils/shuffle";
 import { randomInt } from "../../../Utils/math";
+import { speakWithRandomVoice } from "../../../Utils/speech";
+import { replaceBlank, toSpelling } from "../../../Utils/string";
+import { useFiredux } from "../../../hooks/useFiredux";
+import { extractImageUri } from "../../../Utils/image";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 const WordButton = ({ word, backgroundColor, onPress }) => {
   const handlePress = () => {
@@ -89,10 +94,18 @@ const GameSort = ({
   // const result = ["B", "E", "Y", "Y", "B", "E"];
   // const words = ["B", "E", "Y", "Y", "B", "E", "B", "E", "Y", "Y", "A", "B"];
 
-  //data.image
-  const imageUrl = {
-    uri: "https://tiengtrunganhduong.com/Images/images/635766289191430000.jpg",
-  };
+  const vocabulary = useFiredux("vocabulary") ?? {};
+
+  const image = React.useMemo(() => {
+    /** @type {string} */
+    let uri = extractImageUri(questions[currentStep]?.image, vocabulary);
+    return uri ? { uri } : null;
+  }, [currentStep, vocabulary])
+
+  /** @type {GameSortSubtype} */
+  const currentSubtype = React.useMemo(() => {
+    return questions[currentStep]?.subtype;
+  }, [currentStep])
 
   const checkAnswer = () => {
     const answer = questions[currentStep]?.answer;
@@ -159,17 +172,50 @@ const GameSort = ({
       <View style={styles.container}>
         <Text
           style={{ textAlign: "center", fontSize: 20, fontFamily: "Cucho" }}
+          onPress={() => speakWithRandomVoice(
+            questions[currentStep]?.questionLang,
+            replaceBlank(questions[currentStep].question, currentSubtype === "listen" ? questions[currentStep].answer : "blank"))
+          }
         >
           {questions[currentStep].question}
         </Text>
-        {imageUrl ? (
+        {image ? (
           <Image
-            source={imageUrl}
+            source={image}
             style={{ height: 120, resizeMode: "center", margin: 5 }}
           ></Image>
         ) : (
           <></>
         )}
+        {(currentSubtype === "listen" || currentSubtype === "spell") &&
+          (
+            <Ionicons
+              name="volume-high-outline"
+              style={{ marginTop: 3, alignSelf: "center" }}
+              color={colors.primary}
+              size={50}
+              onPress={() => {
+                let textToSpeak = "";
+                let langToSpeak = "";
+
+                switch (currentSubtype) {
+                  case "listen": {
+                    textToSpeak = replaceBlank(questions[currentStep].question, questions[currentStep].answer);
+                    langToSpeak = questions[currentStep].questionLang;
+                    break;
+                  }
+                  case "spell": {
+                    textToSpeak = toSpelling(questions[currentStep]?.answer);
+                    langToSpeak = questions[currentStep].answerLang;
+                    break;
+                  }
+                }
+                speakWithRandomVoice(langToSpeak, textToSpeak)
+              }}
+            />
+          )
+        }
+
         <FlatList
           columnWrapperStyle={{
             justifyContent: "center",
@@ -217,3 +263,8 @@ const GameSort = ({
 };
 
 export default GameSort;
+
+
+/**
+ * @typedef {"read"|"listen"|"spell"} GameSortSubtype
+ */

@@ -1,11 +1,15 @@
 import React from "react";
-import { View, FlatList, Text, TouchableOpacity } from "react-native";
+import { View, FlatList, Text, TouchableOpacity, Image } from "react-native";
 import { colors } from "../../../config/colors";
 // import { styles } from "../../../shared/styles";
 import { styles } from "./styles";
 import { PrimaryButton } from "../../buttons/PrimaryButton/PrimaryButton";
-import { shuffle } from "../../../Utils/shuffle";
 import { TextInput } from "react-native-paper";
+import { speakWithRandomVoice } from "../../../Utils/speech";
+import { replaceBlank, toSpelling } from "../../../Utils/string";
+import { useFiredux } from "../../../hooks/useFiredux";
+import { extractImageUri } from "../../../Utils/image";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 export default GameFill = ({
   data,
@@ -28,6 +32,19 @@ export default GameFill = ({
   React.useEffect(() => {
     onStepChange?.(currentStep, countSteps);
   }, [currentStep, countSteps]);
+
+  const vocabulary = useFiredux("vocabulary") ?? {};
+
+  const image = React.useMemo(() => {
+    /** @type {string} */
+    let uri = extractImageUri(questions[currentStep]?.image, vocabulary);
+    return uri ? { uri } : null;
+  }, [currentStep, vocabulary])
+
+  /** @type {GameFillSubtype} */
+  const currentSubtype = React.useMemo(() => {
+    return questions[currentStep]?.subtype;
+  }, [currentStep])
 
   const checkAnswer = () => {
     /** @type {[string]} */
@@ -75,9 +92,49 @@ export default GameFill = ({
             marginTop: 30,
             fontFamily: "Cucho",
           }}
+          onPress={() => speakWithRandomVoice(
+            questions[currentStep]?.questionLang,
+            replaceBlank(questions[currentStep].question, currentSubtype === "listen" ? questions[currentStep].answer?.["0"] : "blank"))
+          }
         >
           {questions[currentStep].question}
         </Text>
+        {image ? (
+          <Image
+            source={image}
+            style={{ height: 120, resizeMode: "center", margin: 5 }}
+          ></Image>
+        ) : (
+          <></>
+        )}
+        {(currentSubtype === "listen" || currentSubtype === "spell") &&
+          (
+            <Ionicons
+              name="volume-high-outline"
+              style={{ marginTop: 3, alignSelf: "center" }}
+              color={colors.primary}
+              size={50}
+              onPress={() => {
+                let textToSpeak = "";
+                let langToSpeak = "";
+
+                switch (currentSubtype) {
+                  case "listen": {
+                    textToSpeak = replaceBlank(questions[currentStep].question, questions[currentStep].answer?.["0"]);
+                    langToSpeak = questions[currentStep].questionLang;
+                    break;
+                  }
+                  case "spell": {
+                    textToSpeak = toSpelling(questions[currentStep]?.answer?.["0"]);
+                    langToSpeak = questions[currentStep].answerLang;
+                    break;
+                  }
+                }
+                speakWithRandomVoice(langToSpeak, textToSpeak)
+              }}
+            />
+          )
+        }
       </View>
       <View>
         <TextInput
@@ -106,3 +163,7 @@ export default GameFill = ({
     </View>
   );
 };
+
+/**
+ * @typedef {"read"|"listen"|"spell"} GameFillSubtype
+ */

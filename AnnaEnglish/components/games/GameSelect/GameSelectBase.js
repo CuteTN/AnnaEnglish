@@ -8,7 +8,7 @@ import { shuffle } from "../../../Utils/shuffle";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { speakWithRandomVoice } from "../../../Utils/speech";
 import { useFiredux } from "../../../hooks/useFiredux";
-import { replaceBlank } from "../../../Utils/string";
+import { replaceBlank, replaceBlanks } from "../../../Utils/string";
 import { extractImageUri } from "../../../Utils/image";
 
 const Card = ({ label, onPress, isSelected }) => {
@@ -77,7 +77,8 @@ const GameSelectBase = ({
   }, [currentStep, countSteps]);
 
   const handleToggleSelectAnswer = (answer) => {
-    speakWithRandomVoice(questions[currentStep].optionsLang, answer)
+    if (!(allowMultiSelect && selections.includes(answer)))
+      speakWithRandomVoice(questions[currentStep].optionsLang, answer)
 
     if (allowMultiSelect) {
       setSelections((prev) => {
@@ -132,6 +133,13 @@ const GameSelectBase = ({
     onComplete?.();
   };
 
+  const getBlankedReplacedAnswer = () => {
+    if (allowMultiSelect)
+      return replaceBlanks(questions[currentStep].question, Object.values(questions[currentStep].answer ?? {}));
+    else
+      return replaceBlank(questions[currentStep].question, questions[currentStep].answer);
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.container}>
@@ -139,8 +147,11 @@ const GameSelectBase = ({
           style={{ textAlign: "center", fontSize: 26, fontFamily: "Cucho" }}
           onPress={() => speakWithRandomVoice(
             questions[currentStep]?.questionLang,
-            replaceBlank(questions[currentStep].question, currentSubtype === "listen" ? questions[currentStep].answer : "blank"))
-          }
+            currentSubtype === "listen" ?
+              getBlankedReplacedAnswer()
+              :
+              replaceBlank(questions[currentStep].question, ", blank, ")
+          )}
         >
           {questions[currentStep].question}
         </Text>
@@ -161,7 +172,12 @@ const GameSelectBase = ({
               style={{ marginTop: 3, alignSelf: "center" }}
               color={colors.primary}
               size={50}
-              onPress={() => speakWithRandomVoice(questions[currentStep]?.questionLang, replaceBlank(questions[currentStep].question, questions[currentStep].answer))}
+              onPress={() => {
+                speakWithRandomVoice(
+                  questions[currentStep]?.questionLang,
+                  getBlankedReplacedAnswer()
+                )
+              }}
             />
           )
         }
