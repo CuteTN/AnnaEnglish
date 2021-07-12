@@ -56,7 +56,7 @@ export default TopicScreen = ({ route }) => {
           <View style={{ flexDirection: "row" }}>
             <Image
               source={{ uri: "https://imgur.com/KMyVCmn.png" }}
-              style={{ height: 100, width: 100 }}
+              style={{ height: 100, width: 100, marginLeft: 5 }}
             ></Image>
             <Text style={[styles.label, { color: "black" }]}>THỬ THÁCH</Text>
           </View>
@@ -66,8 +66,8 @@ export default TopicScreen = ({ route }) => {
         <View style={[styles.card]}>
           <View style={{ flexDirection: "row" }}>
             <Image
-              source={{ uri: "https://imgur.com/KMyVCmn.png" }}
-              style={{ height: 100, width: 100 }}
+              source={{ uri: "https://imgur.com/N5Vs1gw.png" }}
+              style={{ height: 115, width: 100, marginLeft: 10 }}
             ></Image>
             <Text style={[styles.label, { color: "black" }]}>ÔN TẬP</Text>
           </View>

@@ -101,6 +101,8 @@ function PlayScreen() {
           if (justUnlocked) navigateToTopicScreen();
         },
       });
+    } else {
+      navigateToTopicScreen();
     }
   };
 

@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
   label: {
     fontSize: 24,
     fontFamily: "Cucho",
-    margin: 40,
+    margin: 36,
   },
   topicImage: {
     alignSelf: "center",
@@ -46,7 +46,6 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     borderWidth: 1,
     backgroundColor: "#C9F4F6",
-
-    margin: 20,
+    margin: 15,
   },
 });

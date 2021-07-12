@@ -137,7 +137,7 @@ export default GameScreen = ({ route }) => {
       }}
     >
       <View style={{ marginTop: 30 }}>
-        <Header title={isReviewMode ? "Review" : game?.name} />
+        <Header title={isReviewMode ? "Review" : game?.name} showCoin={true} />
       </View>
       {/* <View style={[styles.header, { backgroundColor: "lightpink" }]}>
         <Icon
