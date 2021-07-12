@@ -15,7 +15,7 @@ import Fire from "../../firebase/Fire";
 import { useRealtimeFire } from "../../hooks/useRealtimeFire";
 
 export default GameScreen = ({ route }) => {
-  const { game } = route?.params ?? {};
+  const { game, isReviewMode } = route?.params ?? {};
   const [progress, setProgress] = useState({ currentStep: 0, countSteps: 0 });
   const navigation = useNavigation();
   const { showCompleteModal } = useCompleteModal();
@@ -32,8 +32,12 @@ export default GameScreen = ({ route }) => {
     return user?.progress?.topics?.[topicId]?.completedGames?.[game?._id];
   }, [topicId, game?._id, user?.progress])
 
+  const userProgressOnReview = React.useMemo(() => {
+    return user?.progress?.topics?.[topicId]?.review
+  }, [topicId, user?.progress])
+
   useEffect(() => {
-    if (!game) {
+    if ((!game) && (!isReviewMode)) {
       navigation.goBack();
     }
   }, []);
@@ -48,14 +52,30 @@ export default GameScreen = ({ route }) => {
 
 
   const rewardUserCompleteProgress = () => {
+    if (!topic)
+      return;
+
     const now = Date.now();
     const data = { lastCompleteAt: now, }
 
-    // if the user haven't beat this game before
-    if (!userProgressOnGame)
-      data.firstCompleteAt = now;
+    if (isReviewMode) {
+      Fire.transaction(
+        `user/${username}/progress/topics/${topicId}/review`,
+        prev => {
+          const result = { ...prev, ...data };
+          result.firstCompleteAt = result.firstCompleteAt ?? now;
+          result.completedTimes = (prev?.completedTimes ?? 0) + 1;
 
-    Fire.update(`user/${username}/progress/topics/${topicId}/completedGames/${game._id}`, data);
+          return result;
+        }
+      )
+    } else {
+      // if the user haven't beat this game before
+      if (!userProgressOnGame)
+        data.firstCompleteAt = now;
+
+      Fire.update(`user/${username}/progress/topics/${topicId}/completedGames/${game._id}`, data);
+    }
   }
 
   const rewardUserCompleteStats = () => {
@@ -64,9 +84,16 @@ export default GameScreen = ({ route }) => {
 
     let rewardedCoins = 0;
 
-    // if the user haven't beat this game before
-    if (!userProgressOnGame) {
-      rewardedCoins += 10; // yeah this is magic, I promise it'll be cleaner if I have time
+    if (isReviewMode) {
+      const completedTimes = (userProgressOnReview.completedTimes ?? 0) + 1;
+      if (completedTimes <= 10)
+        rewardedCoins = completedTimes * 5
+
+    } else {
+      // if the user haven't beat this game before
+      if (!userProgressOnGame) {
+        rewardedCoins += 10; // yeah this is magic, I promise it'll be cleaner if I have time
+      }
     }
 
     // Fire.update(`user/${username}/stats`, { coins: userStats.coins, exp: userStats.exp });
@@ -112,7 +139,7 @@ export default GameScreen = ({ route }) => {
       }}
     >
       <View style={{ marginTop: 30 }}>
-        <Header title={game?.name} />
+        <Header title={isReviewMode ? "Review" : game?.name} />
       </View>
       {/* <View style={[styles.header, { backgroundColor: "lightpink" }]}>
         <Icon

@@ -28,11 +28,16 @@ export default TopicScreen = ({ route }) => {
   const [topic] = useRealtimeFire("topic", route?.params?.topicId);
   const navigation = useNavigation();
 
-  const navigateToTopicScreen = () =>
+  const navigateToTopicGameScreen = () =>
     navigation.navigate(SCREENS.topicGame.name, { topicId: topicId });
 
   const navigateToTopicWordScreen = () =>
     navigation.navigate(SCREENS.topicWord.name, { topicId: topicId });
+
+  const navigateToReviewGameScreen = () => {
+    // have to duplicate topicId here for reasons.
+    navigation.navigate(SCREENS.game.name, { topicId, isReviewMode: true, game: { type: "match", topicId } })
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -50,7 +55,7 @@ export default TopicScreen = ({ route }) => {
           </View>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity onPress={navigateToTopicScreen}>
+      <TouchableOpacity onPress={navigateToTopicGameScreen}>
         <View style={[styles.card]}>
           <View style={{ flexDirection: "row" }}>
             <Image
@@ -58,6 +63,17 @@ export default TopicScreen = ({ route }) => {
               style={{ height: 100, width: 100 }}
             ></Image>
             <Text style={[styles.label, { color: "black" }]}>THỬ THÁCH</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={navigateToReviewGameScreen}>
+        <View style={[styles.card]}>
+          <View style={{ flexDirection: "row" }}>
+            <Image
+              source={{ uri: "https://imgur.com/KMyVCmn.png" }}
+              style={{ height: 100, width: 100 }}
+            ></Image>
+            <Text style={[styles.label, { color: "black" }]}>ÔN TẬP</Text>
           </View>
         </View>
       </TouchableOpacity>

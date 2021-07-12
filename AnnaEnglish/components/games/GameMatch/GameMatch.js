@@ -16,6 +16,7 @@ import { randomInt } from "../../../Utils/math";
 import { extractImageUri } from "../../../Utils/image";
 import { useFiredux } from "../../../hooks/useFiredux";
 import { speakWithRandomVoice } from "../../../Utils/speech";
+import { useRealtimeFire } from "../../../hooks/useRealtimeFire";
 
 const AnswerImage = ({ backgroundColor, onPress, imageUrl, isSelected }) => {
   const handlePress = () => {
@@ -71,14 +72,42 @@ const AnswerText = ({ label, backgroundColor, onPress, isSelected }) => {
 };
 
 const GameMatch = ({ data, onComplete, onStepChange, onCorrect, onIncorrect, }) => {
-  const pairs = React.useRef(Object.values(data?.pairs ?? {})).current;
-  const textOptions = React.useRef(shuffle(pairs.map(p => p["0"])));
-  const imageOptions = React.useRef(shuffle(pairs.map(p => p["1"])));
+  const MAX_PAIRS = 4;
 
-  const countSteps = React.useRef(pairs.length).current;
+  const vocabulary = useFiredux("vocabulary");
+  const [topic] = useRealtimeFire("topic", data?.topicId);
+
+  const pairs = React.useMemo(() => {
+    if (!(vocabulary && topic?.vocabulary))
+      return null;
+
+    const topicVocabulary = Object.values(topic?.vocabulary ?? {});
+
+    const result = shuffle(Object.entries(vocabulary)
+      .filter(entry => topicVocabulary.includes(entry[0])))
+      .map(entry => ({
+        text: entry[0],
+        image: entry[1]?.image
+      }))
+      .slice(0, MAX_PAIRS);
+
+    return result;
+  }, [vocabulary, topic?.vocabulary])
+
+  const [textOptions, setTextOptions] = React.useState([]);
+  const [imageOptions, setImageOptions] = React.useState([]);
+
+  React.useEffect(() => {
+    if (!pairs)
+      return;
+
+    setTextOptions(shuffle(pairs?.map(p => p.text)));
+    setImageOptions(shuffle(pairs?.map(p => p.image)));
+  }, [pairs]);
+
+  const countSteps = React.useRef(MAX_PAIRS).current;
   const [currentStep, setCurrentStep] = React.useState(0);
 
-  const vocabulary = useFiredux("vocabulary") ?? {};
 
   React.useEffect(() => {
     onStepChange?.(currentStep, countSteps);
@@ -87,30 +116,32 @@ const GameMatch = ({ data, onComplete, onStepChange, onCorrect, onIncorrect, }) 
   const backgroundColor = React.useRef(randomColor()).current;
   const backgroundColorWords = React.useRef(randomColor()).current;
 
-  const [selection, setSelection] = React.useState({ text: null, image: null });
+  const [selection, setSelection] = React.useState({ textInd: -1, imageInd: -1 });
   const checkAnswer = () => {
-    return pairs.some(p => p["0"] === selection.text && p["1"] === selection.image);
+    return pairs?.some(p => p.text === textOptions[selection.textInd] && p.image === imageOptions[selection.imageInd]);
   };
 
   /**
-   * @param {"text"|"image"} type 
+   * @param {"textInd"|"imageInd"} type 
    */
-  const handleToggleSelect = (type, value) => {
-    if (value) {
+  const handleToggleSelect = (type, ind) => {
+    const options = type === "imageInd" ? imageOptions : textOptions;
+
+    if (options[ind]) {
       if (type === "text")
-        speakWithRandomVoice("en", value);
+        speakWithRandomVoice("en", ind);
 
       setSelection(prev => {
         return {
-          ...prev,
-          [type]: prev[type] === value ? null : value
+          ...(prev ?? {}),
+          [type]: prev[type] === ind ? -1 : ind
         };
       })
     }
   }
 
   React.useEffect(() => {
-    if (selection.text && selection.image)
+    if (selection.textInd >= 0 && selection.imageInd >= 0)
       if (checkAnswer()) {
         handleCorrect();
       } else {
@@ -120,8 +151,13 @@ const GameMatch = ({ data, onComplete, onStepChange, onCorrect, onIncorrect, }) 
 
   const handleCorrect = () => {
     if (currentStep < countSteps - 1) {
-      textOptions.current = textOptions.current.map(text => text === selection.text ? "" : text);
-      imageOptions.current = imageOptions.current.map(image => image === selection.image ? "" : image);
+      const removeAt = (arr, ind) => {
+        const result = [...arr];
+        result[ind] = "";
+        return result;
+      }
+      setTextOptions(prev => removeAt(prev, selection.textInd));
+      setImageOptions(prev => removeAt(prev, selection.imageInd));
 
       setSelection({ text: null, image: null });
       setCurrentStep((prev) => prev + 1);
@@ -149,13 +185,13 @@ const GameMatch = ({ data, onComplete, onStepChange, onCorrect, onIncorrect, }) 
             marginBottom: 10,
             paddingRight: 20,
           }}
-          data={textOptions.current}
-          renderItem={({ item }) => (
+          data={textOptions ?? []}
+          renderItem={({ item, index }) => (
             <AnswerText
               label={item}
               backgroundColor={backgroundColor}
-              onPress={() => handleToggleSelect("text", item)}
-              isSelected={item === selection.text}
+              onPress={() => handleToggleSelect("textInd", index)}
+              isSelected={index === selection.textInd}
             />
           )}
         />
@@ -165,13 +201,13 @@ const GameMatch = ({ data, onComplete, onStepChange, onCorrect, onIncorrect, }) 
           contentContainerStyle={{
             marginBottom: 10,
           }}
-          data={imageOptions.current}
-          renderItem={({ item }) => (
+          data={imageOptions ?? []}
+          renderItem={({ item, index }) => (
             <AnswerImage
               backgroundColor={backgroundColorWords}
               imageUrl={extractImageUri(item, vocabulary)}
-              onPress={() => handleToggleSelect("image", item)}
-              isSelected={item === selection.image}
+              onPress={() => handleToggleSelect("imageInd", index)}
+              isSelected={index === selection.imageInd}
             />
           )}
         />

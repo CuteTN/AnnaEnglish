@@ -1,6 +1,7 @@
 /**
- * @param {[number]} data 
- * @returns {[number]}
+ * @param {[T]} data 
+ * @returns {[T]}
+ * @template T
  */
 export const shuffle = (data) => {
   let result = [...data];
