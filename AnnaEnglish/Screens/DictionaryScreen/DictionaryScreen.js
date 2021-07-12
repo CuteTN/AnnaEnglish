@@ -35,7 +35,7 @@ function DictionaryScreen() {
   );
 
   return (
-    <View style={styles.styleCenter}>
+    <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerBody}>
           <Text style={styles.headerText}>Từ vựng</Text>
@@ -46,28 +46,27 @@ function DictionaryScreen() {
             <TextInput style={styles.inputText} onChangeText={setTxtSearch} />
           </View>
         </View>
-
-        <ScrollView contentContainerStyle={styles.scrollViewWrapper}>
-          {listWord.map((item) => (
-            <TouchableOpacity onPress={() => handleSelectWord(item._id)}>
-              <View
-                style={[
-                  styles.card,
-                  {
-                    backgroundColor: "#AFEEEE",
-                    marginBottom: 5,
-                    marginTop: 5,
-                  },
-                ]}
-              >
-                <Text style={[styles.label, { color: "black" }]}>
-                  {item?._id}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
       </View>
+      <ScrollView contentContainerStyle={styles.scrollViewWrapper}>
+        {listWord.map((item) => (
+          <TouchableOpacity onPress={() => handleSelectWord(item._id)}>
+            <View
+              style={[
+                styles.card,
+                {
+                  backgroundColor: "#AFEEEE",
+                  marginBottom: 5,
+                  marginTop: 5,
+                },
+              ]}
+            >
+              <Text style={[styles.label, { color: "black" }]}>
+                {item?._id}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
     </View>
   );
 }

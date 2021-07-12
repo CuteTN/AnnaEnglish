@@ -2,9 +2,8 @@ import { StyleSheet } from "react-native";
 import { colors } from "../../config/colors";
 export const styles = StyleSheet.create({
   container: {
+    display: "flex",
     flex: 1,
-    backgroundColor: colors.white,
-    paddingHorizontal: 20,
   },
   header: {
     marginTop: 20,
@@ -36,7 +35,7 @@ export const styles = StyleSheet.create({
   },
   scrollViewWrapper: {
     justifyContent: "space-between",
-    marginTop: 10,
+    padding: 15,
   },
   card: {
     padding: 10,
