@@ -87,7 +87,7 @@ export default GameScreen = ({ route }) => {
     let rewardedCoins = 0;
 
     if (isReviewMode) {
-      const completedTimes = (userProgressOnReview.completedTimes ?? 0) + 1;
+      const completedTimes = (userProgressOnReview?.completedTimes ?? 0) + 1;
       if (completedTimes <= 10) rewardedCoins = completedTimes * 5;
     } else {
       // if the user haven't beat this game before

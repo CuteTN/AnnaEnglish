@@ -14,6 +14,11 @@ export const styles = StyleSheet.create({
     fontSize: 28,
     color: colors.heading,
   },
+  headerText: {
+    fontSize: 32,
+    fontFamily: "Pony",
+    color: colors.heading,
+  },
   subHeading: {
     color: colors.heading,
     fontSize: 28,

@@ -64,7 +64,10 @@ function PlayScreen() {
 
       return true;
     } else {
-      console.log("not enough coins or exp to unlock topic :(");
+      showOkModal({
+        label: "Chưa đủ tiền",
+        text: "Bạn hãy thực hiện nhiều thử thách hơn để tích luỹ tiền nhé!"
+      })
 
       return false;
     }
@@ -193,9 +196,9 @@ function PlayScreen() {
         source={require("../../assets/images/bg2.png")}
       />
       <View style={styles.headingWrapper}>
-        <Text style={styles.heading}>Let's learn.</Text>
+        <Text style={styles.headerText}>Cùng học nào!</Text>
         {/* <Text style={styles.subHeading}>to Silent Moon</Text> */}
-        <Text style={styles.title}>Choose a topic to focuse on:</Text>
+        <Text style={styles.title}>Hãy chọn chủ đề:</Text>
       </View>
       <ScrollView contentContainerStyle={styles.scrollViewWrapper}>
         <FlatList

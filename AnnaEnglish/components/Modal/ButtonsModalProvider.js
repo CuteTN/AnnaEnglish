@@ -12,7 +12,7 @@ export const useButtonsModal = () => {
 
 export const ButtonsModalProvider = ({ children }) => {
   const [visible, setVisible] = React.useState(false);
-  const modalProps = React.useRef();
+  const [modalProps, setModalProps] = React.useState();
 
   const closeModalAndHandleFunc = (func) => () => {
     setVisible(false);
@@ -21,32 +21,34 @@ export const ButtonsModalProvider = ({ children }) => {
 
   /** @type {showYesNoModalType} */
   const showYesNoModal = ({ label, text, imageUrl, onNo, onYes }) => {
-    modalProps.current = {
+    const tempModalProps = {
       label,
       text,
       imageUrl,
     };
 
-    modalProps.current.buttons = [
+    tempModalProps.buttons = [
       { label: "Không", onPress: closeModalAndHandleFunc(onNo) },
       { label: "Có", onPress: closeModalAndHandleFunc(onYes) },
     ];
 
+    setModalProps(tempModalProps);
     setVisible(true);
   };
 
   /** @type {showYesNoModalType} */
   const showOkModal = ({ label, text, imageUrl, onOk }) => {
-    modalProps.current = {
+    const tempModalProps = {
       label,
       text,
       imageUrl,
     };
 
-    modalProps.current.buttons = [
+    tempModalProps.buttons = [
       { label: "OK", onPress: closeModalAndHandleFunc(onOk) },
     ];
 
+    setModalProps(tempModalProps);
     setVisible(true);
   };
 
@@ -60,10 +62,10 @@ export const ButtonsModalProvider = ({ children }) => {
     >
       <ButtonsModal
         visible={visible}
-        label={modalProps.current?.label}
-        text={modalProps.current?.text}
-        imageUrl={modalProps.current?.imageUrl}
-        buttons={modalProps.current?.buttons}
+        label={modalProps?.label}
+        text={modalProps?.text}
+        imageUrl={modalProps?.imageUrl}
+        buttons={modalProps?.buttons}
       />
       {children}
     </ButtonsModalContext.Provider>

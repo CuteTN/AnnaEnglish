@@ -121,19 +121,19 @@ const EditProfileScreen = () => {
       </View>
       <TouchableOpacity
         style={styles.panelButton}
-        // onPress={takePhotoFromCamera}
+      // onPress={takePhotoFromCamera}
       >
         <Text style={styles.panelButtonTitle}>Take Photo</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.panelButton}
-        // onPress={choosePhotoFromLibrary}
+      // onPress={choosePhotoFromLibrary}
       >
         <Text style={styles.panelButtonTitle}>Choose From Library</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.panelButton}
-        // onPress={() => this.bs.current.snapTo(1)}
+      // onPress={() => this.bs.current.snapTo(1)}
       >
         <Text style={styles.panelButtonTitle}>Cancel</Text>
       </TouchableOpacity>
@@ -229,25 +229,25 @@ const EditProfileScreen = () => {
               },
             ]}
           >
-            Full Name
+            Họ và tên
           </Text>
           <View style={styles.inputItem}>
             <EditInputName
-              placeHolder={"Full Name"}
+              placeHolder={"Họ và tên"}
               value={tempUser?.name}
               onChangeText={handleChangeTextName}
             />
           </View>
-          <Text style={[styles.text_footer]}>Country</Text>
+          <Text style={[styles.text_footer]}>Đất nước</Text>
           <View style={styles.inputItem}>
             {/* <FontAwesome name="globe" color={colors.text} size={20} /> */}
             <EditInput
-              placeHolder={"Country"}
+              placeHolder={"Đất nước"}
               value={tempUser?.country}
               onChangeText={handleChangeTextCountry}
             />
           </View>
-          <Text style={[styles.text_footer]}>Birthday</Text>
+          <Text style={[styles.text_footer]}>Ngày sinh</Text>
           <View style={styles.inputItem}>
             <DatePicker
               style={styles.datepicker}
@@ -265,7 +265,7 @@ const EditProfileScreen = () => {
               }}
             />
           </View>
-          <Text style={[styles.text_footer]}>Gender</Text>
+          <Text style={[styles.text_footer]}>Giới tính</Text>
           <View style={styles.inputItem1}>
             {/* <Icon name="gender-male-female" color={colors.text} size={20} /> */}
 
@@ -284,8 +284,8 @@ const EditProfileScreen = () => {
                 handleChangeGenderPicker(itemValue);
               }}
             >
-              <Picker.Item label="Male" value="Male" />
-              <Picker.Item label="Female" value="Female" />
+              <Picker.Item label="Nam" value="Male" />
+              <Picker.Item label="Nữ" value="Female" />
             </Picker>
           </View>
           <View style={styles.getStartedbtnItemWrapper}>
