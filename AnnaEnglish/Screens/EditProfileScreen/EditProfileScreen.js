@@ -81,9 +81,12 @@ const EditProfileScreen = () => {
   //#endregion
 
   const handleSaveButtonPress = () => {
-    if (checkEnoughUserInfo({ ...user, ...tempUser }).isValid) {
+    const checkResult = checkEnoughUserInfo({ ...user, ...tempUser });
+    if (checkResult.isValid) {
       updateUser(tempUser);
       navigation.navigate(SCREENS.mainApp.name);
+    } else {
+      console.log(checkResult.message);
     }
   };
 

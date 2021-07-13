@@ -210,7 +210,7 @@ function PlayScreen() {
             style={{
               fontSize: 22,
               alignContent: "flex-end",
-              marginLeft: 100,
+              marginLeft: 70,
               marginTop: 10,
               marginRight: 1,
               fontFamily: "Cucho",
