@@ -20,7 +20,7 @@ import { useButtonsModal } from "../../components/Modal/ButtonsModalProvider";
 const EditPasswordScreen = () => {
   // const { user, updateUser } = useSignedIn();
   const navigation = useNavigation();
-  const { showOkModal } = useButtonsModal();
+  const { showOkModal, showYesNoModal } = useButtonsModal();
 
   const handleChangePassword = (oldPassword, newPassword) => {
     Fire.checkPassword(oldPassword).then((isSuccessful) => {
@@ -31,7 +31,7 @@ const EditPasswordScreen = () => {
       } else {
         showOkModal({
           label: "Mật khẩu không chính xác",
-          onOk: () => {},
+          onOk: () => { },
         });
       }
     });
@@ -39,11 +39,17 @@ const EditPasswordScreen = () => {
 
   const handleSaveButtonPress = () => {
     if (newPassword.current === newPasswordConfirm.current)
-      handleChangePassword(oldPassword.current, newPassword.current);
+      showYesNoModal({
+        label: "Thay đổi mật khẩu",
+        text: "Bạn có chắc muốn thay đổi mật khẩu không?",
+        onYes: () => {
+          handleChangePassword(oldPassword.current, newPassword.current)
+        }
+      })
     else {
       showOkModal({
         label: "Mật khẩu xác nhận không trùng khớp",
-        onOk: () => {},
+        onOk: () => { },
       });
     }
   };

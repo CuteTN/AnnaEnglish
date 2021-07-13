@@ -26,7 +26,8 @@ function ProfileScreen() {
 
   const showModal = () => {
     showYesNoModal({
-      label: "Bạn có chắc muốn đăng xuất không?",
+      label: "Đăng xuất",
+      text: "Bạn có chắc muốn đăng xuất không?",
       onYes: () => {
         handleSignOutPress();
       },

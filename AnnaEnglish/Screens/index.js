@@ -23,6 +23,7 @@ export const TAB_SCREENS = {
     screen: StatisticsScreen,
     iconName: "ios-pie-chart",
     focusIconName: "ios-pie-chart-outline",
+    vieName: "Thống kê",
   },
 
   leaderboard: {
@@ -30,6 +31,7 @@ export const TAB_SCREENS = {
     screen: LeaderboardScreen,
     iconName: "md-podium",
     focusIconName: "md-podium-outline",
+    vieName: "Xếp hạng",
   },
 
   play: {
@@ -37,6 +39,7 @@ export const TAB_SCREENS = {
     screen: PlayScreen,
     iconName: "game-controller",
     focusIconName: "game-controller-outline",
+    vieName: "Sân chơi",
   },
 
   dictionary: {
@@ -44,6 +47,7 @@ export const TAB_SCREENS = {
     screen: DictionaryScreen,
     iconName: "book",
     focusIconName: "book-outline",
+    vieName: "Từ vựng",
   },
 
   profile: {
@@ -51,6 +55,7 @@ export const TAB_SCREENS = {
     screen: ProfileScreen,
     iconName: "person",
     focusIconName: "person-outline",
+    vieName: "Tài khoản",
   },
 };
 

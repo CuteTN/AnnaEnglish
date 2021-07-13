@@ -99,6 +99,7 @@ function PlayScreen() {
     if (!unlocked) {
       showYesNoModal({
         label: "Mở chủ đề",
+        text: "Bạn có chắc muốn mở khoá chủ đề này không?",
         onYes: () => {
           const justUnlocked = unlockTopic(topic);
           if (justUnlocked) navigateToTopicScreen();

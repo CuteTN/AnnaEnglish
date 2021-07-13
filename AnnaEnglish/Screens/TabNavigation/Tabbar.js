@@ -31,7 +31,7 @@ export default function Tabbar() {
       }}
     >
       {Object.values(TAB_SCREENS).map((scr) => (
-        <Tab.Screen name={scr.name} component={scr.screen} />
+        <Tab.Screen name={scr.name} component={scr.screen} options={{ title: scr.vieName }} />
       ))}
     </Tab.Navigator>
   );

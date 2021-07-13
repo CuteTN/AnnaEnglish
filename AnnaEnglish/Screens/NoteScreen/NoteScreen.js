@@ -4,10 +4,12 @@ import Header from "../../components/Header/Header";
 import { styles } from "./styles";
 import { useSignedIn } from "../../hooks/useSignedIn";
 import { PrimaryButton } from "../../components/buttons/PrimaryButton/PrimaryButton";
+import { useButtonsModal } from "../../components/Modal/ButtonsModalProvider";
 
 export default NoteScreen = ({ route }) => {
   const { user, updateUser } = useSignedIn();
   const [tempNote, setTempNote] = useState("");
+  const { showOkModal } = useButtonsModal();
 
   useEffect(() => {
     if (user?.note) setTempNote(user.note);
@@ -15,6 +17,10 @@ export default NoteScreen = ({ route }) => {
 
   const handleSaveButtonPress = () => {
     updateUser({ note: tempNote });
+    showOkModal({
+      label: "Cập nhật ghi chú",
+      text: "Đã cập nhật ghi chú thành công!",
+    })
   };
 
   return (
