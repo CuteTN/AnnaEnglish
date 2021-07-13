@@ -45,7 +45,7 @@ export default TopicScreen = ({ route }) => {
           <View style={{ flexDirection: "row" }}>
             <Image
               source={{ uri: "https://imgur.com/3qfBver.png" }}
-              style={{ height: 100, width: 100 }}
+              style={{ height: 100, width: 100, marginTop: 5 }}
             ></Image>
             <Text style={[styles.label, { color: "black" }]}>TỪ VỰNG</Text>
           </View>

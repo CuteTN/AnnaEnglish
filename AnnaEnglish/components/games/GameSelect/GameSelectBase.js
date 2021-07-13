@@ -61,12 +61,12 @@ const GameSelectBase = ({
     /** @type {string} */
     let uri = extractImageUri(questions[currentStep]?.image, vocabulary);
     return uri ? { uri } : null;
-  }, [currentStep, vocabulary])
+  }, [currentStep, vocabulary]);
 
   /** @type {GameSelectSubtype} */
   const currentSubtype = useMemo(() => {
     return questions[currentStep]?.subtype;
-  }, [currentStep])
+  }, [currentStep]);
 
   React.useEffect(() => {
     if (currentStep < countSteps) {
@@ -78,7 +78,7 @@ const GameSelectBase = ({
 
   const handleToggleSelectAnswer = (answer) => {
     if (!(allowMultiSelect && selections.includes(answer)))
-      speakWithRandomVoice(questions[currentStep].optionsLang, answer)
+      speakWithRandomVoice(questions[currentStep].optionsLang, answer);
 
     if (allowMultiSelect) {
       setSelections((prev) => {
@@ -97,10 +97,8 @@ const GameSelectBase = ({
       const answer = Object.values(questions[currentStep].answer ?? {}).sort();
       const sortedSelection = [...selections].sort();
 
-      if (answer.length !== sortedSelection.length)
-        result = false;
-      else
-        answer.forEach((a, i) => (result &= a === sortedSelection[i]));
+      if (answer.length !== sortedSelection.length) result = false;
+      else answer.forEach((a, i) => (result &= a === sortedSelection[i]));
     } else {
       result &=
         selections.length !== 0 &&
@@ -138,23 +136,35 @@ const GameSelectBase = ({
 
   const getBlankedReplacedAnswer = () => {
     if (allowMultiSelect)
-      return replaceBlanks(questions[currentStep].question, Object.values(questions[currentStep].answer ?? {}));
+      return replaceBlanks(
+        questions[currentStep].question,
+        Object.values(questions[currentStep].answer ?? {})
+      );
     else
-      return replaceBlank(questions[currentStep].question, questions[currentStep].answer);
-  }
+      return replaceBlank(
+        questions[currentStep].question,
+        questions[currentStep].answer
+      );
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.container}>
         <Text
-          style={{ textAlign: "center", fontSize: 26, fontFamily: "Cucho" }}
-          onPress={() => speakWithRandomVoice(
-            questions[currentStep]?.questionLang,
-            currentSubtype === "listen" ?
-              getBlankedReplacedAnswer()
-              :
-              replaceBlank(questions[currentStep].question, ", blank, ")
-          )}
+          style={{
+            textAlign: "center",
+            fontSize: 20,
+            fontFamily: "Cucho",
+            lineHeight: 30,
+          }}
+          onPress={() =>
+            speakWithRandomVoice(
+              questions[currentStep]?.questionLang,
+              currentSubtype === "listen"
+                ? getBlankedReplacedAnswer()
+                : replaceBlank(questions[currentStep].question, ", blank, ")
+            )
+          }
         >
           {questions[currentStep].question}
         </Text>
@@ -168,22 +178,20 @@ const GameSelectBase = ({
           <></>
         )}
 
-        {currentSubtype === "listen" &&
-          (
-            <Ionicons
-              name="volume-high-outline"
-              style={{ marginTop: 3, alignSelf: "center" }}
-              color={colors.primary}
-              size={50}
-              onPress={() => {
-                speakWithRandomVoice(
-                  questions[currentStep]?.questionLang,
-                  getBlankedReplacedAnswer()
-                )
-              }}
-            />
-          )
-        }
+        {currentSubtype === "listen" && (
+          <Ionicons
+            name="volume-high-outline"
+            style={{ marginTop: 3, alignSelf: "center" }}
+            color={colors.primary}
+            size={50}
+            onPress={() => {
+              speakWithRandomVoice(
+                questions[currentStep]?.questionLang,
+                getBlankedReplacedAnswer()
+              );
+            }}
+          />
+        )}
       </View>
       <View>
         <FlatList
@@ -196,7 +204,11 @@ const GameSelectBase = ({
           data={options}
           renderItem={({ item, index }) => (
             <Card
-              label={questions[currentStep]?.hiddenOptions ? String.fromCharCode(index + 65) : item}
+              label={
+                questions[currentStep]?.hiddenOptions
+                  ? String.fromCharCode(index + 65)
+                  : item
+              }
               onPress={() => handleToggleSelectAnswer(item)}
               isSelected={selections.includes(item)}
             />
@@ -206,7 +218,7 @@ const GameSelectBase = ({
       <View style={styles.getStartedbtnItemWrapper}>
         <PrimaryButton label={"KIỂM TRA"} onPress={handleSubmitButtonPress} />
       </View>
-    </View >
+    </View>
   );
 };
 
