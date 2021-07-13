@@ -10,6 +10,7 @@ import { useCheckModal } from "../../components/games/CheckModal/CheckModalProvi
 import { useSignedIn } from "../../hooks/useSignedIn";
 import Fire from "../../firebase/Fire";
 import { useRealtimeFire } from "../../hooks/useRealtimeFire";
+import { useButtonsModal } from "../../components/Modal/ButtonsModalProvider"
 
 export default GameScreen = ({ route }) => {
   const { game, isReviewMode } = route?.params ?? {};
@@ -17,6 +18,7 @@ export default GameScreen = ({ route }) => {
   const navigation = useNavigation();
   const { showCompleteModal } = useCompleteModal();
   const { showCheckModal } = useCheckModal();
+  const { showOkModal } = useButtonsModal();
 
   const { user, username } = useSignedIn();
 
@@ -81,18 +83,36 @@ export default GameScreen = ({ route }) => {
     }
   };
 
+  /**
+   * @returns {{ isRewarded: boolean, label: string, message: string }}
+   */
   const rewardUserCompleteStats = () => {
-    if (!topic) return;
+    if (!topic) return { isRewarded: false };
+
+    const result = { isRewarded: false };
 
     let rewardedCoins = 0;
 
     if (isReviewMode) {
       const completedTimes = (userProgressOnReview?.completedTimes ?? 0) + 1;
-      if (completedTimes <= 10) rewardedCoins = completedTimes * 5;
+      if (completedTimes <= 10) {
+        rewardedCoins = completedTimes * 5;
+
+        result.isRewarded = true;
+        result.label = "Phần thưởng";
+        result.message = `Bạn nhận được ${rewardedCoins} xu vì hoàn thành phần ôn tập lần thứ ${completedTimes}.`
+
+        if (completedTimes < 10)
+          result.message += " Hãy làm lại để nhận được nhiều tiền thưởng hơn nhé!"
+      }
     } else {
       // if the user haven't beat this game before
       if (!userProgressOnGame) {
         rewardedCoins += 10; // yeah this is magic, I promise it'll be cleaner if I have time
+
+        result.isRewarded = true;
+        result.label = "Phần thưởng";
+        result.message = `Bạn nhận được ${rewardedCoins} xu vì hoàn thành trò chơi "${game?.name}".`
       }
     }
 
@@ -103,16 +123,30 @@ export default GameScreen = ({ route }) => {
 
       return result;
     });
+
+    return result;
   };
 
   const handleCompleteGame = () => {
     rewardUserCompleteProgress();
-    rewardUserCompleteStats();
+    const rewardResult = rewardUserCompleteStats();
 
     showCompleteModal({
       onClose: () => {
-        onGameComplete?.(game?._id);
-        navigation.goBack();
+        const handleOnCloseReward = () => {
+          onGameComplete?.(game?._id);
+          navigation.goBack();
+        }
+
+        if (rewardResult?.isRewarded) {
+          showOkModal({
+            label: rewardResult.label,
+            text: rewardResult.message,
+            onOk: handleOnCloseReward,
+          })
+        } else {
+          handleOnCloseReward();
+        }
       },
     });
   };
