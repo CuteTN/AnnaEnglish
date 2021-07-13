@@ -3,7 +3,13 @@ import React from "react";
 import { colors } from "../../config/colors";
 import { View, StyleSheet, Modal, Pressable, Text } from "react-native";
 
-export default function ButtonsModal({ visible, label, imageUrl, text, buttons }) {
+export default function ButtonsModal({
+  visible,
+  label,
+  imageUrl,
+  text,
+  buttons,
+}) {
   return (
     <Modal
       animationType="fade"
@@ -86,7 +92,7 @@ const styles = StyleSheet.create({
   },
   modalLabel: {
     marginBottom: 15,
-    fontWeight: "700",
+    fontWeight: "200",
     textAlign: "center",
     fontFamily: "Cucho",
     fontSize: 24,
