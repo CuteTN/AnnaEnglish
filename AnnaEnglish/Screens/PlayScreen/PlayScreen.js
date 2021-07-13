@@ -15,6 +15,7 @@ import { colors } from "../../config/colors";
 import { useSignedIn } from "../../hooks/useSignedIn";
 import Fire from "../../firebase/Fire";
 import { useButtonsModal } from "../../components/Modal/ButtonsModalProvider";
+import { getUserStats } from "../../Utils/user";
 
 function PlayScreen() {
   const rawTopics = useFiredux("topic") ?? {};
@@ -66,8 +67,8 @@ function PlayScreen() {
     } else {
       showOkModal({
         label: "Chưa đủ tiền",
-        text: "Bạn hãy thực hiện nhiều thử thách hơn để tích luỹ tiền nhé!"
-      })
+        text: "Bạn hãy thực hiện nhiều thử thách hơn để tích luỹ tiền nhé!",
+      });
 
       return false;
     }
@@ -199,8 +200,36 @@ function PlayScreen() {
       <View style={styles.headingWrapper}>
         <Text style={styles.headerText}>Cùng học nào!</Text>
         {/* <Text style={styles.subHeading}>to Silent Moon</Text> */}
-        <Text style={styles.title}>Hãy chọn chủ đề:</Text>
+        <View
+          style={{
+            alignContent: "flex-end",
+            flexDirection: "row",
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 22,
+              alignContent: "flex-end",
+              marginLeft: 100,
+              marginTop: 10,
+              marginRight: 1,
+              fontFamily: "Cucho",
+              color: colors.black,
+            }}
+          >
+            {getUserStats("coins", user)}
+          </Text>
+          <Image
+            source={{ uri: "https://imgur.com/B2sbpi2.png" }}
+            style={{
+              width: 24,
+              resizeMode: "center",
+              marginRight: 10,
+            }}
+          />
+        </View>
       </View>
+      <Text style={styles.title}>Hãy chọn chủ đề:</Text>
       <ScrollView contentContainerStyle={styles.scrollViewWrapper}>
         <FlatList
           columnWrapperStyle={{ justifyContent: "space-between" }}

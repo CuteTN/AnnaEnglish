@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
   },
   headingWrapper: {
     marginTop: 35,
+    flexDirection: "row",
   },
   heading: {
     fontWeight: "bold",

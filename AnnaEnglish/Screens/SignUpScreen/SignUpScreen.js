@@ -82,7 +82,7 @@ function SignUpScreen({}) {
           style={styles.back}
           source={require("../../assets/images/back.png")}
         /> */}
-          <Text style={styles.heading}>CREATE YOUR ACCOUNT</Text>
+          <Text style={styles.heading}>ĐĂNG KÝ TÀI KHOẢN</Text>
           <View style={styles.inputItem}>
             <PrimaryInput
               placeHolder={"Nhập tên đăng nhập!"}

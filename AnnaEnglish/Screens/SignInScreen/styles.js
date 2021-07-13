@@ -47,6 +47,7 @@ export const styles = StyleSheet.create({
   },
   top: {
     flex: 1,
+    // marginBottom: 80,
     marginBottom: 10,
   },
 });
