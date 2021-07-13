@@ -13,18 +13,24 @@ import { colors } from "../../config/colors";
 import { useNavigation } from "@react-navigation/core";
 import { SCREENS } from "..";
 import { styles } from "./styles";
+import { useSignedIn } from "../../hooks/useSignedIn";
 
 function DictionaryScreen() {
   const vocabulary = useFiredux("vocabulary") ?? {};
+  const { user } = useSignedIn();
   const navigation = useNavigation();
   const [txtSearch, setTxtSearch] = useState("");
 
-  const listVocabulary = React.useMemo(() =>
-    Object.entries(vocabulary).map((entry) => ({
-      _id: entry[0],
-      ...entry[1],
-    }))
-  );
+  const listVocabulary = React.useMemo(() => {
+    const userVocabulary = Object.values(user?.progress?.vocabulary ?? {});
+
+    return Object.entries(vocabulary)
+      .filter(entry => userVocabulary.includes(entry[0]))
+      .map((entry) => ({
+        _id: entry[0],
+        ...entry[1],
+      }))
+  }, [vocabulary, user?.progress?.vocabulary]);
 
   const handleSelectWord = (word) => {
     navigation.navigate(SCREENS.word.name, { word });

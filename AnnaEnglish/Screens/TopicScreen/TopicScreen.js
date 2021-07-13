@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   View,
   SafeAreaView,
@@ -11,6 +11,7 @@ import Header from "../../components/Header/Header";
 import { styles } from "./styles";
 import { useNavigation } from "@react-navigation/native";
 import { SCREENS } from "..";
+import { useSignedIn } from "../../hooks/useSignedIn";
 
 export default TopicScreen = ({ route }) => {
   const topicId = React.useMemo(
@@ -19,6 +20,12 @@ export default TopicScreen = ({ route }) => {
   );
   const [topic] = useRealtimeFire("topic", route?.params?.topicId);
   const navigation = useNavigation();
+
+  const { user } = useSignedIn();
+
+  const isTopicCompleted = useMemo(() => {
+    return user?.progress?.topics?.[topicId]?.firstCompleteAt;
+  }, [topicId, user?.progress?.topics])
 
   const navigateToTopicGameScreen = () =>
     navigation.navigate(SCREENS.topicGame.name, { topicId: topicId });
@@ -62,17 +69,19 @@ export default TopicScreen = ({ route }) => {
           </View>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity onPress={navigateToReviewGameScreen}>
-        <View style={[styles.card]}>
-          <View style={{ flexDirection: "row" }}>
-            <Image
-              source={{ uri: "https://imgur.com/N5Vs1gw.png" }}
-              style={{ height: 115, width: 100, marginLeft: 10 }}
-            ></Image>
-            <Text style={[styles.label, { color: "black" }]}>ÔN TẬP</Text>
+      {isTopicCompleted &&
+        <TouchableOpacity onPress={navigateToReviewGameScreen}>
+          <View style={[styles.card]}>
+            <View style={{ flexDirection: "row" }}>
+              <Image
+                source={{ uri: "https://imgur.com/N5Vs1gw.png" }}
+                style={{ height: 115, width: 100, marginLeft: 10 }}
+              ></Image>
+              <Text style={[styles.label, { color: "black" }]}>ÔN TẬP</Text>
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      }
     </SafeAreaView>
   );
 };
