@@ -155,7 +155,12 @@ const GameHangman = ({
     <View style={styles.container}>
       <View style={styles.container}>
         <Text
-          style={{ textAlign: "center", fontSize: 26, fontFamily: "Cucho" }}
+          style={{
+            textAlign: "center",
+            fontSize: 20,
+            fontFamily: "Cucho",
+            lineHeight: 30,
+          }}
           onPress={() =>
             speakWithRandomVoice(
               questions[currentStep]?.questionLang,
