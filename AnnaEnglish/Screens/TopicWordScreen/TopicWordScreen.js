@@ -57,7 +57,7 @@ function TopicWordScreen({ route }) {
         <View style={styles.groupInputs}>
           <View style={styles.wrapperInput}>
             <AntDesign name="search1" size={18} color="gray" />
-            <TextInput style={styles.inputText} onChangeText={setTxtSearch} />
+            <TextInput style={styles.inputText} onChangeText={setTxtSearch} placeholder={"Tìm kiếm từ vựng"} />
           </View>
         </View>
 
