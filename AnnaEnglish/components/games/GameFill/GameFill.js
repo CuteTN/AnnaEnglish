@@ -91,6 +91,7 @@ export default GameFill = ({
             fontSize: 24,
             marginTop: 30,
             fontFamily: "Cucho",
+            lineHeight: 32,
           }}
           onPress={() =>
             speakWithRandomVoice(

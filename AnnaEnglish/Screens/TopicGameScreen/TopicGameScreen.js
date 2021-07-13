@@ -17,6 +17,7 @@ import { useNavigation } from "@react-navigation/native";
 import { SCREENS } from "..";
 import { useSignedIn } from "../../hooks/useSignedIn";
 import { isToday } from "../../Utils/datetime";
+import { useButtonsModal } from "../../components/Modal/ButtonsModalProvider";
 
 export default TopicGameScreen = ({ route }) => {
   const topicId = React.useMemo(
@@ -29,6 +30,8 @@ export default TopicGameScreen = ({ route }) => {
   const navigation = useNavigation();
 
   const { user, username } = useSignedIn();
+
+  const { showOkModal } = useButtonsModal();
 
   useEffect(() => {
     if (topic?.games) {
@@ -83,9 +86,14 @@ export default TopicGameScreen = ({ route }) => {
     Fire.update(`user/${username}/progress/topics/${topicId}/`, data);
   };
 
-  /** @param {"first"|"today"} rewardType*/
+  /** 
+   * @param {"first"|"today"} rewardType
+   * @returns {{ isRewarded: boolean, label: string, message: string }}
+   * */
   const rewardUserCompleteStats = (rewardType) => {
-    if (!topic) return;
+    if (!topic) return { isRewarded: false };
+
+    const result = { isRewarded: false }
 
     let rewardedCoins = 0;
     let rewardedExp = 0;
@@ -94,9 +102,17 @@ export default TopicGameScreen = ({ route }) => {
     if (rewardType === "first") {
       rewardedCoins += topic?.reward?.coins ?? 0;
       rewardedExp += topic?.reward?.exp ?? 0;
+
+      result.isRewarded = true;
+      result.label = "Phần thưởng";
+      result.message = `Bạn nhận được ${rewardedCoins} xu và ${rewardedExp} điểm kinh nghiệm vì hoàn thành chủ đề "${topic?.name}" lần đầu tiên. Chơi lại vào ngày mai để được nhận tiếp nhé!`
     } else if (rewardType === "today") {
       rewardedCoins += 50;
       rewardedExp += 10;
+
+      result.isRewarded = true;
+      result.label = "Phần thưởng";
+      result.message = `Bạn nhận được ${rewardedCoins} xu và ${rewardedExp} điểm kinh nghiệm vì hoàn thành chủ đề "${topic?.name}" trong hôm nay. Chơi lại vào ngày mai để được nhận tiếp nhé!`
     }
 
     // Fire.update(`user/${username}/stats`, { coins: userStats.coins, exp: userStats.exp });
@@ -107,12 +123,21 @@ export default TopicGameScreen = ({ route }) => {
 
       return result;
     });
+
+    return result;
   };
 
   /** @param {"first"|"today"} rewardType*/
   const handleTopicComplete = (rewardType) => {
     rewardUserCompleteProgress(rewardType);
-    rewardUserCompleteStats(rewardType);
+    const rewardResult = rewardUserCompleteStats(rewardType);
+
+    if (rewardResult?.isRewarded) {
+      showOkModal({
+        label: rewardResult.label,
+        text: rewardResult.message,
+      })
+    }
   };
 
   const handleGameComplete = (gameId) => {
@@ -182,7 +207,7 @@ export default TopicGameScreen = ({ route }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ marginTop: 30 }}>
-        <Header title={topic?.name} />
+        <Header title={topic?.name} showCoin />
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollViewWrapper}>
