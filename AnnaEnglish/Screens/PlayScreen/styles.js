@@ -30,6 +30,7 @@ export const styles = StyleSheet.create({
     marginTop: 10,
     color: colors.gray,
     marginBottom: 30,
+    fontFamily: "Cucho",
   },
   bgImage: {
     position: "absolute",
